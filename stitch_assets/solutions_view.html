@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Samartsev AI - Solutions &amp; Process</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#111111",
+                        "background-light": "#F9FAFB",
+                        "surface": "#FFFFFF",
+                        "text-main": "#1A1D20",
+                        "muted": "#828D99",
+                        "accent": "#00E599",
+                        "border-color": "#E5E7EB"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "sm": "4px",
+                        "md": "8px",
+                        "lg": "12px",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'subtle': '0 4px 24px rgba(0, 0, 0, 0.04)',
+                    },
+                    letterSpacing: {
+                        'tight-heading': '-0.04em',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #F9FAFB;
+            color: #1A1D20;
+            background-image: radial-gradient(#F2F4F7 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        h1, h2, h3, h4, h5, h6, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* Smooth interactions */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            border-color: #00E599;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 229, 153, 0.08);
+        }
+
+        /* Material Icons setup */
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center w-full overflow-x-hidden">
+<!-- Main Container -->
+<main class="w-full max-w-[1200px] mx-auto px-6 py-24 md:py-32 flex flex-col gap-24">
+<!-- Solutions Section -->
+<section class="flex flex-col gap-12 w-full">
+<!-- Section Header -->
+<div class="flex flex-col gap-4 max-w-[720px]">
+<h2 class="font-display text-4xl md:text-5xl font-bold text-primary tracking-tight-heading leading-tight">
+                Отраслевые решения
+            </h2>
+<p class="text-muted text-lg font-body leading-relaxed">
+                Автоматизация для любой ниши. Настроим автономного агента под специфику вашего бизнеса.
+            </p>
+</div>
+<!-- Solutions Grid (2x2) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+<!-- Card 1: Услуги -->
+<div class="card-hover bg-surface rounded-md border border-border-color p-8 flex flex-col h-full cursor-pointer group relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-sm bg-background-light flex items-center justify-center text-accent group-hover:bg-accent/10 transition-colors">
+<span class="material-symbols-outlined text-[28px]">spa</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<h3 class="font-display text-xl font-bold text-primary">Услуги</h3>
+<p class="text-muted text-sm font-body leading-relaxed mb-6">
+                        Beauty, Clinics. Квалификация пациентов, запись на процедуры, напоминания о визитах 24/7.
+                    </p>
+</div>
+<div class="mt-auto">
+<button class="flex items-center gap-2 text-sm font-display font-semibold text-primary uppercase tracking-widest group-hover:text-accent transition-colors">
+                        Узнать подробнее
+                        <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Магазины -->
+<div class="card-hover bg-surface rounded-md border border-border-color p-8 flex flex-col h-full cursor-pointer group relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-sm bg-background-light flex items-center justify-center text-accent group-hover:bg-accent/10 transition-colors">
+<span class="material-symbols-outlined text-[28px]">shopping_cart</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<h3 class="font-display text-xl font-bold text-primary">Магазины</h3>
+<p class="text-muted text-sm font-body leading-relaxed mb-6">
+                        E-commerce. Консультации по ассортименту, проверка наличия, оформление заказов без менеджера.
+                    </p>
+</div>
+<div class="mt-auto">
+<button class="flex items-center gap-2 text-sm font-display font-semibold text-primary uppercase tracking-widest group-hover:text-accent transition-colors">
+                        Узнать подробнее
+                        <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Автосервисы -->
+<div class="card-hover bg-surface rounded-md border border-border-color p-8 flex flex-col h-full cursor-pointer group relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-sm bg-background-light flex items-center justify-center text-accent group-hover:bg-accent/10 transition-colors">
+<span class="material-symbols-outlined text-[28px]">build</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<h3 class="font-display text-xl font-bold text-primary">Автосервисы</h3>
+<p class="text-muted text-sm font-body leading-relaxed mb-6">
+                        Booking, Consultations. Первичный расчет стоимости ТО, бронирование постов, сбор симптомов поломки.
+                    </p>
+</div>
+<div class="mt-auto">
+<button class="flex items-center gap-2 text-sm font-display font-semibold text-primary uppercase tracking-widest group-hover:text-accent transition-colors">
+                        Узнать подробнее
+                        <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 4: Недвижимость -->
+<div class="card-hover bg-surface rounded-md border border-border-color p-8 flex flex-col h-full cursor-pointer group relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-sm bg-background-light flex items-center justify-center text-accent group-hover:bg-accent/10 transition-colors">
+<span class="material-symbols-outlined text-[28px]">apartment</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<h3 class="font-display text-xl font-bold text-primary">Недвижимость</h3>
+<p class="text-muted text-sm font-body leading-relaxed mb-6">
+                        Lead qualification. Сбор параметров поиска, предложение релевантных объектов, назначение показов.
+                    </p>
+</div>
+<div class="mt-auto">
+<button class="flex items-center gap-2 text-sm font-display font-semibold text-primary uppercase tracking-widest group-hover:text-accent transition-colors">
+                        Узнать подробнее
+                        <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Process Section -->
+<section class="flex flex-col gap-16 w-full mt-12">
+<!-- Section Header -->
+<div class="flex flex-col gap-4 text-center items-center">
+<h2 class="font-display text-3xl md:text-4xl font-bold text-primary tracking-tight-heading">
+                Как мы работаем
+            </h2>
+<p class="text-muted text-base font-body max-w-2xl">
+                Прозрачный процесс внедрения за 3 шага. От анализа до готового решения в вашей CRM.
+            </p>
+</div>
+<!-- Process Framework (3-column) -->
+<div class="relative w-full max-w-5xl mx-auto">
+<!-- Connecting Line (Desktop) -->
+<div class="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[1px] border-t border-dashed border-border-color z-0"></div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
+<!-- Step 1 -->
+<div class="flex flex-col items-center text-center gap-6 group">
+<div class="w-20 h-20 rounded-full bg-surface border border-border-color shadow-subtle flex items-center justify-center relative transition-transform duration-300 group-hover:-translate-y-1 group-hover:border-accent">
+<span class="font-display text-2xl font-bold text-primary">1</span>
+<!-- Mobile connecting line -->
+<div class="md:hidden absolute -bottom-12 left-1/2 w-[1px] h-12 border-l border-dashed border-border-color"></div>
+</div>
+<div class="flex flex-col gap-2 px-4">
+<h4 class="font-display text-xl font-bold text-primary">Аудит</h4>
+<p class="text-muted text-sm font-body leading-relaxed">
+                            Analysis of current processes. Изучаем вашу воронку, частые вопросы клиентов и логику ответов менеджеров.
+                        </p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center text-center gap-6 group">
+<div class="w-20 h-20 rounded-full bg-surface border border-border-color shadow-subtle flex items-center justify-center relative transition-transform duration-300 group-hover:-translate-y-1 group-hover:border-accent">
+<span class="font-display text-2xl font-bold text-primary">2</span>
+<!-- Mobile connecting line -->
+<div class="md:hidden absolute -bottom-12 left-1/2 w-[1px] h-12 border-l border-dashed border-border-color"></div>
+</div>
+<div class="flex flex-col gap-2 px-4">
+<h4 class="font-display text-xl font-bold text-primary">Сборка</h4>
+<p class="text-muted text-sm font-body leading-relaxed">
+                            Custom AI agent development. Обучаем нейросеть на ваших данных, настраиваем сценарии в n8n, тестируем диалоги.
+                        </p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center text-center gap-6 group">
+<div class="w-20 h-20 rounded-full bg-accent shadow-subtle flex items-center justify-center text-primary relative transition-transform duration-300 group-hover:-translate-y-1 ring-4 ring-background-light">
+<span class="font-display text-2xl font-bold">3</span>
+</div>
+<div class="flex flex-col gap-2 px-4">
+<h4 class="font-display text-xl font-bold text-primary">Интеграция</h4>
+<p class="text-muted text-sm font-body leading-relaxed">
+                            Deployment to CRM. Подключаем агента к WhatsApp/Telegram и вашей CRM-системе. Запуск в боевом режиме.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Process CTA -->
+<div class="flex justify-center mt-8">
+<button class="bg-primary text-surface font-display font-semibold text-base uppercase tracking-widest px-8 py-4 rounded-md hover:bg-accent hover:text-primary transition-colors duration-300">
+                Обсудить ваш проект
+            </button>
+</div>
+</section>
+</main>
+</body></html>

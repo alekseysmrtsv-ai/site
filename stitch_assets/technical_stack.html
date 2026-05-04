@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Samartsev AI Studio | Technical Excellence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f8f9fa",
+              "on-secondary-fixed": "#141b2b",
+              "inverse-surface": "#2e3132",
+              "primary-fixed-dim": "#00e297",
+              "on-primary-container": "#00613e",
+              "on-primary-fixed": "#002112",
+              "on-error-container": "#93000a",
+              "secondary-fixed": "#dce2f7",
+              "surface-container-low": "#f3f4f5",
+              "tertiary": "#825500",
+              "on-background": "#191c1d",
+              "tertiary-container": "#ffbd5d",
+              "surface-dim": "#d9dadb",
+              "surface-tint": "#006c46",
+              "on-tertiary-fixed-variant": "#633f00",
+              "on-secondary": "#ffffff",
+              "on-tertiary-container": "#754c00",
+              "outline": "#6b7b70",
+              "on-secondary-container": "#5c6274",
+              "surface-container": "#edeeef",
+              "primary": "#006c46",
+              "inverse-on-surface": "#f0f1f2",
+              "surface-bright": "#f8f9fa",
+              "surface-container-lowest": "#ffffff",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed": "#291800",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "on-primary-fixed-variant": "#005234",
+              "primary-container": "#00e599",
+              "on-surface-variant": "#3b4a41",
+              "secondary-container": "#d9dff5",
+              "surface": "#f8f9fa",
+              "tertiary-fixed-dim": "#fcba5b",
+              "outline-variant": "#bacbbe",
+              "surface-container-highest": "#e1e3e4",
+              "tertiary-fixed": "#ffddb3",
+              "primary-fixed": "#4dffb2",
+              "on-surface": "#191c1d",
+              "secondary": "#575e70",
+              "on-secondary-fixed-variant": "#404758",
+              "on-primary": "#ffffff",
+              "secondary-fixed-dim": "#c0c6db",
+              "inverse-primary": "#00e297",
+              "surface-container-high": "#e7e8e9",
+              "surface-variant": "#e1e3e4",
+              "on-tertiary": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .grid-pattern {
+            background-image: radial-gradient(#bacbbe 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+        .neo-mint-glow {
+            box-shadow: 0 0 20px rgba(0, 229, 153, 0.15);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .code-overlay {
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            pointer-events: none;
+            user-select: none;
+        }
+        @keyframes pulse-line {
+            0% { stroke-dashoffset: 24; opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 0.3; }
+        }
+        .animate-pulse-line {
+            stroke-dasharray: 4;
+            animation: pulse-line 2s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-outline-variant/10">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-xl font-bold tracking-tighter text-slate-900 dark:text-white font-headline">
+            Samartsev AI Studio
+        </div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-emerald-600 dark:text-emerald-400 font-semibold border-b-2 border-emerald-500 py-1 transition-colors duration-200 font-body text-sm" href="#">Solutions</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-emerald-500 transition-colors duration-200 font-body text-sm" href="#">Architecture</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-emerald-500 transition-colors duration-200 font-body text-sm" href="#">Safety</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-emerald-500 transition-colors duration-200 font-body text-sm" href="#">Contact</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-semibold flex items-center gap-2 hover:scale-95 transition-all active:duration-150">
+<span>СВЯЗАТЬСЯ</span>
+<span class="material-symbols-outlined text-lg" data-icon="send">send</span>
+</button>
+</div>
+</nav>
+<main class="pt-24 pb-20 grid-pattern min-h-screen">
+<div class="max-w-7xl mx-auto px-8">
+<!-- Section Header -->
+<div class="mb-16">
+<p class="font-label text-xs uppercase tracking-[0.3em] text-primary mb-4">ТЕХНОЛОГИЧЕСКИЙ СТЕК И АРХИТЕКТУРА</p>
+<h1 class="font-headline text-5xl font-bold tracking-tighter max-w-2xl leading-none">
+                Клиническая Точность <br/> в Автоматизации.
+            </h1>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- 1. Корпоративный Мозг (RAG) -->
+<div class="md:col-span-8 bg-surface-container-lowest p-8 rounded-xl relative overflow-hidden group border border-outline-variant/10">
+<div class="absolute inset-0 code-overlay text-on-surface/5 p-4 overflow-hidden">
+                    { "query": "contract terms", "similarity": 0.98, "chunks": [ {"id": 102, "text": "14 days delivery"}, {"id": 103, "text": "liability clause"} ] }
+                </div>
+<div class="relative z-10 flex flex-col h-full">
+<div class="mb-4">
+<p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">ЗНАНИЯ И ИНТЕЛЛЕКТ</p>
+<h3 class="font-headline text-2xl font-bold mb-4">Корпоративный Мозг <span class="text-primary-container font-medium">(RAG)</span></h3>
+<p class="text-on-surface-variant max-w-md text-sm">
+                            Превращаем хаос документов в структурированную базу знаний. AI <span class="font-bold text-on-surface">находит ответы только в ваших данных</span>.
+                        </p>
+</div>
+<div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mt-6">
+<!-- Left: Visualizing data flow & Chunking -->
+<div class="bg-surface-container-low/30 p-4 rounded-lg border border-outline-variant/10">
+<div class="flex items-center justify-between gap-2 mb-6">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 bg-white px-3 py-2 rounded border border-outline-variant/20 shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="description">description</span>
+<span class="text-[9px] font-bold">CONTRACT.PDF</span>
+</div>
+<div class="flex items-center gap-2 bg-white px-3 py-2 rounded border border-outline-variant/20 shadow-sm opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="notes">notes</span>
+<span class="text-[9px] font-bold">WIKI_PAGES</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center relative px-4">
+<div class="text-[8px] font-bold text-primary uppercase mb-2">Chunking</div>
+<div class="flex gap-1">
+<div class="w-2 h-2 bg-primary-container/40 rounded-sm animate-pulse"></div>
+<div class="w-2 h-2 bg-primary-container rounded-sm"></div>
+<div class="w-2 h-2 bg-primary-container/60 rounded-sm animate-bounce"></div>
+</div>
+<div class="w-full h-px bg-gradient-to-r from-transparent via-primary-container to-transparent mt-3"></div>
+</div>
+<div class="w-12 h-12 bg-on-surface flex items-center justify-center rounded-xl neo-mint-glow">
+<span class="material-symbols-outlined text-primary-container text-2xl" data-icon="database">database</span>
+</div>
+</div>
+</div>
+<!-- Right: Chat Interface -->
+<div class="bg-white rounded-lg border border-outline-variant/20 shadow-xl overflow-hidden flex flex-col text-[11px] h-48">
+<div class="bg-surface-container-low px-3 py-2 border-b border-outline-variant/10 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="font-bold opacity-60">AI ASSISTANT</span>
+</div>
+<div class="p-3 space-y-3 overflow-y-auto">
+<div class="bg-surface-container-low p-2 rounded-lg self-start mr-8">Каковы сроки поставки по договору v2?</div>
+<div class="bg-primary-container/10 p-2 rounded-lg self-end ml-4 border-l-2 border-primary-container">
+<p class="mb-1">Срок поставки составляет 14 рабочих дней.</p>
+<div class="flex items-center gap-1 text-[9px] text-primary font-bold">
+<span class="material-symbols-outlined text-[10px]" data-icon="link">link</span>
+                                        Found in contract_v2.pdf, page 4
+                                    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Конвейер Документов -->
+<div class="md:col-span-4 bg-surface-container-low p-8 rounded-xl border border-outline-variant/10 flex flex-col relative overflow-hidden group">
+<div class="absolute inset-0 code-overlay text-on-surface/5 p-4 opacity-30">
+                    doc_gen_01.py [STATUS: OK]
+                    template: "standard_contract"
+                    mapping: { "client": "ACME Corp", "date": "2024-05-20" }
+                </div>
+<div class="relative z-10 flex-1 flex flex-col">
+<p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">АВТОМАТИЗАЦИЯ ВЫВОДА</p>
+<h3 class="font-headline text-2xl font-bold mb-4">Конвейер Документов</h3>
+<p class="text-on-surface-variant text-sm mb-8">
+                        Трансформация сырых данных в <span class="font-bold text-on-surface">безупречные контракты</span> с точностью «Swiss watch».
+                    </p>
+<div class="mt-auto relative h-48 bg-white/50 rounded-lg border border-outline-variant/5 flex items-center justify-center p-4">
+<div class="flex items-center justify-between w-full">
+<!-- Raw Data -->
+<div class="w-14 h-14 relative opacity-40 group-hover:opacity-60 transition-opacity">
+<div class="absolute inset-0 bg-outline-variant/20 rounded rotate-6"></div>
+<div class="absolute inset-0 bg-outline-variant/10 rounded -rotate-3"></div>
+<div class="absolute inset-0 bg-white border border-outline-variant/40 rounded flex flex-col gap-1 p-1">
+<div class="h-0.5 w-full bg-on-surface/10"></div>
+<div class="h-0.5 w-2/3 bg-on-surface/10"></div>
+<div class="h-0.5 w-3/4 bg-on-surface/10"></div>
+</div>
+</div>
+<!-- Arrow -->
+<div class="flex-1 flex justify-center">
+<span class="material-symbols-outlined text-primary-container/60 animate-pulse" data-icon="trending_flat">trending_flat</span>
+</div>
+<!-- Formatted Doc -->
+<div class="w-20 h-28 bg-white border-2 border-primary-container rounded shadow-lg p-3 rotate-[3deg] relative z-20">
+<div class="w-full h-1 bg-primary-container/20 rounded-full mb-2"></div>
+<div class="space-y-1 mb-4">
+<div class="h-0.5 w-full bg-on-surface/10"></div>
+<div class="h-0.5 w-full bg-on-surface/10"></div>
+<div class="h-0.5 w-full bg-on-surface/10"></div>
+<div class="h-0.5 w-2/3 bg-on-surface/10"></div>
+</div>
+<div class="absolute bottom-2 right-2 flex flex-col items-center">
+<div class="w-6 h-6 rounded-full border border-primary-container/30 flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-[10px] text-primary" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="w-4 h-4 bg-primary-container/20 rounded-full border border-primary-container/40"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Протокол Безопасности 360 -->
+<div class="md:col-span-6 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute inset-0 code-overlay text-on-surface/5 p-4">
+                    FIREWALL: ACTIVE
+                    ENCRYPTION: AES-256
+                    HUMAN_VALIDATION: REQUIRED_FOR_SUM &gt; 500k
+                </div>
+<p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">БЕЗОПАСНОСТЬ И КОНТРОЛЬ</p>
+<h3 class="font-headline text-2xl font-bold mb-6">Протокол Безопасности 360°</h3>
+<div class="space-y-8 relative z-10">
+<div class="flex items-center gap-4 py-4">
+<div class="w-12 h-12 bg-secondary-container/40 rounded-xl flex items-center justify-center border border-outline-variant/10">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="flex-1 relative h-6">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+<line class="animate-pulse-line" stroke="url(#gradient-mint)" stroke-width="2" x1="0" x2="100" y1="10" y2="10"></line>
+<defs>
+<lineargradient id="gradient-mint" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#00e599"></stop>
+<stop offset="100%" stop-color="#ffffff"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<div class="w-16 h-16 bg-on-surface rounded-full flex items-center justify-center neo-mint-glow border-2 border-primary-container">
+<span class="material-symbols-outlined text-primary-container text-3xl" data-icon="shield">shield</span>
+</div>
+<div class="flex-1 relative h-6">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+<line class="animate-pulse-line" stroke="#e1e3e4" stroke-width="1" style="animation-delay: 0.5s" x1="0" x2="100" y1="10" y2="10"></line>
+</svg>
+</div>
+<div class="flex flex-col gap-3">
+<div class="bg-primary-fixed px-3 py-1 rounded-full text-[9px] font-bold text-on-primary-fixed flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary-fixed animate-ping"></span>
+                                AI RESPONSE
+                            </div>
+<div class="bg-tertiary-fixed px-3 py-1 rounded-full text-[9px] font-bold text-on-tertiary-fixed">HUMAN OPERATOR</div>
+</div>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+<span class="font-bold text-on-surface">Human-in-the-Loop</span>: Каскадная система проверки гарантирует, что критические решения всегда проходят через <span class="font-bold text-on-surface">фильтр безопасности</span> или живого оператора.
+                    </p>
+</div>
+</div>
+<!-- 4. Технический Стек -->
+<div class="md:col-span-6 bg-white p-8 rounded-xl border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute inset-0 code-overlay text-on-surface/5 p-4 flex flex-wrap gap-2">
+                    SELECT * FROM enterprise_data; docker-compose up -d; npm install @langchain/openai;
+                </div>
+<div class="relative z-10 h-full flex flex-col">
+<p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">ИНФРАСТРУКТУРА</p>
+<h3 class="font-headline text-2xl font-bold mb-8">Технический Стек</h3>
+<div class="grid grid-cols-3 gap-y-10 gap-x-6 mt-auto">
+<div class="flex flex-col items-center gap-3">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl flex items-center justify-center p-3 border border-outline-variant/5 shadow-sm hover:border-primary-container/50 transition-colors relative"><div class="absolute inset-0 flex items-center justify-center opacity-[0.03] text-[6px] font-mono pointer-events-none select-none overflow-hidden">{ "workflow": "trigger" }</div><img alt="n8n logo" class="w-full hover:scale-110 transition-transform relative z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSrdFkZXpv7Hu2BsjpcY22IomJf2SN0Ss9Jq4kwHWxmnefam7sTpoiY4FDgFTPNyAtWoBdH04xIpIhebLhGPa8OMcV8GCluNWaCR-vcG0ABFt1TTGHlzlsm4jroHWw3JMoSVQVTe3UAjK0cQTuSLkoPSb005YQ-M8BRXNiBiDaahrr0ShlytvyqbgSMSSEgqldHITBhmWM9tubz8WnKVMoVKBBQUseKoAtyu3N8lHPg7SrMn0OvS4yrmGgxOcfiuF1XflGhbHdoxU"/></div>
+<span class="font-label text-[9px] font-bold uppercase tracking-widest">n8n</span>
+</div>
+<div class="flex flex-col items-center gap-3">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl flex items-center justify-center p-3 border border-outline-variant/5 shadow-sm hover:border-primary-container/50 transition-colors relative"><div class="absolute inset-0 flex items-center justify-center opacity-[0.03] text-[6px] font-mono pointer-events-none select-none overflow-hidden">SELECT * FROM users</div><img alt="PostgreSQL logo" class="w-full hover:scale-110 transition-transform relative z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApUbOJu3B_NP13W77ZVU4-Vh17aHDeczbSXctmsOzM4RHtMmiSVTWEsCN0aDvzQveeTKfv-xgCkSiA3NhTfeZN6rFlEFEM6KfH1yq5XRNo5NiClhMSR09PUDICGQrI-Wea6_mof8zOEu12M8m2pHP_bcH2V4K185hvNMRcHLgLP-5dCRzKgeay3nGNNOD29WYiXYUmxV1RrV76YYsN1lIjQ_XGuLgFnUFPdv9Tsr23TT2Swc2pvkNuNwXOpB-FIOaxdCRJROmgjGM"/></div>
+<span class="font-label text-[9px] font-bold uppercase tracking-widest">PostgreSQL</span>
+</div>
+<div class="flex flex-col items-center gap-3">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl flex items-center justify-center p-3 border border-outline-variant/5 shadow-sm hover:border-primary-container/50 transition-colors relative"><div class="absolute inset-0 flex items-center justify-center opacity-[0.03] text-[6px] font-mono pointer-events-none select-none overflow-hidden">model.generate()</div><img alt="DeepSeek AI logo" class="w-full hover:scale-110 transition-transform relative z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnWrtXL2mpoMfYXrHRGtYPwk4Xb4fj0j-Jg4pSk7-lY62ESPqML_NeZN3h28vEki6I2FT6c6N4POLWsET_aRIdvQOENMkE6i4m2HJ3C3_vDMyeeLE7CV5kDFMdwLQx3SFMBYJ7n_2kRTOUWtAiH4qDLoCh2Vid4IJk3k_dv02MktNTU0JyKYoy009RBFgOB_QG7Wr7NDK90zXbR8bsx1oX15ZcFzUxf8YVxpiIEP68POn2PRO-w70w_t38ZmDpsmmXkJKpz3W451g"/></div>
+<span class="font-label text-[9px] font-bold uppercase tracking-widest">DeepSeek</span>
+</div>
+<div class="flex flex-col items-center gap-3">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl flex items-center justify-center p-3 border border-outline-variant/5 shadow-sm hover:border-primary-container/50 transition-colors relative"><div class="absolute inset-0 flex items-center justify-center opacity-[0.03] text-[6px] font-mono pointer-events-none select-none overflow-hidden">FROM node:18</div><img alt="Docker logo" class="w-full hover:scale-110 transition-transform relative z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_0JEQFBs9NXYV9D1hag80OJf6PyLwXlH8NUKFwmPcrYo-3yHfUNPmHBhdOnwPQZu3l523RkWyDUIVufIqpXPD_rNDpVald5EkbACcm6HKv63CfkrNgyccIT46oYbl7HzwDFPWpxvb2-z4Mjowg8gloWxh9wfrLXMjq_SkpTL5otXgrKnQZrzQR8fAC2o8O_jqoGrSY2thOZgtoj0AcR2b4wVgC9lR3kXMsQMXQ6Fi-8o1UjwDEcIPhH_p3MCV1cextL-9g-WhP5Q"/></div>
+<span class="font-label text-[9px] font-bold uppercase tracking-widest">Docker</span>
+</div>
+<div class="flex flex-col items-center gap-3">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl flex items-center justify-center p-3 border border-outline-variant/5 shadow-sm hover:border-primary-container/50 transition-colors relative"><div class="absolute inset-0 flex items-center justify-center opacity-[0.03] text-[6px] font-mono pointer-events-none select-none overflow-hidden">gcloud auth login</div><img alt="Google Cloud logo" class="w-full hover:scale-110 transition-transform relative z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR_B2rN8wZiiejarb-r3aG6leloAO84CDmrkeo39TsFbE4gUQt37RUScSQR2hfHjH_zfJNNAluh7Sb8xzNQTahlUqt8jl4lWbDKl7J2c0cTNcLP7cPYkOS8OyDPvHzcZI-y1v6dDehOpzwYbr9CYu6GQ7yPF-AMrSxsOleRo81VnxM4L2ZApEiUTiKY0jaOg-6O7oXWHeu3ZYBD7WAS2AMgqP9zi06Ma7O-fJBmPGdGWnFVBnxsQIsCHmiBelh-y1mFmAGe6OOh90"/></div>
+<span class="font-label text-[9px] font-bold uppercase tracking-widest">GCP</span>
+</div>
+<div class="flex flex-col items-center gap-3">
+<div class="w-14 h-14 bg-surface-container-low rounded-xl flex items-center justify-center p-3 border border-dashed border-outline-variant/30 hover:border-primary-container/50 transition-colors cursor-help">
+<span class="material-symbols-outlined text-outline-variant text-xl" data-icon="add">add</span>
+</div>
+<span class="font-label text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">And More</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-900 w-full py-12 px-8 border-t border-slate-200 dark:border-slate-800">
+<div class="grid grid-cols-1 md:grid-cols-2 items-center gap-8 max-w-7xl mx-auto">
+<div>
+<div class="text-lg font-bold text-slate-900 dark:text-white font-headline mb-2">Samartsev AI Studio</div>
+<p class="font-body text-sm uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                © 2024 Samartsev AI Studio. Clinical Precision in Automation.
+            </p>
+</div>
+<div class="flex justify-start md:justify-end gap-6">
+<a class="text-slate-500 dark:text-slate-400 hover:text-emerald-500 font-body text-xs uppercase tracking-widest transition-opacity opacity-80 hover:opacity-100" href="#">Documentation</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-emerald-500 font-body text-xs uppercase tracking-widest transition-opacity opacity-80 hover:opacity-100" href="#">Security Whitepaper</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-emerald-500 font-body text-xs uppercase tracking-widest transition-opacity opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-emerald-500 font-body text-xs uppercase tracking-widest transition-opacity opacity-80 hover:opacity-100" href="#">Terms</a>
+</div>
+</div>
+</footer>
+</body></html>

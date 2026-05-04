@@ -1,26 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =====================================================
+   SAMARTSEV AI — Design System (Neo-Mint Light)
+   Fonts: Space Grotesk (display) + Manrope (body)
+   Brand: #00E68A (primary), #111111 (heavy), #F9FAFB (bg)
+   ===================================================== */
+
+@theme {
+  /* === Brand Colors === */
+  --color-primary:         #00E68A;
+  --color-primary-hover:   #00CC7A;
+  --color-primary-dark:    #00B36B;
+  --color-heavy:           #111111;
+  --color-heavy-hover:     #1a1d20;
+
+  /* === Surfaces === */
+  --color-surface:         #FFFFFF;
+  --color-bg:              #F9FAFB;
+  --color-bg-dark:         #0F231B;
+
+  /* === Text === */
+  --color-text-main:       #1A1D20;
+  --color-text-muted:      #828D99;
+  --color-dots:            #F2F4F7;
+
+  /* === Borders === */
+  --color-border:          #E5E7EB;
+  --color-border-hover:    #00E68A;
+
+  /* === Shadows === */
+  --shadow-subtle:         0 4px 24px rgba(0, 0, 0, 0.04);
+  --shadow-card:           0 8px 32px rgba(0, 0, 0, 0.06);
+  --shadow-floating:       0 -4px 24px rgba(0, 0, 0, 0.06);
+
+  /* === Typography === */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  /* === Radii === */
+  --radius-sm:  0.25rem;
+  --radius-md:  0.5rem;
+  --radius-lg:  0.75rem;
+  --radius-xl:  1rem;
+  --radius-full: 9999px;
+
+  /* === Transitions === */
+  --transition-fast:   all 0.15s ease;
+  --transition-base:   all 0.25s ease;
+  --transition-slow:   all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* === Dark Mode Overrides === */
+:root.dark {
+  --color-surface:         #111111;
+  --color-bg:              #0A0A0A;
+  --color-bg-dark:         #000000;
+  --color-text-main:       #F9FAFB;
+  --color-text-muted:      #D1D5DB;
+  --color-dots:            #1A1D20;
+  --color-border:          #27272A;
+  --color-border-hover:    #00E68A;
+  --color-heavy:           #FFFFFF;
+  --color-heavy-hover:     #F3F4F6;
+  --shadow-subtle:         0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-card:           0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-floating:       0 -4px 24px rgba(0, 0, 0, 0.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ===== BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: var(--font-body);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ===== DOT GRID BACKGROUND ===== */
+@utility dot-grid {
+  background-color: var(--color-bg);
+  background-image: radial-gradient(var(--color-dots) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* ===== TYPOGRAPHY ===== */
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+@utility font-body {
+  font-family: var(--font-body);
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-heavy);
+}
+
+/* ===== FOCUS VISIBLE (Accessibility) ===== */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary);
+}
+
+/* ===== CHAT SCROLL ===== */
+@utility chat-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+/* ===== RANGE SLIDER ===== */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background: var(--color-heavy);
+  cursor: pointer;
+  margin-top: -9px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  background: var(--color-primary);
+  transform: scale(1.1);
+}
+input[type=range]::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: var(--color-border);
+  border-radius: 2px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes typing-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%            { transform: scale(1);   opacity: 1;   }
+}
+
+@utility typing-dot {
+  animation: typing-bounce 1.4s infinite ease-in-out both;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.4s ease forwards;
+}
+
+@keyframes ping-slow {
+  0%, 100% { transform: scale(1);    opacity: 0.75; }
+  50%       { transform: scale(1.5); opacity: 0;    }
+}
+
+@utility animate-ping-slow {
+  animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* FAQ Accordion animation */
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+details[open] summary ~ * {
+  animation: slide-down 0.2s ease-out;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Hide scrollbar for segmented tabs */
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== CARD HOVER ===== */
+@utility card-hover {
+  transition: var(--transition-slow);
+}
+.card-hover:hover {
+  border-color: var(--color-primary) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 230, 138, 0.1);
 }

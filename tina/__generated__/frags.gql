@@ -1,0 +1,79 @@
+fragment LandingParts on Landing {
+  __typename
+  hero {
+    __typename
+    badge
+    headline
+    abTestActive
+    headlineB
+    description
+    ctaPrimary
+    ctaSecondary
+  }
+  calculator {
+    __typename
+    title
+    leadsLabel
+    checkLabel
+    lossLabel
+    resultLabel
+    resultSub
+  }
+  faq {
+    __typename
+    q
+    a
+  }
+  techStack {
+    __typename
+    label
+    title
+    items {
+      __typename
+      name
+      desc
+      logo
+    }
+  }
+  solutions {
+    __typename
+    title
+    description
+    items {
+      __typename
+      icon
+      title
+      description
+      features {
+        __typename
+        icon
+        bold
+        text
+      }
+    }
+  }
+  process {
+    __typename
+    title
+    description
+    steps {
+      __typename
+      n
+      title
+      desc
+    }
+  }
+  chatWidget {
+    __typename
+    greeting
+    subtitle
+    faqButtons {
+      __typename
+      emoji
+      label
+      answer
+      followUp
+      keywords
+    }
+  }
+}
