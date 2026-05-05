@@ -1,4 +1,4 @@
-import content from "../../content/landing/index.json";
+
 
 const CASES = [
   {

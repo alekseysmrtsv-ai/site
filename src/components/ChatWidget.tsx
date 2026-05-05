@@ -216,8 +216,14 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
         throw new Error(errData?.message || errData?.error || `HTTP ${res.status}`);
       }
 
+      type N8nResponse = {
+        response?: string;
+        reply?: string;
+        text?: string;
+      };
+
       const responseText = await res.text();
-      let data: any = {};
+      let data: N8nResponse = {};
       try {
         if (responseText) data = JSON.parse(responseText);
       } catch {
@@ -226,9 +232,9 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
 
       setStatus("idle");
       addBotMessages([data.response || data.reply || data.text || "Спасибо за вопрос! Наш специалист скоро свяжется с вами."]);
-    } catch (err: any) {
+    } catch (err: unknown) {
       clearTimeout(timeoutRef.current!);
-      if (err?.name === "AbortError") return;
+      if (err instanceof Error && err.name === "AbortError") return;
       setStatus("idle");
       console.error("ChatWidget Error:", err);
       addBotMessages([FALLBACK_MESSAGE]);

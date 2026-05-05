@@ -1,4 +1,7 @@
-import content from "../../content/landing/index.json";
+import contentRaw from "../../content/landing/index.json";
+import { LandingContent, SolutionItem, SolutionFeature } from "@/types/landing";
+
+const content = contentRaw as LandingContent;
 
 export default function SolutionsSection() {
   const { solutions, process } = content;
@@ -17,7 +20,7 @@ export default function SolutionsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {solutions.items.map((s: any, idx: number) => (
+          {solutions.items.map((s: SolutionItem, idx: number) => (
             <div
               key={idx}
               className="card-hover bg-surface rounded-md border border-border p-8 flex flex-col h-full cursor-pointer group relative overflow-hidden"
@@ -30,7 +33,7 @@ export default function SolutionsSection() {
               <div className="flex flex-col gap-6 flex-grow mb-8">
                 <h3 className="font-display text-2xl font-bold text-heavy">{s.title}</h3>
                 <div className="flex flex-col gap-4">
-                  {s.features?.map((f: any, fi: number) => (
+                  {s.features?.map((f: SolutionFeature, fi: number) => (
                     <div key={fi} className="flex gap-4">
                       <span className="material-symbols-outlined text-primary text-[20px] shrink-0 mt-1">
                         {f.icon}

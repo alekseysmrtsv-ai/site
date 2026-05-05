@@ -1,4 +1,7 @@
-import content from "../../content/landing/index.json";
+import contentRaw from "../../content/landing/index.json";
+import { LandingContent, FAQItem } from "@/types/landing";
+
+const content = contentRaw as LandingContent;
 
 export default function FAQSection() {
   const { faq } = content;
@@ -15,7 +18,7 @@ export default function FAQSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {faq.map((item: any) => (
+          {faq.map((item: FAQItem) => (
             <details
               key={item.q}
               className="group bg-surface border border-border rounded-md p-6 shadow-subtle hover:border-primary transition-colors duration-200"

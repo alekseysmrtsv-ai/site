@@ -65,7 +65,7 @@ export default function ContactForm() {
         {/* Left info */}
         <div>
           <span className="text-[13px] font-semibold tracking-widest text-text-muted uppercase block mb-4">
-            // БЕСПЛАТНЫЙ АУДИТ
+            {"// БЕСПЛАТНЫЙ АУДИТ"}
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-heavy mb-6 leading-tight">
             Готовы автоматизировать бизнес?

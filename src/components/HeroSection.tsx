@@ -1,23 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ChatWidget from "@/components/ChatWidget";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import content from "../../content/landing/index.json";
+import contentRaw from "../../content/landing/index.json";
+import { LandingContent } from "@/types/landing";
+
+const content = contentRaw as LandingContent;
 
 export default function HeroSection() {
   const { hero, chatWidget } = content;
-  const [headline, setHeadline] = useState(hero.headline);
-
-  useEffect(() => {
-    if (hero.abTestActive && hero.headlineB) {
-      // Pick variant A or B randomly
-      if (Math.random() > 0.5) {
-        setHeadline(hero.headlineB);
-      }
+  
+  // Use initializer function to avoid setState in useEffect
+  const [headline] = useState(() => {
+    if (hero.abTestActive && hero.headlineB && Math.random() > 0.5) {
+      return hero.headlineB;
     }
-  }, [hero.abTestActive, hero.headlineB, hero.headline]);
+    return hero.headline;
+  });
 
   return (
     <section
