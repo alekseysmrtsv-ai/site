@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/n8n/:path*",
-        destination: "http://192.168.0.104:5678/:path*",
+        destination: `${process.env.N8N_BACKEND_URL || "http://localhost:5678"}/:path*`,
       },
     ];
   },
