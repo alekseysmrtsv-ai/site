@@ -22,15 +22,52 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setState("loading");
     setErrorMsg("");
 
     const form = e.currentTarget;
+    const nameInput = form.elements.namedItem("name") as HTMLInputElement;
+    const phoneInput = form.elements.namedItem("phone") as HTMLInputElement;
+    const nicheSelect = form.elements.namedItem("niche") as HTMLSelectElement;
+    const commentInput = form.elements.namedItem("comment") as HTMLTextAreaElement;
+
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const niche = nicheSelect.value;
+    const comment = commentInput.value.trim();
+
+    if (!name) {
+      setState("error");
+      setErrorMsg("Пожалуйста, введите ваше имя.");
+      return;
+    }
+    if (name.length < 2) {
+      setState("error");
+      setErrorMsg("Имя должно быть не менее 2 символов.");
+      return;
+    }
+
+    if (!phone) {
+      setState("error");
+      setErrorMsg("Пожалуйста, введите телефон или email.");
+      return;
+    }
+
+    if (phone.length < 5) {
+      setState("error");
+      setErrorMsg("Пожалуйста, укажите корректный телефон или email.");
+      return;
+    }
+
+    setState("loading");
+
+    const sessionId = typeof window !== "undefined" ? localStorage.getItem("samartsev_chat_session") : null;
+
     const data = {
-      name:    (form.elements.namedItem("name")    as HTMLInputElement).value,
-      phone:   (form.elements.namedItem("phone")   as HTMLInputElement).value,
-      niche:   (form.elements.namedItem("niche")   as HTMLSelectElement).value,
-      comment: (form.elements.namedItem("comment") as HTMLTextAreaElement).value,
+      name,
+      phone,
+      niche,
+      comment,
+      session_id: sessionId,
       source:  "landing_contact_form",
       timestamp: new Date().toISOString(),
     };
