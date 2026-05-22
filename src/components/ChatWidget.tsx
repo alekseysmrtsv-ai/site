@@ -95,7 +95,7 @@ function getSessionId(): string {
 
 /* ──────────────── Helpers ──────────────── */
 
-const TIMEOUT_MS = 15_000;
+const TIMEOUT_MS = 30_000;
 
 const FALLBACK_MESSAGE =
   "Обычно наши ИИ-агенты стабильны на 99.9%. Поздравляю, вы сорвали джекпот и попали в те самые 0.1% 😅 Сервер немного задумался. Но вы всё ещё можете заполнить форму ниже, и мы свяжемся с вами для аудита!";
@@ -157,10 +157,13 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
 
   /* ── Send to n8n ── */
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = input.trim();
-    if (!text || status === "loading") return;
+  const statusRef = useRef(status);
+  useEffect(() => {
+    statusRef.current = status;
+  }, [status]);
+
+  const sendMessage = useCallback(async (text: string) => {
+    if (!text || statusRef.current === "loading") return;
 
     setMessages((prev) => [...prev, { role: "user", text, time: nowTime() }]);
     setInput("");
@@ -179,8 +182,11 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
       return;
     }
 
+    const controller = new AbortController();
+
     // Нет FAQ match → отправляем в n8n
     timeoutRef.current = setTimeout(() => {
+      controller.abort();
       setStatus("idle");
       addBotMessages([FALLBACK_MESSAGE]);
     }, TIMEOUT_MS);
@@ -201,6 +207,7 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
       const res = await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           message: text,
           session_id: getSessionId(),
@@ -239,10 +246,45 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
       console.error("ChatWidget Error:", err);
       addBotMessages([FALLBACK_MESSAGE]);
     }
+  }, [faqItems, addBotMessages]);
+
+  const handleSend = (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = input.trim();
+    if (text) {
+      sendMessage(text);
+    }
   };
 
+  useEffect(() => {
+    const handleCalculateLoss = (e: Event) => {
+      const customEvent = e as CustomEvent<{
+        leads: number;
+        check: number;
+        loss: number;
+        lossPerMonth: number;
+      }>;
+      const { leads, check, loss, lossPerMonth } = customEvent.detail;
+      
+      const text = `Я рассчитaл упущенную выручку в калькуляторе:
+• Заявки в месяц: ${leads}
+• Средний чек: ${check.toLocaleString("ru-RU")} руб.
+• Процент упущенных лидов: ${loss}%
+• Упущенная выручка: ${lossPerMonth.toLocaleString("ru-RU")} руб./мес.
+
+Как мне остановить эти потери?`;
+
+      sendMessage(text);
+    };
+
+    window.addEventListener("calculate-loss", handleCalculateLoss);
+    return () => {
+      window.removeEventListener("calculate-loss", handleCalculateLoss);
+    };
+  }, [sendMessage]);
+
   return (
-    <div className="relative w-full max-w-[480px] mx-auto lg:ml-auto">
+    <div id="chat-widget" className="relative w-full max-w-[480px] mx-auto lg:ml-auto">
       {/* Glow */}
       <div className="absolute -inset-10 bg-primary/5 blur-[80px] rounded-full -z-10 pointer-events-none" />
 
@@ -254,12 +296,7 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
         <span className="text-xs font-bold text-heavy tracking-tight">Окупаемость от 1 мес.</span>
       </div>
 
-      <div className="absolute top-1/2 -right-12 z-10 hidden sm:flex items-center gap-2 bg-surface px-4 py-2.5 border border-border shadow-card rounded-md">
-        <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-        </svg>
-        <span className="text-xs font-bold text-heavy tracking-tight">Интеграция за 5 дней</span>
-      </div>
+
 
       <div className="absolute -bottom-6 left-12 z-10 hidden sm:flex items-center gap-2 bg-surface px-4 py-2.5 border border-border shadow-card rounded-md">
         <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor">
