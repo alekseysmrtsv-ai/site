@@ -104,6 +104,46 @@ function nowTime() {
   return new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
+function parseMarkdown(text: string): React.ReactNode {
+  const lines = text.split("\n");
+  return (
+    <div className="flex flex-col gap-1.5">
+      {lines.map((line, lineIndex) => {
+        const trimmed = line.trim();
+        const isBullet = trimmed.startsWith("- ") || trimmed.startsWith("* ") || trimmed.startsWith("• ");
+        let cleanLine = line;
+        if (isBullet) {
+          cleanLine = trimmed.replace(/^([-*•]\s+)/, "");
+        }
+
+        // Parse bold text **something**
+        const parts = cleanLine.split(/\*\*([^*]+)\*\*/g);
+        const content = parts.map((part, partIndex) => {
+          if (partIndex % 2 === 1) {
+            return <strong key={partIndex} className="font-extrabold">{part}</strong>;
+          }
+          return part;
+        });
+
+        if (isBullet) {
+          return (
+            <div key={lineIndex} className="flex items-start gap-1.5 pl-1.5">
+              <span className="text-primary font-bold mt-1 text-[10px]">•</span>
+              <span className="flex-1 text-inherit leading-relaxed">{content}</span>
+            </div>
+          );
+        }
+
+        return (
+          <p key={lineIndex} className="min-h-[1em] text-inherit leading-relaxed">
+            {content}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ──────────────── Component ──────────────── */
 
 export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
@@ -338,14 +378,14 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
             msg.role === "bot" ? (
               <div key={i} className="flex flex-col gap-1 max-w-[85%] animate-fade-in-up">
                 <div className="bg-bg border border-border text-text-main text-sm p-3 rounded-md rounded-tl-none leading-relaxed">
-                  {msg.text}
+                  {parseMarkdown(msg.text)}
                 </div>
                 <span suppressHydrationWarning className="text-[10px] text-text-muted ml-1">{msg.time}</span>
               </div>
             ) : (
               <div key={i} className="flex flex-col gap-1 max-w-[85%] self-end items-end animate-fade-in-up">
                 <div className="bg-heavy text-surface text-sm p-3 rounded-md rounded-tr-none leading-relaxed">
-                  {msg.text}
+                  {parseMarkdown(msg.text)}
                 </div>
                 <div className="flex items-center gap-1 mr-1">
                   <span suppressHydrationWarning className="text-[10px] text-text-muted">{msg.time}</span>
