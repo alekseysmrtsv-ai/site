@@ -39,6 +39,23 @@ export default function CalculatorSection() {
     return `${((val - min) / (max - min)) * 100}%`;
   }, []);
 
+  const handleStopLoss = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    const chatEl = document.getElementById("chat-widget");
+    if (chatEl) {
+      chatEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    const event = new CustomEvent("calculate-loss", {
+      detail: {
+        leads,
+        check,
+        loss,
+        lossPerMonth,
+      },
+    });
+    window.dispatchEvent(event);
+  }, [leads, check, loss, lossPerMonth]);
+
   return (
     <section
       id="calculator"
@@ -166,7 +183,8 @@ export default function CalculatorSection() {
                 <span className="text-3xl md:text-5xl text-text-muted">{content.calculator.resultSub}</span>
               </div>
               <a
-                href="#contact"
+                href="#chat-widget"
+                onClick={handleStopLoss}
                 className="w-full md:w-auto px-8 py-4 bg-primary text-heavy font-display font-semibold text-base uppercase tracking-widest rounded-md hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 group"
               >
                 Остановить потери

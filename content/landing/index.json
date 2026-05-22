@@ -33,27 +33,27 @@
       {
         "name": "n8n",
         "desc": "Автоматизация",
-        "logo": ""
+        "logo": "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/n8n.svg"
       },
       {
         "name": "PostgreSQL",
         "desc": "База данных",
-        "logo": ""
+        "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg"
       },
       {
         "name": "DeepSeek",
         "desc": "LLM модель",
-        "logo": ""
+        "logo": "https://unpkg.com/@lobehub/icons-static-svg@latest/icons/deepseek.svg"
       },
       {
         "name": "Docker",
         "desc": "Инфраструктура",
-        "logo": ""
+        "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg"
       },
       {
         "name": "GCP",
         "desc": "Облако",
-        "logo": ""
+        "logo": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg"
       }
     ]
   },
