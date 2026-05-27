@@ -194,6 +194,15 @@ input[type=range]::-webkit-slider-runnable-track {
 input[type=range]:focus {
   outline: none;
 }
+input[type=range]:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+input[type=range]:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
 
 /* ===== ANIMATIONS ===== */
 @keyframes typing-bounce {

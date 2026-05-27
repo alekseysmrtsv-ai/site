@@ -330,7 +330,7 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
 
       {/* Floating pills */}
       <div className="absolute -top-6 -left-8 z-10 hidden sm:flex items-center gap-2 bg-surface px-4 py-2.5 border border-border shadow-card rounded-md animate-bounce [animation-duration:3s]">
-        <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor">
+        <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
         </svg>
         <span className="text-xs font-bold text-heavy tracking-tight">Окупаемость от 1 мес.</span>
@@ -339,7 +339,7 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
 
 
       <div className="absolute -bottom-6 left-12 z-10 hidden sm:flex items-center gap-2 bg-surface px-4 py-2.5 border border-border shadow-card rounded-md">
-        <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor">
+        <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
         </svg>
         <span className="text-xs font-bold text-heavy tracking-tight">Работает 24/7</span>
@@ -366,6 +366,8 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
         <div
           ref={scrollRef}
           className="flex-1 p-5 overflow-y-auto chat-scroll flex flex-col gap-4 bg-bg"
+          aria-live="polite"
+          role="log"
         >
           {/* Date badge */}
           <div className="flex justify-center mb-1">
@@ -377,19 +379,19 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
           {messages.map((msg, i) =>
             msg.role === "bot" ? (
               <div key={i} className="flex flex-col gap-1 max-w-[85%] animate-fade-in-up">
-                <div className="bg-bg border border-border text-text-main text-sm p-3 rounded-md rounded-tl-none leading-relaxed">
+                <div className="bg-bg border border-border text-text-main text-sm p-3 rounded-md rounded-tl-none leading-relaxed break-words">
                   {parseMarkdown(msg.text)}
                 </div>
                 <span suppressHydrationWarning className="text-[10px] text-text-muted ml-1">{msg.time}</span>
               </div>
             ) : (
               <div key={i} className="flex flex-col gap-1 max-w-[85%] self-end items-end animate-fade-in-up">
-                <div className="bg-heavy text-surface text-sm p-3 rounded-md rounded-tr-none leading-relaxed">
+                <div className="bg-heavy text-surface text-sm p-3 rounded-md rounded-tr-none leading-relaxed break-words">
                   {parseMarkdown(msg.text)}
                 </div>
                 <div className="flex items-center gap-1 mr-1">
                   <span suppressHydrationWarning className="text-[10px] text-text-muted">{msg.time}</span>
-                  <svg className="w-3.5 h-3.5 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="w-3.5 h-3.5 text-primary" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z" />
                   </svg>
                 </div>
@@ -461,7 +463,8 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Введите сообщение..."
+            placeholder="Введите сообщение…"
+            aria-label="Введите сообщение"
             className="flex-1 bg-bg border border-border rounded-md px-4 py-2 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors"
             disabled={status === "loading"}
           />

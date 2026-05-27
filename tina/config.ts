@@ -104,7 +104,10 @@ export default defineConfig({
                 fields: [
                   { type: "string", name: "icon", label: "Иконка (Material Symbols)" },
                   { type: "string", name: "title", label: "Заголовок" },
-                  { type: "string", name: "description", label: "Описание", ui: { component: "textarea" } },
+                  { type: "string", name: "description", label: "Описание (устарело/необязательно)", ui: { component: "textarea" } },
+                  { type: "string", name: "stat", label: "Главная метрика кейса (например: +17% записей)" },
+                  { type: "string", name: "statSub", label: "Подпись метрики (например: 0 пропущенных звонков)" },
+                  { type: "string", name: "cta", label: "Призыв к действию (например: Рассчитать для клиники)" },
                   {
                     type: "object",
                     list: true,

@@ -2,7 +2,6 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import CalculatorSection from "@/components/CalculatorSection";
 import ComparisonSection from "@/components/ComparisonSection";
-import CasesSection from "@/components/CasesSection";
 import SolutionsSection from "@/components/SolutionsSection";
 import TechStackSection from "@/components/TechStackSection";
 import FounderSection from "@/components/FounderSection";
@@ -28,7 +27,6 @@ export default function HomePage() {
         <HeroSection />
         <CalculatorSection />
         <ComparisonSection />
-        <CasesSection />
         <SolutionsSection />
         <TechStackSection />
         <FounderSection />

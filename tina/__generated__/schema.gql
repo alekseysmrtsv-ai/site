@@ -133,6 +133,9 @@ type LandingSolutionsItems {
   icon: String
   title: String
   description: String
+  stat: String
+  statSub: String
+  cta: String
   features: [LandingSolutionsItemsFeatures]
 }
 
@@ -246,6 +249,9 @@ input LandingSolutionsItemsFilter {
   icon: StringFilter
   title: StringFilter
   description: StringFilter
+  stat: StringFilter
+  statSub: StringFilter
+  cta: StringFilter
   features: LandingSolutionsItemsFeaturesFilter
 }
 
@@ -367,6 +373,9 @@ input LandingSolutionsItemsMutation {
   icon: String
   title: String
   description: String
+  stat: String
+  statSub: String
+  cta: String
   features: [LandingSolutionsItemsFeaturesMutation]
 }
 

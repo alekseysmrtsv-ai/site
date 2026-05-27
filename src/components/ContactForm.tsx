@@ -117,7 +117,7 @@ export default function ContactForm() {
               "Никаких обязательств при тестировании",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3 text-text-main font-body">
-                <svg className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                 </svg>
                 <span>{item}</span>
@@ -133,7 +133,7 @@ export default function ContactForm() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-heavy hover:text-primary transition-colors font-display font-semibold"
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.24.24 0 0 0-.07-.2c-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.45-.42-1.39-.88.03-.24.37-.48 1.02-.73 4-1.74 6.67-2.88 8-3.43 3.81-1.58 4.6-1.85 5.12-1.86.11 0 .37.03.54.17.14.12.18.28.19.4z"/>
               </svg>
               @samartsev_ai
@@ -167,7 +167,9 @@ export default function ContactForm() {
                 </label>
                 <input
                   id="contact-name" name="name" type="text" required
-                  placeholder="Иван Петров"
+                  placeholder="Иван Петров…"
+                  autoComplete="name"
+                  spellCheck={false}
                   className="w-full bg-bg border border-border rounded-md px-4 py-3 text-text-main placeholder:text-text-muted text-sm focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
@@ -177,7 +179,9 @@ export default function ContactForm() {
                 </label>
                 <input
                   id="contact-phone" name="phone" type="text" required
-                  placeholder="+7 (999) 000-00-00 или ivan@company.ru"
+                  placeholder="+7 (999) 000-00-00 или ivan@company.ru…"
+                  autoComplete="email"
+                  spellCheck={false}
                   className="w-full bg-bg border border-border rounded-md px-4 py-3 text-text-main placeholder:text-text-muted text-sm focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
@@ -189,7 +193,7 @@ export default function ContactForm() {
                   id="contact-niche" name="niche"
                   className="w-full bg-bg border border-border rounded-md px-4 py-3 text-text-main text-sm focus:outline-none focus:border-primary transition-colors appearance-none"
                 >
-                  <option value="">Выберите нишу...</option>
+                  <option value="">Выберите нишу…</option>
                   {NICHES.map((n) => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
@@ -199,13 +203,13 @@ export default function ContactForm() {
                 </label>
                 <textarea
                   id="contact-comment" name="comment" rows={3}
-                  placeholder="Кратко опишите, что хотите автоматизировать..."
+                  placeholder="Кратко опишите, что хотите автоматизировать…"
                   className="w-full bg-bg border border-border rounded-md px-4 py-3 text-text-main placeholder:text-text-muted text-sm focus:outline-none focus:border-primary transition-colors resize-none"
                 />
               </div>
 
               {state === "error" && (
-                <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-4 py-3">
+                <div role="alert" aria-live="polite" className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-4 py-3">
                   <AlertCircle className="w-4 h-4 flex-shrink-0" />
                   {errorMsg}
                 </div>
@@ -217,7 +221,7 @@ export default function ContactForm() {
                 className="w-full flex items-center justify-center gap-2 h-13 px-8 py-4 bg-heavy text-surface hover:bg-primary hover:text-heavy font-display font-semibold uppercase tracking-widest text-sm rounded-md transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {state === "loading" ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" /> Отправляем...</>
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Отправляем…</>
                 ) : (
                   "Получить бесплатный аудит"
                 )}

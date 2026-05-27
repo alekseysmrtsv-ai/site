@@ -44,6 +44,9 @@ export interface SolutionItem {
   icon: string;
   title: string;
   features: SolutionFeature[];
+  stat?: string;
+  statSub?: string;
+  cta?: string;
 }
 
 export interface SolutionsContent {

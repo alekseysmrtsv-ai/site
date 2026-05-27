@@ -7,7 +7,7 @@ export default function SolutionsSection() {
   const { solutions, process } = content;
   
   return (
-    <section id="services" className="w-full max-w-[1200px] mx-auto px-6 py-16 md:py-20 flex flex-col gap-16">
+    <section id="services" className="w-full max-w-[1280px] mx-auto px-6 lg:px-12 py-16 md:py-24 flex flex-col gap-24">
       {/* Solutions */}
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-4 max-w-[720px]">
@@ -19,37 +19,68 @@ export default function SolutionsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           {solutions.items.map((s: SolutionItem, idx: number) => (
             <div
               key={idx}
-              className="card-hover bg-surface rounded-md border border-border p-8 flex flex-col h-full cursor-pointer group relative overflow-hidden"
+              className="card-hover bg-surface rounded-md border border-border p-8 flex flex-col h-full relative overflow-hidden group"
             >
-              <div className="flex justify-between items-start mb-6">
-                <div className="w-12 h-12 rounded-sm bg-bg flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors">
-                  <span className="material-symbols-outlined text-[28px]">{s.icon}</span>
-                </div>
+              {/* Watermark icon */}
+              <div className="absolute top-0 right-0 p-6 opacity-[0.06] group-hover:opacity-[0.12] transition-opacity pointer-events-none">
+                <span className="material-symbols-outlined text-6xl text-heavy" aria-hidden="true">
+                  {s.icon}
+                </span>
               </div>
-              <div className="flex flex-col gap-6 flex-grow mb-8">
-                <h3 className="font-display text-2xl font-bold text-heavy">{s.title}</h3>
-                <div className="flex flex-col gap-4">
-                  {s.features?.map((f: SolutionFeature, fi: number) => (
-                    <div key={fi} className="flex gap-4">
-                      <span className="material-symbols-outlined text-primary text-[20px] shrink-0 mt-1">
-                        {f.icon}
-                      </span>
-                      <p className="text-text-muted text-sm font-body leading-relaxed">
-                        <span className="font-bold text-heavy">{f.bold}</span>{" "}
-                        {f.text}
-                      </p>
-                    </div>
-                  ))}
+
+              {/* Category badge */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-md bg-bg flex items-center justify-center border border-border group-hover:border-primary transition-colors">
+                  <span className="material-symbols-outlined text-xl text-primary" aria-hidden="true">
+                    {s.icon}
+                  </span>
                 </div>
+                <span className="text-[11px] font-bold font-display tracking-widest uppercase text-text-muted">
+                  {s.title}
+                </span>
               </div>
-              <div className="mt-auto">
-                <a href="#contact" className="flex items-center gap-2 text-xs font-display font-semibold text-heavy uppercase tracking-widest group-hover:text-primary transition-colors">
-                  Обсудить внедрение
-                  <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+
+              {/* Feature list */}
+              <div className="flex flex-col gap-4 mb-8 flex-grow">
+                {s.features?.map((f: SolutionFeature, fi: number) => (
+                  <div key={fi} className="flex gap-3 items-start">
+                    <span className="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5" aria-hidden="true">
+                      {f.icon}
+                    </span>
+                    <p className="text-text-muted text-sm font-body leading-relaxed">
+                      <span className="font-bold text-heavy">{f.bold}</span>{" "}
+                      {f.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Stats box (Social proof) */}
+              {s.stat && (
+                <div className="bg-bg p-5 rounded-md mb-8 border border-border">
+                  <div className="text-xl font-display font-bold text-primary mb-1">
+                    {s.stat}
+                  </div>
+                  <div className="text-sm font-body text-text-muted">
+                    {s.statSub}
+                  </div>
+                </div>
+              )}
+
+              {/* CTA link */}
+              <div className="mt-auto pt-2">
+                <a
+                  href={s.cta ? "#calculator" : "#contact"}
+                  className="inline-flex items-center gap-2 text-primary font-bold font-display text-sm group-hover:translate-x-1 transition-transform"
+                >
+                  {s.cta || "Обсудить внедрение"}
+                  <span className="material-symbols-outlined text-sm" aria-hidden="true">
+                    arrow_forward
+                  </span>
                 </a>
               </div>
             </div>

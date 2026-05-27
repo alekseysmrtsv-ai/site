@@ -64,7 +64,7 @@ export default function CalculatorSection() {
       <div className="max-w-3xl mx-auto px-6 flex flex-col items-center">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="font-display font-bold text-4xl md:text-5xl text-heavy tracking-tight mb-4">
+          <h2 className="font-display font-bold text-4xl md:text-5xl text-heavy tracking-tight mb-4 text-balance">
             {content.calculator.title}
           </h2>
           <p className="text-text-muted text-lg max-w-xl mx-auto font-body">
@@ -74,10 +74,12 @@ export default function CalculatorSection() {
 
         {/* Tabs */}
         <div className="w-full mb-8">
-          <div className="flex h-12 w-full items-center justify-center rounded-md bg-border/30 p-1 overflow-x-auto no-scrollbar gap-0.5">
+          <div role="tablist" aria-label="Тип упущенной выручки" className="flex h-12 w-full items-center justify-center rounded-md bg-border/30 p-1 overflow-x-auto no-scrollbar gap-0.5">
             {TABS.map((t) => (
               <button
                 key={t.value}
+                role="tab"
+                aria-selected={tab === t.value}
                 onClick={() => setTab(t.value)}
                 className={`flex cursor-pointer h-full flex-1 min-w-[140px] items-center justify-center rounded-sm px-3 text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                   tab === t.value
@@ -188,7 +190,7 @@ export default function CalculatorSection() {
                 className="w-full md:w-auto px-8 py-4 bg-primary text-heavy font-display font-semibold text-base uppercase tracking-widest rounded-md hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 group"
               >
                 Остановить потери
-                <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
                 </svg>
               </a>
@@ -198,7 +200,7 @@ export default function CalculatorSection() {
 
         {/* Trust indicator */}
         <div className="mt-8 flex items-center gap-3 text-sm text-text-muted font-body justify-center w-full">
-          <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
           </svg>
           <span>Расчёт основан на средних данных по рынку РФ за 2026 год.</span>

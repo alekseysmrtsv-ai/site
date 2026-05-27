@@ -44,6 +44,9 @@ fragment LandingParts on Landing {
       icon
       title
       description
+      stat
+      statSub
+      cta
       features {
         __typename
         icon
