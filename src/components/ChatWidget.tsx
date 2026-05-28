@@ -232,7 +232,10 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
     }, TIMEOUT_MS);
 
     try {
-      const webhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK;
+      let webhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK;
+      if (webhookUrl && process.env.NODE_ENV === "production") {
+        webhookUrl = webhookUrl.replace("/webhook-test/", "/webhook/");
+      }
 
       if (!webhookUrl) {
         await new Promise((r) => setTimeout(r, 1800));

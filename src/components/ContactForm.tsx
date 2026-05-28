@@ -72,7 +72,10 @@ export default function ContactForm() {
       timestamp: new Date().toISOString(),
     };
 
-    const webhookUrl = process.env.NEXT_PUBLIC_N8N_FORM_WEBHOOK;
+    let webhookUrl = process.env.NEXT_PUBLIC_N8N_FORM_WEBHOOK;
+    if (webhookUrl && process.env.NODE_ENV === "production") {
+      webhookUrl = webhookUrl.replace("/webhook-test/", "/webhook/");
+    }
 
     try {
       if (!webhookUrl) {
