@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import MatrixMode from "@/components/MatrixMode";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://samartsev.ai"),
@@ -111,6 +112,7 @@ export default function RootLayout({
       </head>
       <body className="dot-grid font-body antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <MatrixMode />
           {children}
         </ThemeProvider>
       </body>

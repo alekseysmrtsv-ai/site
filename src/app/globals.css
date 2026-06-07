@@ -267,3 +267,61 @@ details > summary::-webkit-details-marker {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(0, 230, 138, 0.1);
 }
+
+/* ===== MATRIX MODE & GLOW EFFECTS ===== */
+.matrix-active {
+  --color-primary: #00FF66 !important;
+  --color-primary-hover: #00CC52 !important;
+  --color-primary-dark: #00993D !important;
+  --color-heavy: #00FF66 !important;
+  --color-heavy-hover: #00FF88 !important;
+  --color-surface: #050d0a !important;
+  --color-bg: #000000 !important;
+  --color-bg-dark: #000000 !important;
+  --color-text-main: #33FF33 !important;
+  --color-text-muted: #008800 !important;
+  --color-border: #004400 !important;
+  --color-dots: #002200 !important;
+  --shadow-subtle: 0 0 15px rgba(0, 255, 102, 0.1) !important;
+  --shadow-card: 0 0 25px rgba(0, 255, 102, 0.2) !important;
+  --shadow-floating: 0 0 20px rgba(0, 255, 102, 0.15) !important;
+}
+
+.matrix-active body {
+  background-color: #000000 !important;
+  color: #33FF33 !important;
+}
+
+.matrix-active input, 
+.matrix-active textarea, 
+.matrix-active select, 
+.matrix-active button {
+  font-family: monospace !important;
+}
+
+/* Анимация импульсного свечения для чата */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    border-color: var(--color-border);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 230, 138, 0.5);
+    border-color: var(--color-primary);
+  }
+}
+
+.chat-glow-pulse {
+  animation: glow-pulse 1s ease-in-out 2;
+}
+
+/* Пульсация для красной зоны калькулятора */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+

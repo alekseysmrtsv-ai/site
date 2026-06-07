@@ -16,6 +16,13 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive]     = useState("");
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (e.detail === 3) {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent("toggle-matrix-mode"));
+    }
+  };
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -46,7 +53,12 @@ export default function Header() {
     >
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12 h-[68px] flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-3 text-heavy group" aria-label="Samartsev AI — главная">
+        <a
+          href="#"
+          onClick={handleLogoClick}
+          className="flex items-center gap-3 text-heavy group select-none"
+          aria-label="Samartsev AI — главная"
+        >
           <div className="w-5 h-5 text-primary flex-shrink-0">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path

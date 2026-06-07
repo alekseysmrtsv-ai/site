@@ -5,13 +5,18 @@ export default function FounderSection() {
     <section className="py-24 px-6 border-t border-border">
       <div className="max-w-3xl mx-auto text-center space-y-8">
         {/* Photo */}
-        <div className="relative inline-block">
+        <div className="relative inline-block group">
           <div className="w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full overflow-hidden border border-border shadow-subtle grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer">
             <img
               src={FOUNDER_PHOTO}
               alt="Алексей Самарцев — основатель Samartsev AI"
               className="w-full h-full object-cover"
             />
+          </div>
+          {/* Custom CSS-only B2B Tooltip */}
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 bg-heavy text-surface text-xs py-2.5 px-4 rounded-md opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-100 shadow-card text-center border border-border z-10">
+            Напишите мне в Telegram — обсудим ваш проект лично ☕
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-heavy rotate-45 border-r border-b border-border -mt-[5px]" />
           </div>
         </div>
 

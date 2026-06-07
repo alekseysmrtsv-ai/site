@@ -158,8 +158,35 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
   const [input, setInput]             = useState("");
   const [status, setStatus]           = useState<Status>("idle");
   const [showFaq, setShowFaq]         = useState(true);
+  const [isHighlighted, setIsHighlighted] = useState(false);
+  const [placeholderIdx, setPlaceholderIdx] = useState(0);
   const scrollRef                     = useRef<HTMLDivElement>(null);
   const timeoutRef                    = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const PLACEHOLDERS = [
+    "Введите сообщение…",
+    "Спросите меня: «Где хранятся данные?»",
+    "Спросите меня: «Каковы сроки внедрения?»",
+    "Спросите меня про безопасность данных…",
+    "Спросите меня про интеграцию с amoCRM…",
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPlaceholderIdx((prev) => (prev + 1) % PLACEHOLDERS.length);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleHighlight = () => {
+      setIsHighlighted(true);
+      const timer = setTimeout(() => setIsHighlighted(false), 2000);
+      return () => clearTimeout(timer);
+    };
+    window.addEventListener("highlight-chat", handleHighlight);
+    return () => window.removeEventListener("highlight-chat", handleHighlight);
+  }, []);
 
   const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
@@ -349,10 +376,10 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
       </div>
 
       {/* Chat Card */}
-      <div className="bg-surface rounded-md border border-border shadow-card flex flex-col h-[520px] overflow-hidden">
+      <div className={`bg-surface rounded-md border border-border shadow-card flex flex-col h-[420px] sm:h-[520px] overflow-hidden transition-all duration-300 ${isHighlighted ? "chat-glow-pulse" : ""}`}>
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-bg/50">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 relative group/conn cursor-help">
             <div className="relative flex w-3 h-3">
               <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-3 w-3 bg-primary" />
@@ -361,6 +388,10 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
               <p className="text-heavy font-display font-bold text-sm tracking-tight">Live Connection</p>
               <p className="text-text-muted text-xs font-medium">Powered by AI</p>
             </div>
+            {/* Connection Status Tooltip */}
+            <div className="absolute top-full left-0 mt-2 w-56 bg-heavy text-surface text-[10px] py-2 px-3 rounded-md opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out group-hover/conn:opacity-100 group-hover/conn:scale-100 shadow-card border border-border z-20">
+              Алекс оцифрован и готов к общению 24/7 ⚡
+            </div>
           </div>
           <MoreVertical className="w-5 h-5 text-text-muted" />
         </div>
@@ -368,7 +399,7 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
         {/* Messages */}
         <div
           ref={scrollRef}
-          className="flex-1 p-5 overflow-y-auto chat-scroll flex flex-col gap-4 bg-bg"
+          className="flex-1 p-3.5 sm:p-5 overflow-y-auto chat-scroll flex flex-col gap-3 sm:gap-4 bg-bg"
           aria-live="polite"
           role="log"
         >
@@ -466,9 +497,9 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Введите сообщение…"
+            placeholder={PLACEHOLDERS[placeholderIdx]}
             aria-label="Введите сообщение"
-            className="flex-1 bg-bg border border-border rounded-md px-4 py-2 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors"
+            className="flex-1 bg-bg border border-border rounded-md px-4 py-2 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:border-primary transition-all"
             disabled={status === "loading"}
           />
           <button

@@ -28,7 +28,7 @@ export default function CalculatorSection() {
   const [check, setCheck] = useState(15000);
   const [loss, setLoss]   = useState(20);
 
-  const lossPerMonth = Math.round(leads * check * (loss / 100));
+  const lossPerMonth = leads && check && loss ? Math.round(leads * check * (loss / 100)) : 0;
 
   const fmt = useCallback(
     (n: number) => n.toLocaleString("ru-RU"),
@@ -36,7 +36,20 @@ export default function CalculatorSection() {
   );
 
   const trackWidth = useCallback((val: number, min: number, max: number) => {
-    return `${((val - min) / (max - min)) * 100}%`;
+    const range = max - min;
+    return range === 0 ? "0%" : `${((val - min) / range) * 100}%`;
+  }, []);
+
+  const getLossColorClass = useCallback((val: number) => {
+    if (val <= 15) return "bg-primary";
+    if (val <= 35) return "bg-amber-500";
+    return "bg-red-500";
+  }, []);
+
+  const getResultColorClass = useCallback((val: number) => {
+    if (val <= 15) return "text-heavy";
+    if (val <= 35) return "text-amber-500 dark:text-amber-400";
+    return "text-red-500 dark:text-red-400 animate-pulse-subtle";
   }, []);
 
   const handleStopLoss = useCallback((e: React.MouseEvent) => {
@@ -54,6 +67,9 @@ export default function CalculatorSection() {
       },
     });
     window.dispatchEvent(event);
+
+    const highlightEvent = new CustomEvent("highlight-chat");
+    window.dispatchEvent(highlightEvent);
   }, [leads, check, loss, lossPerMonth]);
 
   return (
@@ -156,11 +172,11 @@ export default function CalculatorSection() {
                 <label className="font-display font-medium text-xs uppercase tracking-wider text-text-muted">
                   {content.calculator.lossLabel}
                 </label>
-                <span className="font-display font-bold text-xl text-heavy tabular-nums">{loss}%</span>
+                <span className={`font-display font-bold text-xl tabular-nums transition-colors duration-300 ${loss <= 15 ? "text-heavy" : loss <= 35 ? "text-amber-500 dark:text-amber-400" : "text-red-500 dark:text-red-400"}`}>{loss}%</span>
               </div>
               <div className="relative w-full h-6 flex items-center">
                 <div
-                  className="absolute left-0 h-1 bg-primary rounded-l-sm pointer-events-none"
+                  className={`absolute left-0 h-1 rounded-l-sm pointer-events-none transition-colors duration-300 ${getLossColorClass(loss)}`}
                   style={{ width: trackWidth(loss, 5, 80) }}
                 />
                 <input
@@ -171,7 +187,7 @@ export default function CalculatorSection() {
                 />
               </div>
               <p className="text-xs text-text-muted">
-                {loss}% — {loss <= 20 ? "оптимистичная оценка" : loss <= 35 ? "средний показатель по рынку РФ" : "высокий показатель — срочно нужна автоматизация"}.
+                {loss}% — {loss <= 15 ? "оптимистичная оценка" : loss <= 35 ? "средний показатель по рынку РФ" : "высокий показатель — срочно нужна автоматизация"}.
               </p>
             </div>
 
@@ -180,14 +196,14 @@ export default function CalculatorSection() {
               <p className="font-display font-medium text-sm text-text-muted mb-2 uppercase tracking-wide">
                 {content.calculator.resultLabel}
               </p>
-              <div className="font-display font-bold text-5xl md:text-7xl text-heavy tracking-tight mb-8 tabular-nums">
+              <div className={`font-display font-bold text-5xl md:text-7xl tracking-tight mb-8 tabular-nums transition-colors duration-300 ${getResultColorClass(loss)}`}>
                 {fmt(lossPerMonth)}{" "}
                 <span className="text-3xl md:text-5xl text-text-muted">{content.calculator.resultSub}</span>
               </div>
               <a
                 href="#chat-widget"
                 onClick={handleStopLoss}
-                className="w-full md:w-auto px-8 py-4 bg-primary text-heavy font-display font-semibold text-base uppercase tracking-widest rounded-md hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 group"
+                className="w-full md:w-auto px-8 py-4 bg-primary text-heavy font-display font-semibold text-base uppercase tracking-widest rounded-md hover:bg-primary-hover transition-all duration-300 flex items-center justify-center gap-2 group active:scale-95"
               >
                 Остановить потери
                 <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -225,11 +241,12 @@ export default function CalculatorSection() {
         <div className="p-4 flex items-center justify-between gap-4">
           <div className="flex flex-col">
             <span className="text-[10px] font-display uppercase tracking-wider text-text-muted">Потери / мес</span>
-            <span className="font-display font-bold text-lg text-heavy tabular-nums">{fmt(lossPerMonth)} ₽</span>
+            <span className={`font-display font-bold text-lg tabular-nums transition-colors duration-300 ${getResultColorClass(loss)}`}>{fmt(lossPerMonth)} ₽</span>
           </div>
           <a
-            href="#contact"
-            className="px-6 py-3 bg-primary text-heavy font-display font-semibold text-sm uppercase tracking-wide rounded-md hover:bg-primary-hover transition-colors whitespace-nowrap"
+            href="#chat-widget"
+            onClick={handleStopLoss}
+            className="px-6 py-3 bg-primary text-heavy font-display font-semibold text-sm uppercase tracking-wide rounded-md hover:bg-primary-hover transition-colors whitespace-nowrap active:scale-95"
           >
             Остановить
           </a>
