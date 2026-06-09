@@ -196,10 +196,22 @@ export default function CalculatorSection() {
               <p className="font-display font-medium text-sm text-text-muted mb-2 uppercase tracking-wide">
                 {content.calculator.resultLabel}
               </p>
-              <div className={`font-display font-bold text-5xl md:text-7xl tracking-tight mb-8 tabular-nums transition-colors duration-300 ${getResultColorClass(loss)}`}>
+              <div className={`font-display font-bold text-5xl md:text-7xl tracking-tight mb-2 tabular-nums transition-colors duration-300 ${getResultColorClass(loss)}`}>
                 {fmt(lossPerMonth)}{" "}
                 <span className="text-3xl md:text-5xl text-text-muted">{content.calculator.resultSub}</span>
               </div>
+              {lossPerMonth > 0 && (
+                <p className="text-sm text-text-muted font-body mb-6 max-w-md mx-auto">
+                  Это {fmt(lossPerMonth * 12)} ₽ в год
+                  {lossPerMonth < 50000 && " — стоимость менеджера на полставки"}
+                  {lossPerMonth >= 50000 && lossPerMonth < 200000 && " — полноценный сотрудник с бонусами"}
+                  {lossPerMonth >= 200000 && lossPerMonth < 500000 && " — бюджет маленького отдела продаж"}
+                  {lossPerMonth >= 500000 && " — годовой ФОТ 2-3 менеджеров"}
+                  .
+                  <br />
+                  <span className="text-primary font-medium">ИИ-агент решает ту же задачу — с окупаемостью от 1 месяца.</span>
+                </p>
+              )}
               <a
                 href="#chat-widget"
                 onClick={handleStopLoss}
