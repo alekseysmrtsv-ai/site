@@ -89,6 +89,7 @@ function getSessionId(): string {
   if (!id) {
     id = crypto.randomUUID();
     localStorage.setItem(KEY, id);
+    window.dispatchEvent(new Event("chat-session-created"));
   }
   return id;
 }
@@ -350,6 +351,37 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
     window.addEventListener("calculate-loss", handleCalculateLoss);
     return () => {
       window.removeEventListener("calculate-loss", handleCalculateLoss);
+    };
+  }, [sendMessage]);
+
+  useEffect(() => {
+    const handleQuizData = (e: Event) => {
+      const customEvent = e as CustomEvent<{
+        niche: string;
+        employees: string;
+        tasks: string;
+      }>;
+      const { niche, employees, tasks } = customEvent.detail;
+      
+      const text = `Я прошел квиз на сайте.
+Мои ответы:
+• Ниша: ${niche}
+• Количество сотрудников: ${employees}
+• Задачи для автоматизации: ${tasks}
+
+Что вы можете мне предложить?`;
+
+      sendMessage(text);
+      
+      setTimeout(() => {
+        document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        window.dispatchEvent(new Event("highlight-chat"));
+      }, 100);
+    };
+
+    window.addEventListener("quiz-data", handleQuizData);
+    return () => {
+      window.removeEventListener("quiz-data", handleQuizData);
     };
   }, [sendMessage]);
 

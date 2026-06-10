@@ -7,7 +7,7 @@ import TechStackSection from "@/components/TechStackSection";
 import FounderSection from "@/components/FounderSection";
 import FAQSection from "@/components/FAQSection";
 import CTABanner from "@/components/CTABanner";
-import ContactForm from "@/components/ContactForm";
+import QuizSection from "@/components/QuizSection";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 
@@ -32,7 +32,7 @@ export default function HomePage() {
         <FounderSection />
         <FAQSection />
         <CTABanner />
-        <ContactForm />
+        <QuizSection />
       </main>
 
       <Footer />
