@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     }
 
     // Отправляем запрос на n8n webhook
-    const res = await fetch(`${N8N_URL}/webhook/run-parser`, {
+    const res = await fetch(`${N8N_URL}/webhook/run-parser-sniper`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
