@@ -602,13 +602,13 @@ export function CrmKanban() {
 
             <div className="space-y-4 mb-2">
               <div>
-                <label className="text-sm font-medium text-gray-700 block mb-1">Поисковый запрос</label>
+                <label className="text-sm font-medium text-gray-700 block mb-1">Широкая ниша</label>
                 <input 
                   value={parserQuery}
                   onChange={e => setParserQuery(e.target.value)}
                   type="text" 
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500 outline-none" 
-                  placeholder="Например: Салоны красоты Москва" 
+                  placeholder="Например: Автосервисы" 
                 />
               </div>
               <div>
