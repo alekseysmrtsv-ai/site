@@ -2,22 +2,19 @@ import { NextResponse } from "next/server";
 
 const N8N_URL = "http://84.22.148.12:5678";
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
-    const body = await request.json();
-    const { query, limit } = body;
+    const { searchParams } = new URL(request.url);
+    const query = searchParams.get('query');
+    const limit = searchParams.get('limit');
 
     if (!query) {
       return NextResponse.json({ error: "Поисковый запрос обязателен" }, { status: 400 });
     }
 
     // Отправляем запрос на n8n webhook
-    const res = await fetch(`${N8N_URL}/webhook/run-parser-sniper`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query, limit: limit || 20 }),
+    const res = await fetch(`${N8N_URL}/webhook/run-parser-sniper?query=${encodeURIComponent(query)}&limit=${limit || 20}`, {
+      method: "GET"
     });
 
     if (!res.ok) {

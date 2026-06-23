@@ -297,10 +297,8 @@ export function CrmKanban() {
     
     setIsParsing(true);
     try {
-      const res = await fetch("/api/parser", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: parserQuery, limit: parserLimit })
+      const res = await fetch(`/api/parser?query=${encodeURIComponent(parserQuery)}&limit=${parserLimit}`, {
+        method: "GET"
       });
       
       if (!res.ok) throw new Error("Ошибка запуска");
