@@ -7,7 +7,8 @@ export async function GET() {
     const res = await fetch(`${N8N_URL}/webhook/get-leads`, { cache: 'no-store' });
     if (!res.ok) throw new Error("Failed to fetch leads");
     const data = await res.json();
-    return NextResponse.json(data);
+    const leadsArray = Array.isArray(data) ? data : (data ? [data] : []);
+    return NextResponse.json(leadsArray);
   } catch (error) {
     console.error("n8n not reachable, returning mock data", error);
     return NextResponse.json([
