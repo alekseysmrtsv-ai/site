@@ -66,9 +66,28 @@ function SortableLeadCard({ lead, isDuplicate, onClick }: { lead: Lead; isDuplic
         </div>
       )}
       <div className="flex justify-between items-start mb-2 relative z-0">
-        <h3 className="font-semibold text-gray-900 leading-tight pr-4">{lead.name}</h3>
+        <div>
+          <h3 className="font-semibold text-gray-900 leading-tight pr-4">{lead.name}</h3>
+          <div className="flex gap-1.5 mt-1">
+            {lead.score !== undefined && lead.score >= 4 && (
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-700 border border-red-100">
+                🔥 Горячий
+              </span>
+            )}
+            {lead.score === 3 && (
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100">
+                ⚡ Теплый
+              </span>
+            )}
+            {lead.score !== undefined && lead.score > 0 && lead.score <= 2 && (
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-600 border border-gray-200">
+                💤 Низкий
+              </span>
+            )}
+          </div>
+        </div>
         <div className="flex text-yellow-400 shrink-0">
-          {[...Array(lead.score || 0)].map((_, i) => (
+          {lead.score !== undefined && lead.score > 0 && [...Array(lead.score)].map((_, i) => (
             <Star key={i} className="w-3.5 h-3.5 fill-current" />
           ))}
         </div>
@@ -447,6 +466,23 @@ export function CrmKanban() {
                       className="text-xl font-bold text-gray-900 w-full focus:outline-none focus:ring-1 focus:ring-emerald-500 rounded px-1 -ml-1"
                     />
                     <p className="text-gray-400 text-xs mt-1">Последнее изменение: {formatDate(selectedLead.updated_at)}</p>
+                    <div className="flex gap-2 mt-2">
+                      {editForm.score !== undefined && editForm.score >= 4 && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-red-50 text-red-700 border border-red-100">
+                          🔥 Горячий лид
+                        </span>
+                      )}
+                      {editForm.score === 3 && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-amber-50 text-amber-700 border border-amber-100">
+                          ⚡ Теплый лид
+                        </span>
+                      )}
+                      {editForm.score !== undefined && editForm.score > 0 && editForm.score <= 2 && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-gray-50 text-gray-600 border border-gray-200">
+                          💤 Низкий приоритет
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <Dialog.Close className="text-gray-400 hover:text-gray-600 p-1 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors shrink-0">
                     <X className="w-5 h-5" />

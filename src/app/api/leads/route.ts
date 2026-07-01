@@ -8,7 +8,15 @@ export async function GET() {
     if (!res.ok) throw new Error("Failed to fetch leads");
     const data = await res.json();
     const leadsArray = Array.isArray(data) ? data : (data ? [data] : []);
-    return NextResponse.json(leadsArray);
+    const mapped = leadsArray.map((l: any) => {
+      let s = 0;
+      if (l.lead_score === 100) s = 5;
+      else if (l.lead_score === 50) s = 3;
+      else if (l.lead_score === 10) s = 1;
+      else s = l.lead_score || l.score || 0;
+      return { ...l, score: s };
+    });
+    return NextResponse.json(mapped);
   } catch (error) {
     console.error("n8n not reachable, returning mock data", error);
     return NextResponse.json([

@@ -191,7 +191,7 @@ Collection: founder
 - [ ] Lighthouse score > 90
 - [ ] Core Web Vitals ✅
 - [ ] Cookie consent banner
-- [ ] Vercel deploy + domain DNS (интегрирован автоматический деплой при пуше в ветку `main`)
+- [x] Vercel deploy + domain DNS (интегрирован автоматический деплой при пуше в ветку `main`)
 
 ---
 
