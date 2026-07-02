@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { Clock, Globe, Phone, Star, Search, Plus, X, Trash2, Archive, AlertTriangle, Building, RefreshCcw, Save, CalendarClock } from "lucide-react";
+import { Clock, Globe, Phone, Star, Search, Plus, X, Trash2, Archive, AlertTriangle, Building, RefreshCcw, Save, CalendarClock, Sparkles, CheckCircle2, XCircle, Edit, Copy, Check } from "lucide-react";
 import { DndContext, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent, DragStartEvent, DragOverlay, useDroppable } from '@dnd-kit/core';
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -39,6 +39,35 @@ function formatDate(isoString?: string) {
   if (!isoString) return "";
   const date = new Date(isoString);
   return new Intl.DateTimeFormat('ru-RU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).format(date);
+}
+
+function getChecklistItems(editForm: any, selectedLead: any) {
+  const dataQuality = editForm?.data_quality || selectedLead?.data_quality || {};
+  const checklist = dataQuality.checklist || {};
+  
+  const hasChecklistData = Object.keys(checklist).length > 0;
+  
+  if (hasChecklistData) {
+    return [
+      { label: "Игнорирование звонков/сообщений", checked: !!checklist.no_response },
+      { label: "Длительное время ожидания", checked: !!checklist.slow_response },
+      { label: "Грубость / хамство персонала", checked: !!checklist.rudeness },
+      { label: "Сложности с бронированием/записью", checked: !!checklist.booking_issue },
+      { label: "Сетевой филиал (сеть)", checked: !!checklist.is_chain },
+      { label: "Микро-бизнес (низкий приоритет)", checked: !!checklist.is_micro }
+    ];
+  }
+  
+  // Fallback based on score
+  const score = editForm?.score || selectedLead?.score || 0;
+  return [
+    { label: "Игнорирование звонков/сообщений", checked: score >= 4 },
+    { label: "Длительное время ожидания", checked: score >= 4 },
+    { label: "Грубость / хамство персонала", checked: false },
+    { label: "Сложности с бронированием/записью", checked: score >= 5 },
+    { label: "Сетевой филиал (сеть)", checked: score === 3 },
+    { label: "Микро-бизнес (низкий приоритет)", checked: score === 1 }
+  ];
 }
 
 function SortableLeadCard({ lead, isDuplicate, onClick }: { lead: Lead; isDuplicate: boolean; onClick: () => void }) {
@@ -157,6 +186,8 @@ export function CrmKanban() {
   const [isParsing, setIsParsing] = useState(false);
 
   const [editForm, setEditForm] = useState<Partial<Lead>>({});
+  const [isEditingComment, setIsEditingComment] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetch("/api/leads")
@@ -170,8 +201,12 @@ export function CrmKanban() {
   useEffect(() => {
     if (selectedLead) {
       setEditForm(selectedLead);
+      setIsEditingComment(false);
+      setCopied(false);
     } else {
       setEditForm({});
+      setIsEditingComment(false);
+      setCopied(false);
     }
   }, [selectedLead]);
 
@@ -529,14 +564,80 @@ export function CrmKanban() {
                     </div>
                   </div>
 
+                  {/* AI Checklist */}
+                  <div className="bg-emerald-50/40 p-4 rounded-xl border border-emerald-100/70">
+                    <p className="text-xs font-semibold text-emerald-800 mb-2.5 uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-600 fill-current" /> ИИ-Диагностика лида
+                    </p>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                      {getChecklistItems(editForm, selectedLead).map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-2 py-0.5">
+                          {item.checked ? (
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          ) : (
+                            <XCircle className="w-4 h-4 text-gray-300 shrink-0" />
+                          )}
+                          <span className={item.checked ? "text-gray-900 font-medium" : "text-gray-400"}>
+                            {item.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Comment / Notes */}
                   <div>
-                    <label className="text-xs text-gray-500 block mb-1">Комментарий / Заметки</label>
-                    <textarea 
-                      value={editForm.comment || ""}
-                      onChange={e => setEditForm({...editForm, comment: e.target.value})}
-                      placeholder="Оставь заметку об этом лиде..."
-                      className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[80px] custom-scrollbar"
-                    />
+                    {!isEditingComment ? (
+                      <div>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <label className="text-xs text-gray-500 font-medium">Сценарий захода / Заметки</label>
+                          <div className="flex gap-2">
+                            <button 
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard.writeText(editForm.comment || "");
+                                setCopied(true);
+                                setTimeout(() => setCopied(false), 2000);
+                              }}
+                              className="text-[11px] text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1 transition-colors"
+                              title="Скопировать сценарий в буфер обмена"
+                            >
+                              {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                              {copied ? "Скопировано!" : "Копировать"}
+                            </button>
+                            <button 
+                              type="button"
+                              onClick={() => setIsEditingComment(true)}
+                              className="text-[11px] text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1 transition-colors"
+                            >
+                              <Edit className="w-3 h-3" /> Редактировать
+                            </button>
+                          </div>
+                        </div>
+                        <div className="w-full bg-emerald-50/10 border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 whitespace-pre-wrap leading-relaxed max-h-[300px] overflow-y-auto custom-scrollbar shadow-inner">
+                          {editForm.comment || <span className="text-gray-400 italic">Сценарий не заполнен. Вы можете добавить его вручную.</span>}
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <label className="text-xs text-gray-500 font-medium">Редактирование комментария</label>
+                          <button 
+                            type="button"
+                            onClick={() => setIsEditingComment(false)}
+                            className="text-[11px] text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1 transition-colors"
+                          >
+                            Готово (просмотр)
+                          </button>
+                        </div>
+                        <textarea 
+                          value={editForm.comment || ""}
+                          onChange={e => setEditForm({...editForm, comment: e.target.value})}
+                          placeholder="Оставь заметку об этом лиде..."
+                          className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-h-[250px] custom-scrollbar shadow-sm leading-relaxed"
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <div>
