@@ -22,11 +22,21 @@ const TABS = [
   },
 ];
 
-export default function CalculatorSection() {
+interface CalculatorSectionProps {
+  defaultLeads?: number;
+  defaultCheck?: number;
+  defaultLoss?: number;
+}
+
+export default function CalculatorSection({
+  defaultLeads = 100,
+  defaultCheck = 15000,
+  defaultLoss = 20,
+}: CalculatorSectionProps) {
   const [tab, setTab]     = useState("night");
-  const [leads, setLeads] = useState(100); // Теперь это лидов в МЕСЯЦ
-  const [check, setCheck] = useState(15000);
-  const [loss, setLoss]   = useState(20);
+  const [leads, setLeads] = useState(defaultLeads); // Теперь это лидов в МЕСЯЦ
+  const [check, setCheck] = useState(defaultCheck);
+  const [loss, setLoss]   = useState(defaultLoss);
 
   const lossPerMonth = leads && check && loss ? Math.round(leads * check * (loss / 100)) : 0;
 

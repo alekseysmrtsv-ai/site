@@ -29,6 +29,7 @@ type ChatWidgetData = {
 
 type ChatWidgetProps = {
   chatWidgetData?: ChatWidgetData;
+  niche?: string;
 };
 
 /* ──────────────── Default FAQ (fallback) ──────────────── */
@@ -147,7 +148,7 @@ function parseMarkdown(text: string): React.ReactNode {
 
 /* ──────────────── Component ──────────────── */
 
-export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
+export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
   // Данные из TinaCMS или fallback
   const greeting = chatWidgetData?.greeting || DEFAULT_GREETING;
   const subtitle = chatWidgetData?.subtitle || DEFAULT_SUBTITLE;
@@ -284,6 +285,7 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
           session_id: getSessionId(),
           source: "widget",
           timestamp: Date.now(),
+          niche: niche || undefined,
         }),
       });
 
@@ -317,7 +319,7 @@ export default function ChatWidget({ chatWidgetData }: ChatWidgetProps) {
       console.error("ChatWidget Error:", err);
       addBotMessages([FALLBACK_MESSAGE]);
     }
-  }, [faqItems, addBotMessages]);
+  }, [faqItems, addBotMessages, niche]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();

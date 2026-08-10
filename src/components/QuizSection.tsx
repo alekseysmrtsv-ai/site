@@ -33,12 +33,17 @@ const TASKS = [
   "Другое",
 ];
 
-export default function QuizSection() {
+interface QuizSectionProps {
+  defaultNiche?: string;
+}
+
+export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
   const [hasSession, setHasSession] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   
-  const [step, setStep] = useState(1);
-  const [niche, setNiche] = useState("");
+  const [step, setStep] = useState(defaultNiche ? 2 : 1);
+  const [quizDone, setQuizDone] = useState(false);
+  const [niche, setNiche] = useState(defaultNiche);
   const [employees, setEmployees] = useState("");
   const [tasks, setTasks] = useState<string[]>([]);
   
@@ -82,6 +87,7 @@ export default function QuizSection() {
         })
       );
     }
+    setQuizDone(true);
   };
 
   const renderQuizContent = () => {
@@ -96,6 +102,22 @@ export default function QuizSection() {
               ))}
             </div>
           </div>
+
+          {niche && step > 1 && (
+            <div className="mb-6 p-4 bg-primary/5 border border-primary/20 rounded-md flex items-center justify-between animate-fade-in-up">
+              <div>
+                <span className="text-[10px] uppercase tracking-wider text-text-muted block mb-0.5 font-bold">Выбранная ниша</span>
+                <span className="text-base font-display font-bold text-heavy">{niche}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="text-xs font-bold text-primary hover:underline hover:text-primary-hover"
+              >
+                Изменить
+              </button>
+            </div>
+          )}
           
           {step === 1 && (
             <div className="animate-fade-in-up">
@@ -367,16 +389,13 @@ export default function QuizSection() {
         {/* Left info */}
         <div className="animate-fade-in-up">
           <span className="text-[13px] font-semibold tracking-widest text-text-muted uppercase block mb-4">
-            {hasSession ? "// БЕСПЛАТНЫЙ АУДИТ" : "// УЗНАЙТЕ СТОИМОСТЬ И СРОКИ"}
+            // УЗНАЙТЕ СТОИМОСТЬ И СРОКИ
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-heavy mb-6 leading-tight">
-            {hasSession ? "Готовы автоматизировать бизнес?" : "Получите решение для вашего бизнеса"}
+            Получите решение для вашего бизнеса
           </h2>
           <p className="text-text-muted mb-10 font-body leading-relaxed text-lg border-b border-border pb-8">
-            {hasSession 
-              ? "Получите бесплатный аудит ваших процессов и узнайте, как ИИ-агент вернёт упущенную выручку уже в первый месяц."
-              : "Пройдите короткий опрос из 3 вопросов, и наш ИИ-агент моментально предложит оптимальную архитектуру и рассчитает окупаемость."
-            }
+            Пройдите короткий опрос из 3 вопросов — мы подготовим персональное предложение с расчётом окупаемости для вашей ниши.
           </p>
           <ul className="space-y-5">
             {[
@@ -411,7 +430,7 @@ export default function QuizSection() {
 
         {/* Right form or quiz */}
         <div className="h-full min-h-[480px]">
-          {isMounted && (hasSession ? renderFallbackForm() : renderQuizContent())}
+          {isMounted && (quizDone ? renderFallbackForm() : renderQuizContent())}
           {!isMounted && (
              <div className="h-full w-full bg-surface/50 border border-border rounded-md animate-pulse"></div>
           )}

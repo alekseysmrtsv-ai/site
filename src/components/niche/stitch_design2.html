@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Samartsev AI — ИИ-агент для стоматологии</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#ddb7ff",
+                        "outline": "#8e90a2",
+                        "on-primary-container": "#efefff",
+                        "secondary-fixed": "#f0dbff",
+                        "tertiary-fixed": "#7df4ff",
+                        "on-surface": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#0035be",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-tertiary-fixed": "#002022",
+                        "tertiary-fixed-dim": "#00dbe9",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#001356",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-dim": "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "outline-variant": "#434656",
+                        "on-secondary": "#490080",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface": "#131313",
+                        "primary-container": "#2e5bff",
+                        "on-secondary-container": "#d6a9ff",
+                        "on-tertiary-fixed-variant": "#004f54",
+                        "on-tertiary-container": "#c4faff",
+                        "on-surface-variant": "#c4c5d9",
+                        "background": "#050505",
+                        "surface-tint": "#b8c3ff",
+                        "surface-container": "#201f1f",
+                        "tertiary-container": "#007981",
+                        "secondary-container": "#6f00be",
+                        "on-background": "#e5e2e1",
+                        "surface-bright": "#3a3939",
+                        "on-primary": "#002388",
+                        "primary": "#b8c3ff",
+                        "on-tertiary": "#00363a",
+                        "inverse-primary": "#124af0",
+                        "tertiary": "#00dbe9",
+                        "surface-variant": "#353534",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#dde1ff",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#b8c3ff",
+                        "on-secondary-fixed-variant": "#6900b3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "80px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "container-max": "1440px",
+                        "sm": "12px",
+                        "lg": "48px",
+                        "xs": "4px",
+                        "margin-desktop": "64px",
+                        "base": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "display-lg": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .nebula-glow {
+            filter: blur(120px);
+            pointer-events: none;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #b8c3ff 0%, #ddb7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .pill-gradient {
+            background: linear-gradient(135deg, #2e5bff 0%, #6f00be 100%);
+        }
+        .neural-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #2e5bff, transparent);
+            opacity: 0.3;
+            width: 100%;
+        }
+        @keyframes pulse-light {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-scan {
+            animation: pulse-light 3s infinite linear;
+        }
+    </style>
+</head>
+<body class="font-body-md selection:bg-primary/30">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] rounded-full bg-white/5 backdrop-blur-xl border-t border-white/10 shadow-[0_0_30px_rgba(46,91,255,0.2)] z-50 flex justify-between items-center px-8 py-4 max-w-container-max transition-all duration-500">
+<div class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">Samartsev AI</div>
+<div class="hidden md:flex gap-md items-center">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Solutions</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Results</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Contact</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-bold hover:scale-105 transition-transform duration-300">Get Started</button>
+</nav>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center pt-32 pb-xl overflow-hidden">
+<!-- STITCH_SHADER_START:ANIMATION_9 class="absolute inset-0 w-full h-full z-0 opacity-40" -->
+<div class="absolute inset-0 w-full h-full z-0 opacity-40" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_9" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_9');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 p = (uv - 0.5) * 2.0;
+    p.x *= u_resolution.x / u_resolution.y;
+
+    float d = length(p);
+    float noise = 0.0;
+    
+    // Abstract flowing pulses
+    for(float i = 1.0; i < 4.0; i++) {
+        p.x += 0.3 / i * sin(i * p.y + u_time * 0.4 + i * 0.6) + 0.5;
+        p.y += 0.3 / i * sin(i * p.x + u_time * 0.4 + i * 1.2) + 0.5;
+        noise += sin(length(p) * 1.5);
+    }
+
+    vec3 color1 = vec3(0.04, 0.04, 0.15); // Deep space
+    vec3 color2 = vec3(0.18, 0.36, 1.0);  // Cobalt
+    vec3 color3 = vec3(0.55, 0.25, 0.95); // Royal Purple
+
+    vec3 finalColor = mix(color1, color2, 0.5 + 0.5 * sin(noise * 0.15 + u_time * 0.1));
+    finalColor = mix(finalColor, color3, 0.4 * (1.0 - d));
+    
+    // Vignette for depth
+    finalColor *= smoothstep(1.8, 0.6, d);
+
+    gl_FragColor = vec4(finalColor * 0.7, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_9 -->
+<!-- Nebula Backgrounds -->
+<div class="absolute top-1/4 left-0 w-[500px] h-[500px] rounded-full bg-primary/10 nebula-glow z-0"></div>
+<div class="absolute bottom-1/4 right-0 w-[600px] h-[600px] rounded-full bg-secondary/10 nebula-glow z-0"></div>
+<div class="container mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-xl items-center relative z-10">
+<!-- Left Content -->
+<div class="flex flex-col gap-md">
+<h1 class="font-display-lg text-display-lg font-bold tracking-tight text-white leading-none">
+                    ИИ-агент для <span class="gradient-text">стоматологии</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                    Автоматизация записи и продаж 24/7. Не теряйте ни одного пациента благодаря интеллектуальной системе обработки заявок.
+                </p>
+<div class="flex flex-wrap gap-md mt-sm">
+<button class="pill-gradient text-white px-8 py-4 rounded-full font-bold text-body-md hover:shadow-[0_0_30px_rgba(46,91,255,0.4)] transition-all">
+                        Начать проект
+                    </button>
+<button class="glass border border-white/10 text-white px-8 py-4 rounded-full font-bold text-body-md hover:bg-white/10 transition-all">
+                        Смотреть кейсы
+                    </button>
+</div>
+<!-- Integrations -->
+<div class="flex items-center gap-md mt-lg">
+<span class="text-label-sm text-outline font-label-sm uppercase tracking-widest">Интеграции:</span>
+<div class="flex gap-sm opacity-60">
+<span class="material-symbols-outlined text-primary text-3xl">sync_alt</span>
+<span class="material-symbols-outlined text-primary text-3xl">database</span>
+<span class="material-symbols-outlined text-primary text-3xl">chat</span>
+</div>
+</div>
+</div>
+<!-- Right: AI Chat Widget -->
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/20 rounded-xl blur-3xl opacity-50 group-hover:opacity-75 transition duration-1000"></div>
+<div class="glass relative rounded-xl p-md border border-white/5 shadow-2xl flex flex-col gap-md min-h-[400px]">
+<!-- Widget Header -->
+<div class="flex items-center justify-between border-b border-white/10 pb-sm">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full pill-gradient flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div>
+<div class="font-bold text-white">Samartsev AI Assistant</div>
+<div class="text-[10px] text-tertiary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> В сети
+                                </div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">more_vert</span>
+</div>
+<!-- Chat Messages -->
+<div class="flex flex-col gap-md overflow-y-auto pr-2">
+<div class="self-end bg-primary/20 text-on-primary-container px-4 py-2 rounded-2xl rounded-tr-none max-w-[80%] text-sm">
+                            Здравствуйте! Хочу записаться на чистку зубов в четверг.
+                        </div>
+<div class="self-start glass border border-white/5 text-on-surface-variant px-4 py-2 rounded-2xl rounded-tl-none max-w-[80%] text-sm">
+                            Добрый день! Конечно. На четверг 24 октября у нас есть свободные окна: 14:00 и 16:30. Какое время вам удобнее?
+                        </div>
+<div class="self-end bg-primary/20 text-on-primary-container px-4 py-2 rounded-2xl rounded-tr-none max-w-[80%] text-sm">
+                            Давайте на 16:30.
+                        </div>
+<div class="self-start glass border border-white/5 text-on-surface-variant px-4 py-2 rounded-2xl rounded-tl-none max-w-[80%] text-sm">
+                            Отлично! Записала вас на профессиональную чистку к доктору Смирнову. Направляю вам памятку по подготовке. Ждем вас! ✨
+                        </div>
+</div>
+<!-- Typing Input -->
+<div class="mt-auto border-t border-white/10 pt-md relative">
+<div class="absolute top-0 left-0 h-0.5 w-1/3 pill-gradient animate-scan"></div>
+<div class="flex items-center gap-sm text-outline">
+<span class="material-symbols-outlined">attachment</span>
+<div class="flex-1 text-sm">Введите сообщение...</div>
+<span class="material-symbols-outlined text-primary">send</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Solutions Bento Grid -->
+<section class="py-xl relative px-margin-desktop">
+<div class="container mx-auto">
+<div class="flex flex-col gap-xs mb-lg">
+<span class="text-primary font-bold tracking-[0.2em] uppercase text-label-sm">Возможности</span>
+<h2 class="font-headline-xl text-headline-xl text-white">Интеллектуальные решения</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Card 1 -->
+<div class="md:col-span-8 glass p-lg rounded-lg border border-white/5 flex flex-col justify-between h-[360px] hover:bg-white/5 transition-colors cursor-default overflow-hidden relative group">
+<div class="absolute -top-16 -right-16 w-48 h-48 bg-primary/20 nebula-glow group-hover:scale-125 transition-transform duration-700"></div>
+<div>
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-label-sm mb-md">100% точность</div>
+<h3 class="font-headline-md text-headline-md text-white mb-sm">Автоматизация записи</h3>
+<p class="text-on-surface-variant max-w-md">ИИ мгновенно отвечает на запросы пациентов, синхронизирует расписание и отправляет подтверждения без участия администратора.</p>
+</div>
+<span class="material-symbols-outlined text-primary text-6xl opacity-50">calendar_add_on</span>
+</div>
+<!-- Card 2 -->
+<div class="md:col-span-4 glass p-lg rounded-lg border border-white/5 flex flex-col justify-between h-[360px] hover:bg-white/5 transition-colors">
+<div>
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary text-label-sm mb-md">24/7 доступность</div>
+<h3 class="font-headline-md text-headline-md text-white mb-sm">Квалификация лидов</h3>
+<p class="text-on-surface-variant">Фильтрация нецелевых обращений и сбор данных о симптомах еще до первого визита.</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-6xl opacity-50">psychology</span>
+</div>
+<!-- Card 3 -->
+<div class="md:col-span-4 glass p-lg rounded-lg border border-white/5 flex flex-col justify-between h-[360px] hover:bg-white/5 transition-colors">
+<div>
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary/10 border border-tertiary/20 text-tertiary text-label-sm mb-md">CRM Ready</div>
+<h3 class="font-headline-md text-headline-md text-white mb-sm">Интеграция с МИС</h3>
+<p class="text-on-surface-variant">Бесшовная передача данных в вашу медицинскую систему (IDENT, Dental4Windows и др.).</p>
+</div>
+<span class="material-symbols-outlined text-tertiary text-6xl opacity-50">hub</span>
+</div>
+<!-- Card 4 -->
+<div class="md:col-span-8 glass p-lg rounded-lg border border-white/5 flex flex-col justify-between h-[360px] hover:bg-white/5 transition-colors relative group overflow-hidden">
+<div class="absolute -bottom-16 -left-16 w-48 h-48 bg-secondary/20 nebula-glow group-hover:scale-125 transition-transform duration-700"></div>
+<div>
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-outline/10 border border-outline/20 text-on-surface text-label-sm mb-md">Dashboard</div>
+<h3 class="font-headline-md text-headline-md text-white mb-sm">Умная аналитика</h3>
+<p class="text-on-surface-variant max-w-md">Отслеживайте эффективность каждого диалога, конверсию в запись и окупаемость вложений в реальном времени.</p>
+</div>
+<span class="material-symbols-outlined text-primary text-6xl opacity-50 self-end">analytics</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Comparison Table Section -->
+<section class="py-xl bg-surface-container-lowest/50">
+<div class="container mx-auto px-margin-desktop">
+<h2 class="font-headline-xl text-headline-xl text-white mb-xl text-center">Ваш администратор <span class="text-outline">vs</span> ИИ-агент</h2>
+<div class="glass rounded-lg overflow-hidden border border-white/5 shadow-2xl">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-white/10">
+<th class="p-lg font-headline-md text-white">Функция</th>
+<th class="p-lg font-headline-md text-outline">Человек</th>
+<th class="p-lg font-headline-md text-primary">Samartsev AI</th>
+</tr>
+</thead>
+<tbody class="text-on-surface-variant">
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+<td class="p-lg font-bold text-white">Время ответа</td>
+<td class="p-lg">5-15 минут (или никогда)</td>
+<td class="p-lg flex items-center gap-sm text-primary"><span class="material-symbols-outlined">bolt</span> Мгновенно</td>
+</tr>
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+<td class="p-lg font-bold text-white">Режим работы</td>
+<td class="p-lg">40 часов в неделю</td>
+<td class="p-lg flex items-center gap-sm text-primary"><span class="material-symbols-outlined">update</span> 168 часов (24/7)</td>
+</tr>
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+<td class="p-lg font-bold text-white">Человеческий фактор</td>
+<td class="p-lg">Усталость, ошибки, отгулы</td>
+<td class="p-lg flex items-center gap-sm text-primary"><span class="material-symbols-outlined">verified</span> Всегда в тонусе</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="p-lg font-bold text-white">Стоимость</td>
+<td class="p-lg">ЗП + налоги + офис</td>
+<td class="p-lg flex items-center gap-sm text-primary"><span class="material-symbols-outlined">savings</span> В 5 раз дешевле</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Process Section -->
+<section class="py-xl relative">
+<div class="container mx-auto px-margin-desktop">
+<h2 class="font-headline-xl text-headline-xl text-white mb-xl text-center">Путь к внедрению</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl relative">
+<!-- Connecting lines for desktop -->
+<div class="hidden md:block absolute top-1/2 left-[20%] right-[20%] neural-line"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center text-center gap-md relative z-10">
+<div class="w-20 h-20 rounded-full glass border border-primary/30 flex items-center justify-center font-display-lg text-primary text-[32px] group hover:scale-110 transition-transform shadow-[0_0_20px_rgba(46,91,255,0.2)]">
+                        01
+                    </div>
+<h3 class="font-headline-md text-headline-md text-white">Исследование</h3>
+<p class="text-on-surface-variant">Анализируем ваши текущие процессы и скрипты продаж для обучения ИИ.</p>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center text-center gap-md relative z-10">
+<div class="w-20 h-20 rounded-full glass border border-secondary/30 flex items-center justify-center font-display-lg text-secondary text-[32px] group hover:scale-110 transition-transform shadow-[0_0_20px_rgba(221,183,255,0.2)]">
+                        02
+                    </div>
+<h3 class="font-headline-md text-headline-md text-white">Интеграция</h3>
+<p class="text-on-surface-variant">Подключаем систему к МИС, CRM и мессенджерам клиники.</p>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center text-center gap-md relative z-10">
+<div class="w-20 h-20 rounded-full glass border border-tertiary/30 flex items-center justify-center font-display-lg text-tertiary text-[32px] group hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,219,233,0.2)]">
+                        03
+                    </div>
+<h3 class="font-headline-md text-headline-md text-white">Запуск</h3>
+<p class="text-on-surface-variant">Агент начинает работу, принося первые записи уже в первый день.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom CTA Banner -->
+<section class="py-xl px-margin-desktop">
+<div class="container mx-auto">
+<div class="relative rounded-lg p-xl md:p-[100px] overflow-hidden text-center bg-surface-container-lowest border border-white/5">
+<!-- Glowing border effect -->
+<div class="absolute inset-0 border-4 border-transparent pill-gradient opacity-20 pointer-events-none rounded-lg" style="mask-image: linear-gradient(black, black); -webkit-mask-image: linear-gradient(black, black);"></div>
+<div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center gap-md">
+<h2 class="font-display-lg text-display-lg font-bold text-white leading-tight">Готовы к цифровой трансформации?</h2>
+<p class="text-body-lg text-on-surface-variant">Оставьте заявку на бесплатный аудит ваших каналов продаж и узнайте, сколько пациентов вы теряете прямо сейчас.</p>
+<button class="mt-md bg-white text-surface-container-lowest px-12 py-5 rounded-full font-bold text-headline-md hover:scale-105 transition-all shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                        Обсудить проект
+                    </button>
+</div>
+<!-- Background ambient lights -->
+<div class="absolute -top-1/2 -left-1/4 w-full h-full bg-primary/20 nebula-glow"></div>
+<div class="absolute -bottom-1/2 -right-1/4 w-full h-full bg-secondary/20 nebula-glow"></div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-xl border-t border-outline-variant/20 bg-surface-container-lowest flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-md">
+<div class="font-headline-xl text-headline-xl text-on-surface">Samartsev AI</div>
+<div class="flex flex-col items-center md:items-end gap-sm">
+<div class="flex gap-md">
+<a class="text-on-surface-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Contact Us</a>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-60">© 2024 Samartsev AI. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Simple intersection observer for reveal animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section > div').forEach(el => {
+            el.classList</script></body></html>

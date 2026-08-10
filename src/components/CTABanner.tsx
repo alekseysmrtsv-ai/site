@@ -2,7 +2,7 @@ export default function CTABanner() {
   return (
     <section
       className="py-20 px-6 text-center"
-      style={{ backgroundColor: "#00E68A" }}
+      style={{ backgroundColor: "var(--color-primary)" }}
     >
       <div className="max-w-4xl mx-auto space-y-8">
         <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-heavy">

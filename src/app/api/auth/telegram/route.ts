@@ -45,11 +45,14 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL('/login?error=unauthorized_id', request.url));
   }
 
-  // 3. Все проверки пройдены, ставим защищенную куку сессии
+  // 3. Все проверки пройдены, ставим криптографически подписанный токен сессии (auth_ID.HMAC)
+  const hmac = crypto.createHmac('sha256', botToken).update(data.id.toString()).digest('hex');
+  const sessionToken = `auth_${data.id}.${hmac}`;
+
   const response = NextResponse.redirect(new URL('/crm', request.url));
   response.cookies.set({
     name: 'crm_session',
-    value: 'authenticated',
+    value: sessionToken,
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
