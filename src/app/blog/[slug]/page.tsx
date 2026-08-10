@@ -5,11 +5,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
-interface Props {
-  params: {
-    slug: string;
-  };
-}
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
 export async function generateStaticParams() {
   return ARTICLES.map((article) => ({
@@ -18,7 +16,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const article = ARTICLES.find((a) => a.slug === params.slug);
+  const { slug } = await params;
+  const article = ARTICLES.find((a) => a.slug === slug);
   if (!article) return {};
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.ai";
@@ -40,8 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ArticleDetailPage({ params }: Props) {
-  const article = ARTICLES.find((a) => a.slug === params.slug);
+export default async function ArticleDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const article = ARTICLES.find((a) => a.slug === slug);
   if (!article) {
     notFound();
   }

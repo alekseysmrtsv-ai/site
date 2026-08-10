@@ -6,10 +6,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose 
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const navLinks = [
-  { href: "#services",    label: "Услуги" },
-  { href: "#cases",       label: "Кейсы" },
-  { href: "#calculator",  label: "Калькулятор" },
-  { href: "#faq",         label: "FAQ" },
+  { href: "/#services",   label: "Услуги" },
+  { href: "/#cases",      label: "Кейсы" },
+  { href: "/#calculator", label: "Калькулятор" },
+  { href: "/#faq",        label: "FAQ" },
   { href: "/blog",        label: "Блог" },
 ];
 
