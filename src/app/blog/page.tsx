@@ -56,7 +56,7 @@ export default function BlogIndexPage() {
           </div>
 
           {/* Articles grid */}
-          <div className="grid md:grid-[#2fr_1fr] grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8">
             <div className="md:col-span-2 space-y-6">
               {ARTICLES.map((article) => (
                 <article
