@@ -6,7 +6,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Блог и База Знаний ИИ-автоматизации B2B | Samartsev AI",
-  description: "Статьи, разборы 152-ФЗ, n8n архитектуры, экономика ИИ-агентов и инструкции по повышению конверсии отдела продаж.",
+  description: "Практические статьи, разборы 152-ФЗ, n8n архитектуры, экономика ИИ-агентов и инструкции по повышению конверсии отдела продаж.",
   alternates: {
     canonical: "https://samartsev.ai/blog",
   },
@@ -61,45 +61,59 @@ export default function BlogIndexPage() {
               {ARTICLES.map((article) => (
                 <article
                   key={article.slug}
-                  className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E5E7EB] hover:border-[#00E68A]/50 transition-all duration-200 shadow-sm hover:shadow-md group"
+                  className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E5E7EB] hover:border-[#00E68A]/50 transition-all duration-200 shadow-sm hover:shadow-md group flex flex-col sm:flex-row gap-6 items-start"
                 >
-                  <div className="flex items-center gap-3 text-xs text-[#828D99] mb-3">
-                    <span className="px-2.5 py-0.5 rounded-md bg-[#F3F4F6] text-[#111111] font-medium">
-                      {article.category}
-                    </span>
-                    <span>•</span>
-                    <time dateTime={article.date}>{article.date}</time>
-                    <span>•</span>
-                    <span>{article.readTime}</span>
-                  </div>
+                  {article.image && (
+                    <div className="w-full sm:w-44 h-36 flex-shrink-0 rounded-xl overflow-hidden bg-[#F3F4F6] border border-[#E5E7EB]">
+                      <img
+                        src={article.image}
+                        alt={article.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
 
-                  <h2 className="text-xl sm:text-2xl font-bold text-[#111111] group-hover:text-[#00E68A] transition-colors mb-3 font-display">
-                    <Link href={`/blog/${article.slug}`}>
-                      {article.title}
-                    </Link>
-                  </h2>
-
-                  <p className="text-[#828D99] text-sm sm:text-base mb-6 line-clamp-2">
-                    {article.description}
-                  </p>
-
-                  <div className="flex items-center justify-between pt-4 border-t border-[#F3F4F6]">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-[#00E68A]/20 flex items-center justify-center font-bold text-xs text-[#00E68A]">
-                        АС
+                  <div className="flex-1 flex flex-col justify-between h-full w-full">
+                    <div>
+                      <div className="flex items-center gap-3 text-xs text-[#828D99] mb-2">
+                        <span className="px-2.5 py-0.5 rounded-md bg-[#F3F4F6] text-[#111111] font-medium">
+                          {article.category}
+                        </span>
+                        <span>•</span>
+                        <time dateTime={article.date}>{article.date}</time>
+                        <span>•</span>
+                        <span>{article.readTime}</span>
                       </div>
-                      <span className="text-xs font-semibold text-[#111111]">
-                        {article.author.name}
-                      </span>
+
+                      <h2 className="text-lg sm:text-xl font-bold text-[#111111] group-hover:text-[#00E68A] transition-colors mb-2 font-display">
+                        <Link href={`/blog/${article.slug}`}>
+                          {article.title}
+                        </Link>
+                      </h2>
+
+                      <p className="text-[#828D99] text-xs sm:text-sm mb-4 line-clamp-2 leading-relaxed">
+                        {article.description}
+                      </p>
                     </div>
 
-                    <Link
-                      href={`/blog/${article.slug}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111] group-hover:text-[#00E68A] transition-colors"
-                    >
-                      Читать далее
-                      <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                    </Link>
+                    <div className="flex items-center justify-between pt-3 border-t border-[#F3F4F6] mt-auto">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-[#00E68A]/20 flex items-center justify-center font-bold text-[10px] text-[#00E68A]">
+                          АС
+                        </div>
+                        <span className="text-xs font-semibold text-[#111111]">
+                          {article.author.name}
+                        </span>
+                      </div>
+
+                      <Link
+                        href={`/blog/${article.slug}`}
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#111111] group-hover:text-[#00E68A] transition-colors"
+                      >
+                        Читать
+                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                      </Link>
+                    </div>
                   </div>
                 </article>
               ))}
