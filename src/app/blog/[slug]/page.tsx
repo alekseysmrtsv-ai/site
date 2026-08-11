@@ -148,16 +148,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           <article className="prose prose-neutral max-w-none bg-white p-6 sm:p-10 rounded-2xl border border-[#E5E7EB] shadow-sm mb-12">
             <div
               className="space-y-6 text-[#1A1D20] text-sm sm:text-base leading-relaxed"
-              dangerouslySetInnerHTML={{
-                __html: article.content
-                  .replace(/## (.*)/g, '<h2 class="text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4">$1</h2>')
-                  .replace(/### (.*)/g, '<h3 class="text-lg font-bold text-[#111111] font-display mt-6 mb-3">$1</h3>')
-                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                  .replace(/- (.*)/g, '<li class="ml-4 list-disc text-[#1A1D20] mb-1">$1</li>')
-                  .replace(/```([\s\S]*?)```/g, '<pre class="p-4 bg-[#0F231B] text-[#00E68A] font-mono text-xs rounded-xl overflow-x-auto my-4">$1</pre>')
-                  .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-[#00E68A] underline font-medium hover:text-[#00E68A]/80">$1</a>')
-                  .replace(/\n\n/g, '<br/>'),
-              }}
+              dangerouslySetInnerHTML={{ __html: article.content }}
             />
           </article>
 

@@ -5,7 +5,7 @@ export interface Article {
   date: string;
   readTime: string;
   category: string;
-  image: string;
+  image?: string;
   author: {
     name: string;
     role: string;
@@ -17,228 +17,177 @@ export interface Article {
 
 export const ARTICLES: Article[] = [
   {
-    slug: "vnedrenie-ai-agentov-v-otdel-prodazh-152-fz",
-    title: "Как не получить штраф 18 млн ₽: Безопасный ИИ-автоответчик в amoCRM за 3 дня",
-    description: "Боевое руководство по настройке двухконтурной архитектуры n8n. Как отвечать лидам за 3 секунды и при этом 100% соблюдать 152-ФЗ.",
-    date: "2026-08-10",
-    readTime: "7 мин",
-    category: "Безопасность & 152-ФЗ",
-    image: "/blog/cat-sales.png",
-    author: {
-      name: "Алексей Самарцев",
-      role: "Основатель Samartsev AI",
-      avatar: "/founder.jpg"
+    "slug": "chto-takoe-ii-agent-dlya-biznesa",
+    "title": "Что такое ИИ-агент для бизнеса — отличия от чат-бота, примеры и сценарии",
+    "description": "ИИ-агент vs обычный чат-бот: в чём разница, как работает и когда окупается. Разбираем на примерах для стоматологий, салонов красоты и автосервисов.",
+    "date": "2026-08-11",
+    "readTime": "10 мин",
+    "category": "Архитектура & Стек",
+    "image": "/blog/cat-sales.png",
+    "author": {
+      "name": "Алексей Самарцев",
+      "role": "Основатель Samartsev AI",
+      "avatar": "/founder.jpg"
     },
-    content: `
-<p class="text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold">
-Самая частая ошибка владельцев бизнеса при внедрении ИИ — подключение готовых плагинов, которые напрямую отправляют тексты переписок с клиентами во внешние нейросети (ChatGPT / Claude). Если в сообщении есть имя, телефон или e-mail — вы прямо нарушаете 152-ФЗ «О персональных данных» и рискуете получить штраф до 18 млн рублей.
-</p>
-
-<div class="bg-[#FEF2F2] border-l-4 border-red-500 p-5 rounded-r-2xl mb-8">
-  <div class="flex items-center gap-2 text-red-600 font-bold text-sm mb-1">
-    ⚠️ Главный риск 2026 года
-  </div>
-  <p class="text-xs sm:text-sm text-[#1A1D20] m-0 leading-relaxed">
-    Роскомнадзор жестко отслеживает передачу ПДн российских граждан на зарубежные серверы. Любое прямое отправление имени или телефона клиента в сторонние API без предварительной анонимизации влечет за собой внеплановую проверку и блокировку.
-  </p>
-</div>
-
-<h2 class="text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4">
-Как решить проблему: Двухконтурная защита n8n
-</h2>
-
-<p class="mb-4 text-[#374151] leading-relaxed">
-Вместо прямой передачи данных мы собираем двухконтурный пайплайн автоматизации на базе self-hosted платформы n8n. Вся связка работает на вашем собственном защищенном VPS-сервере в Москве:
-</p>
-
-<div class="my-6 text-center">
-  <img src="/blog/funnel-scheme.png" alt="Схема двухконтурной защиты ПДн" class="rounded-xl border border-[#E5E7EB] shadow-sm max-w-full mx-auto" />
-  <span class="block text-xs text-[#828D99] mt-2">Архитектура двухконтурной очистки данных в РФ-контуре</span>
-</div>
-
-<div class="space-y-4 my-6">
-  <div class="p-4 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]">
-    <div class="font-bold text-sm text-[#111111] mb-1">1. Приём обращения</div>
-    <p class="text-xs text-[#4B5563] m-0">Сообщение из Telegram, WhatsApp или amoCRM попадает в изолированный VPS-контейнер n8n в РФ.</p>
-  </div>
-  <div class="p-4 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]">
-    <div class="font-bold text-sm text-[#111111] mb-1">2. РФ-Санитайзер (Очистка ПДн)</div>
-    <p class="text-xs text-[#4B5563] m-0">Локальная отечественная модель (GigaChat / regex-фильтр) заменяет все телефоны и имена на анонимные маркеры: <code>"Иван, +79991234567"</code> ➔ <code>"Пользователь [ID_12], [PHONE_HIDDEN]"</code>.</p>
-  </div>
-  <div class="p-4 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]">
-    <div class="font-bold text-sm text-[#111111] mb-1">3. Генерация ответа ИИ</div>
-    <p class="text-xs text-[#4B5563] m-0">Нейросеть генерирует умный ответ по вашей базе знаний (RAG), работая только с обезличенным бизнес-контекстом.</p>
-  </div>
-  <div class="p-4 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]">
-    <div class="font-bold text-sm text-[#111111] mb-1">4. Реконструкция и отправка</div>
-    <p class="text-xs text-[#4B5563] m-0">На локальном сервере подставляется персональное обращение, и клиент получает готовый ответ за 2 секунды.</p>
-  </div>
-</div>
-
-<h2 class="text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4">
-Сравнение расходов и рисков
-</h2>
-
-<div class="overflow-x-auto my-6 border border-[#E5E7EB] rounded-2xl bg-white shadow-sm">
-  <table class="w-full text-left text-sm text-[#1A1D20]">
-    <thead class="bg-[#F9FAFB] border-b border-[#E5E7EB] text-xs uppercase font-bold text-[#828D99]">
-      <tr>
-        <th class="p-4">Параметр</th>
-        <th class="p-4">Прямое подключение к API</th>
-        <th class="p-4 text-[#00E68A]">Решение Samartsev AI</th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-[#E5E7EB]">
-      <tr>
-        <td class="p-4 font-semibold">Соблюдение 152-ФЗ</td>
-        <td className="p-4 text-red-500 font-medium">Нет (прямая утечка ПДн)</td>
-        <td class="p-4 text-[#00E68A] font-bold">100% в РФ-контуре</td>
-      </tr>
-      <tr>
-        <td class="p-4 font-semibold">Время ответа</td>
-        <td class="p-4">3–5 секунд</td>
-        <td class="p-4 font-bold">2–3 секунды</td>
-      </tr>
-      <tr>
-        <td class="p-4 font-semibold">Автосоздание сделки в CRM</td>
-        <td class="p-4">Нужен отдельный программист</td>
-        <td class="p-4 font-bold">Включено в n8n пайплайн</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-`,
-    faq: [
+    "content": "\n<p class=\"text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold\">\nМногие предприниматели до сих пор путают классических чат-ботов с автономными ИИ-агентами. Ко мне регулярно приходят владельцы компаний со словами: <em>«Алексей, у нас уже стоял бот в Telegram за 15 000 рублей, но от него только клиенты разбегались»</em>. В 99% случаев выясняется, что под видом «искусственного интеллекта» им продали банальное дерево кнопок, которое ломается на первом же нестандартном вопросе.\n</p>\n\n<p class=\"mb-6 leading-relaxed text-[#374151]\">\nВ этой статье мы подробно разберём, что такое ИИ-агент для бизнеса на самом деле, как работают технологии NLU (понимание естественного языка) и языковые модели LLM, в чём кардинальное отличие от кнопочных автоответчиков и когда цифровой сотрудник окупается за считанные недели.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n1. Чат-бот — это дерево кнопок. ИИ-агент — это полноценный сотрудник\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nГлавное различие кроется в <strong>степени автономности и гибкости мышления</strong>. Кнопочный чат-бот работает по жёсткому алгоритму: «Если пользователь нажал 1 — отправь текст А, если написал слово \"цена\" — вышли PDF-прайс». Стоит клиенту опечататься или задать живой вопрос в духе <em>«Здравствуйте, а у вас есть свободный мастер на завтра после шести вечера, чтобы сделать снятие и френч?»</em> — кнопочный бот отвечает глухим <em>«Извините, я вас не понял, выберите пункт меню»</em>.\n</p>\n\n<p class=\"mb-6 text-[#374151] leading-relaxed\">\n<strong>Автономный ИИ-агент (AI Agent)</strong> работает совершенно иначе. Это не заскриптованная программа, а полноценный цифровой ассистент с собственной базой знаний (RAG), подключенный к вашей CRM-системе или МИС (YCLIENTS, Ident, Битрикс24, amoCRM). Он считывает смысл всего сообщения, анализирует контекст разговорной речи, запрашивает актуальное расписание мастеров или врачей по API и самостоятельно принимает решение, как ответить человеку за 2–3 секунды.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n2. Наглядное сравнение: Кнопочный бот vs Автономный ИИ-агент\n</h2>\n\n<div class=\"overflow-x-auto my-6 border border-[#E5E7EB] rounded-2xl bg-white shadow-sm\">\n  <table class=\"w-full text-left text-sm text-[#1A1D20]\">\n    <thead class=\"bg-[#F9FAFB] border-b border-[#E5E7EB] text-xs uppercase font-bold text-[#828D99]\">\n      <tr>\n        <th class=\"p-4\">Критерий</th>\n        <th class=\"p-4\">Классический кнопочный бот</th>\n        <th class=\"p-4 text-[#00E68A]\">Автономный ИИ-агент Samartsev AI</th>\n      </tr>\n    </thead>\n    <tbody class=\"divide-y divide-[#E5E7EB]\">\n      <tr>\n        <td class=\"p-4 font-semibold\">Понимание связной речи</td>\n        <td class=\"p-4 text-red-500 font-medium\">Нет (только ключевые слова или кнопки)</td>\n        <td class=\"p-4 text-[#00E68A] font-bold\">100% NLU (различает сленг, голосовые и опечатки)</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">Удержание контекста беседы</td>\n        <td class=\"p-4 text-red-500\">Забывает диалог при переходе в другой ветке</td>\n        <td class=\"p-4 font-semibold\">Помнит историю диалога и предпочтения клиента</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">Интеграция с расписанием CRM</td>\n        <td class=\"p-4\">Либо отсутствует, либо отправляет внешнюю ссылку</td>\n        <td class=\"p-4 font-semibold\">Напрямую проверяет окна в YCLIENTS / Ident и ставит запись</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">Обработка нетипичных вопросов</td>\n        <td class=\"p-4 text-red-500\">Выдаёт ошибку или зависает</td>\n        <td class=\"p-4 font-bold text-[#00E68A]\">Находит ответ в базе знаний (RAG) или переводит на оператора</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">Работа в нерабочее время (24/7)</td>\n        <td class=\"p-4\">Собирает контакты в заглушку</td>\n        <td class=\"p-4 font-bold\">Полностью закрывает сделку или записывает на приём ночью</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n3. 3 Практических сценария применения в реальном бизнесе\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nЧтобы понять, как ИИ-агент приносит чистую прибыль, давайте рассмотрим три реальных сценария из сервисных ниш:\n</p>\n\n<div class=\"space-y-4 my-6\">\n  <div class=\"p-5 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]\">\n    <h3 class=\"text-base font-bold text-[#111111] mb-2\">Сценарий 1: Стоматологическая клиника</h3>\n    <p class=\"text-xs sm:text-sm text-[#4B5563] leading-relaxed\">\n      Пациент пишет в WhatsApp в 23:30: <em>«Разболелся зуб под пломбой, к кому можно попасть завтра утром?»</em>. ИИ-агент моментально уточняет симптомы, определяет необходимость приема терапевта-эндодонтиста, считывает свободен ли слот на 09:30 в базе Ident и сам создаёт предварительную запись с отправкой правил подготовки к приему.\n    </p>\n  </div>\n  <div class=\"p-5 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]\">\n    <h3 class=\"text-base font-bold text-[#111111] mb-2\">Сценарий 2: Салон красоты (Beauty-сфера)</h3>\n    <p class=\"text-xs sm:text-sm text-[#4B5563] leading-relaxed\">\n      Клиентка запрашивает запись к тоновому топ-стилисту на комплексное окрашивание. ИИ-агент подтягивает из YCLIENTS длительность процедуры (3.5 часа), предлагает оптимальные окна, показывает примеры работ из портфолио прямо в чате и мягко делает допродажу уходовой процедуры для волос.\n    </p>\n  </div>\n  <div class=\"p-5 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]\">\n    <h3 class=\"text-base font-bold text-[#111111] mb-2\">Сценарий 3: Автосервис и СТО</h3>\n    <p class=\"text-xs sm:text-sm text-[#4B5563] leading-relaxed\">\n      Автовладелец отправляет фото СТС и пишет: <em>«Гудит ступичный подшипник на Camry 70, сколько стоит замена?»</em>. ИИ-агент через роутер распознает марку и год, подтягивает расценки на работы из 1С:Автосервис, бронирует свободный слесарный подъемник и передает предварительный заказ-наряд мастеру-приемщику.\n    </p>\n  </div>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n4. Честный раздел: Когда бизнесу НЕ нужен ИИ-агент\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nКак инженер, я никогда не продаю автоматизацию ради самой автоматизации. Есть ситуации, когда внедрение ИИ-агента будет пустой тратой денег:\n</p>\n\n<ul class=\"space-y-3 mb-6\">\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-red-500 font-bold\">✖</span>\n    <span><strong>У вас менее 5–10 входящих заявок в неделю.</strong> В этом случае с потоком легко справляется сам владелец или один администратор.</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-red-500 font-bold\">✖</span>\n    <span><strong>В компании нет регламентированных процессов и прозрачного прайса.</strong> Если даже ваши менеджеры не знают, сколько стоит услуга и кто её оказывает, ИИ-агент лишь быстрее транслирует ваш внутренний хаос клиентам.</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-red-500 font-bold\">✖</span>\n    <span><strong>Продажи строится на эксклюзивных VIP-сделках от 10 млн рублей.</strong> Здесь требуется исключительно личный контакт топ-менеджера и глубокие кастомные переговоры.</span>\n  </li>\n</ul>\n\n<div class=\"bg-[#0F231B] text-white p-6 sm:p-8 rounded-2xl border border-[#00E68A]/30 my-8\">\n  <h3 class=\"text-lg sm:text-xl font-bold font-display text-white mb-2\">\n    Хотите рассчитать, сколько денег вы теряете из-за пропущенных ночных обращений?\n  </h3>\n  <p class=\"text-xs sm:text-sm text-gray-300 mb-6\">\n    Используйте наш интерактивный калькулятор потерь отдела продаж на главной странице.\n  </p>\n  <a href=\"/#calculator\" class=\"inline-block px-6 py-3 rounded-xl bg-[#00E68A] hover:bg-[#00E68A]/90 text-[#111111] font-bold text-sm transition-colors\">\n    Перейти к калькулятору потерь\n  </a>\n</div>\n",
+    "faq": [
       {
-        question: "Где физически хранятся данные переписок?",
-        answer: "На вашем собственном VPS-сервере в российском дата-центре (Selectel / Timeweb Cloud). Ни у кого кроме вашей компании нет доступа к PostgreSQL."
+        "question": "Как ИИ-агент понимает специфику именно моего бизнеса?",
+        "answer": "Мы формируем локальную базу знаний (RAG) на основе ваших прайс-листов, регламентов, ответов на частые вопросы и истории прошлых успешных диалогов менеджеров."
       },
       {
-        question: "Сколько времени занимает запуск системы?",
-        answer: "Аудит процессов и сборка воркфлоу n8n занимают 3 рабочих дня с момента согласовании базы знаний."
+        "question": "Что происходит, если ИИ-агент не знает ответа?",
+        "answer": "Он безошибочно определяет предел своей компетенции, вежливо просит у клиента минуту на уточнение и моментально переводит диалог на дежурного менеджера в CRM."
       }
     ]
   },
   {
-    slug: "n8n-vs-make-dlya-biznesa",
-    title: "Зачем переходить с Make на n8n: Считаем экономику и санкционные риски",
-    description: "Сравнение расходов: $299/мес за Make vs 0 ₽ за операции в n8n. Как избавиться от валютных подписок и лимитов.",
-    date: "2026-08-08",
-    readTime: "6 мин",
-    category: "Архитектура & Стек",
-    image: "/blog/cat-funnel.png",
-    author: {
-      name: "Алексей Самарцев",
-      role: "Основатель Samartsev AI",
-      avatar: "/founder.jpg"
+    "slug": "ii-agent-dlya-stomatologii",
+    "title": "ИИ-агент для стоматологии — автоматическая запись, напоминания и интеграция с YCLIENTS",
+    "description": "Как ИИ-агент записывает пациентов 24/7, снижает неявки на 40% и разгружает регистратуру. Интеграция с YCLIENTS, WhatsApp и CRM.",
+    "date": "2026-08-11",
+    "readTime": "11 мин",
+    "category": "Отраслевые кейсы",
+    "image": "/blog/cat-sales.png",
+    "author": {
+      "name": "Алексей Самарцев",
+      "role": "Основатель Samartsev AI",
+      "avatar": "/founder.jpg"
     },
-    content: `
-<p class="text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold">
-Многие компании начинали автоматизацию с сервиса Make.com (Integromat). Но по мере роста количества заявок подписка превращается в регулярную финансовую дыру. За каждые 100 000 операций Make заставляет платить около $299 в месяц — при этом карты РФ не принимаются, а риски неожиданной блокировки аккаунта остаются высокими.
-</p>
-
-<div class="my-6 text-center">
-  <img src="/blog/cat-funnel.png" alt="Кот размышляет у доски автоматизации" class="rounded-xl border border-[#E5E7EB] shadow-sm max-w-md mx-auto" />
-  <span class="block text-xs text-[#828D99] mt-2">Визуальный скриптинг n8n позволяет сопоставить логику любой сложности</span>
-</div>
-
-<h2 class="text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4">
-Финансовое сравнение на 1 год работы
-</h2>
-
-<div class="overflow-x-auto my-6 border border-[#E5E7EB] rounded-2xl bg-white shadow-sm">
-  <table class="w-full text-left text-sm text-[#1A1D20]">
-    <thead class="bg-[#F9FAFB] border-b border-[#E5E7EB] text-xs uppercase font-bold text-[#828D99]">
-      <tr>
-        <th class="p-4">Критерий</th>
-        <th class="p-4">Make.com</th>
-        <th class="p-4 text-[#00E68A]">n8n (Self-Hosted)</th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-[#E5E7EB]">
-      <tr>
-        <td class="p-4 font-semibold">Стоимость за 100k операций/мес</td>
-        <td class="p-4 text-red-500 font-medium">~$3 500 в год</td>
-        <td class="p-4 text-[#00E68A] font-bold">~6 000 ₽ в год (только VPS)</td>
-      </tr>
-      <tr>
-        <td class="p-4 font-semibold">Ограничение на количество шагов</td>
-        <td class="p-4">Каждый шаг списывает баллы</td>
-        <td class="p-4 font-bold">Безлимитно</td>
-      </tr>
-      <tr>
-        <td class="p-4 font-semibold">Независимость от санкций</td>
-        <td class="p-4 text-red-500">Низкая (риск блокировки)</td>
-        <td class="p-4 font-bold text-[#00E68A]">Абсолютная (Open-Source в РФ)</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<p class="text-[#374151] leading-relaxed mb-4">
-Главное преимущество n8n — вы владеете своим кодом и воркфлоу на 100%. Сервер работает у вас, а данные не утекают сторонним операторам.
-</p>
-`,
-    faq: [
+    "content": "\n<p class=\"text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold\">\nСтоматологический бизнес — одна из самых чувствительных ниш к скорости первого контакта. Когда у человека острая зубная боль или откололся винир перед важной встречей, он не готов ждать 45 минут, пока администратор клиники освободится от оформления первичного пациента на рецепции. Если клиника не отвечает в WhatsApp в течение 3–5 минут, 70% пациентов просто открывают 2GIS и записываются в соседний медицинский центр.\n</p>\n\n<p class=\"mb-6 leading-relaxed text-[#374151]\">\nВ этой статье я по шагам покажу, как автономный ИИ-администратор интегрируется с программами Ident, YCLIENTS или Инфоклиника, берет на себя 80% рутины регистратуры и снижает процент первичных неявок (no-show) минимум на 40%.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n1. Проблема 22:00: Как клиники теряют самых маржинальных пациентов\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nПо нашей статистике более 35% обращений на имплантацию, ортодонтию (элайнеры/брекеты) и тотальное протезирование приходят в нерабочие часы — с 20:00 до 08:00. В это время администраторы уже ушли домой, телефон клиники молчит.\n</p>\n\n<blockquote class=\"border-l-4 border-[#00E68A] pl-4 py-2 my-6 bg-[#F9FAFB] rounded-r-xl italic text-sm text-[#1A1D20]\">\n«Пациент, который ищет клинику для установки имплантов за 300 000 рублей, ценит свое время выше всего. Если в 23:00 он не получает моментальный ответ с консультацией по первичной диагностике и свободным окнам хирурга-имплантолога, вы теряете эту сделку навсегда».\n</blockquote>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n2. Реальный сценарий работы ИИ-администратора в WhatsApp\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nДавайте посмотрим, как выглядит диалог пациента с ИИ-агентом Samartsev AI в режиме реального времени:\n</p>\n\n<div class=\"bg-[#F3F4F6] p-5 rounded-2xl border border-[#E5E7EB] space-y-3 font-sans text-xs sm:text-sm my-6\">\n  <div class=\"bg-white p-3 rounded-xl border border-[#E5E7EB] max-w-[85%] text-[#1A1D20]\">\n    <strong>Пациент (22:45):</strong> Здравствуйте! Заболел зуб под старой коронкой, пульсирует. К какому врачу лучше записаться на завтра и сколько стоит снимки сделать?\n  </div>\n  <div class=\"bg-[#0F231B] text-white p-3 rounded-xl max-w-[85%] ml-auto border border-[#00E68A]/30\">\n    <strong>ИИ-Администратор (22:45:03):</strong> Добрый вечер! При пульсирующей боли под коронкой важно пройти осмотр у терапевта-эндодонтиста с прицельным снимком или КТ. У нас установлен томограф Vatech (КТ двух челюстей — 3 500 ₽, прицельный снимок — 650 ₽). <br/><br/>Завтра на филиале на Ленина есть свободные окна к врачу высшей категории Смирнову А.В.: на 10:30 и 14:00. Какое время вам более удобно забронировать?\n  </div>\n  <div class=\"bg-white p-3 rounded-xl border border-[#E5E7EB] max-w-[85%] text-[#1A1D20]\">\n    <strong>Пациент (22:46):</strong> Давайте на 10:30. Меня зовут Игорь, 89161234567.\n  </div>\n  <div class=\"bg-[#0F231B] text-white p-3 rounded-xl max-w-[85%] ml-auto border border-[#00E68A]/30\">\n    <strong>ИИ-Администратор (22:46:04):</strong> Игорь, отлично! Записал вас на завтра, 12 августа в 10:30 к доктору Смирнову А.В. (Адрес: ул. Ленина, 45). Паспорт возьмите с собой для первичного договора. Если за час до приема приедете — у клиники есть своя бесплатная парковка. Отправил вам памятку перед визитом!\n  </div>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n3. Глубокая интеграция с МИС (Ident, YCLIENTS, Инфоклиника)\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nИИ-агент работает не «рядом» с вашей программой учета, а внутри неё по официальным API. Что умеет модуль автоматизации:\n</p>\n\n<ul class=\"space-y-3 mb-6\">\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✔</span>\n    <span><strong>Проверка реальной занятости кресел:</strong> ИИ видит смены врачей, их специализацию и длительность приема по регламенту (например, гигиена — 60 мин, первичный осмотр — 30 мин).</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✔</span>\n    <span><strong>Мгновенное создание карточки:</strong> Создает нового пациента в Ident или YCLIENTS с указанием источника (UTM-метки рекламы).</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✔</span>\n    <span><strong>Управление листом ожидания:</strong> Если пациент отменяет визит за 3 часа, ИИ-агент автоматически пишет людям из листа ожидания и заполняет простаивающее кресло доктора.</span>\n  </li>\n</ul>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n4. Снижение неявок (no-show) на 40%: Каскадные сервисные напоминания\n</h2>\n\n<div class=\"overflow-x-auto my-6 border border-[#E5E7EB] rounded-2xl bg-white shadow-sm\">\n  <table class=\"w-full text-left text-sm text-[#1A1D20]\">\n    <thead class=\"bg-[#F9FAFB] border-b border-[#E5E7EB] text-xs uppercase font-bold text-[#828D99]\">\n      <tr>\n        <th class=\"p-4\">Время перед визитом</th>\n        <th class=\"p-4\">Действие ИИ-агента</th>\n        <th class=\"p-4 text-[#00E68A]\">Результат для клиники</th>\n      </tr>\n    </thead>\n    <tbody class=\"divide-y divide-[#E5E7EB]\">\n      <tr>\n        <td class=\"p-4 font-semibold\">За 24 часа</td>\n        <td class=\"p-4\">Сообщение в WhatsApp с кнопками «Подтверждаю / Перенести»</td>\n        <td class=\"p-4 text-[#00E68A] font-bold\">85% пациентов подтверждают прием в один клик</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">За 3 часа</td>\n        <td class=\"p-4\">Отправка гео-точки и схемы проезда/парковочного места</td>\n        <td class=\"p-4 font-semibold\">Снижение опозданий пациентов на 25%</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">При отмене визита</td>\n        <td class=\"p-4\">ИИ автоматически освобождает окно в МИС и связывается с клиентами из «Листа ожидания»</td>\n        <td class=\"p-4 font-bold text-[#00E68A]\">Заполнение простоя доктора без участия администратора</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n5. Безопасность 152-ФЗ и врачебная тайна\n</h2>\n\n<p class=\"mb-6 text-[#374151] leading-relaxed\">\nОбработка медицинских данных строго регламентирована законом РФ. В решении Samartsev AI персональные данные и медицинские карты пациентов никогда не отправляются напрямую в открытые облачные сервисы OpenAI или Claude. Все данные деобезличиваются через внутренний Docker-контур n8n на защищенных серверах в Москве (Selectel), соблюдая 152-ФЗ и требования Минздрава.\n</p>\n\n<div class=\"bg-[#0F231B] text-white p-6 sm:p-8 rounded-2xl border border-[#00E68A]/30 my-8\">\n  <h3 class=\"text-lg sm:text-xl font-bold font-display text-white mb-2\">\n    Хотите протестировать ИИ-администратора на вашем расписании YCLIENTS или Ident?\n  </h3>\n  <p class=\"text-xs sm:text-sm text-gray-300 mb-6\">\n    Напишите мне в Telegram — за 15 минут покажу демонстрацию на реальном кейсе стоматологической клиники.\n  </p>\n  <a href=\"https://t.me/alekseysmrtsv\" target=\"_blank\" rel=\"noreferrer\" class=\"inline-block px-6 py-3 rounded-xl bg-[#00E68A] hover:bg-[#00E68A]/90 text-[#111111] font-bold text-sm transition-colors\">\n    Написать Алексею в Telegram\n  </a>\n</div>\n",
+    "faq": [
       {
-        question: "Насколько сложно перенести действующие воркфлоу из Make?",
-        answer: "Перенос сценария средней сложности занимает от 1 до 2 дней. Логика роутинга и вебхуков полностью совпадает."
+        "question": "Поддерживается ли работа с Инфоклиникой и Ident?",
+        "answer": "Да, интеграция осуществляется через защищенный локальный модуль API или прямой коннектор базы данных."
+      },
+      {
+        "question": "Может ли ИИ-агент отвечать на сложные вопросы о противопоказаниях?",
+        "answer": "Заранее программируются границы медицинских консультаций. По медицинским диагнозам ИИ дает базовые клинические рекомендации и предлагает запись на очный осмотр."
       }
     ]
   },
   {
-    slug: "kalkulyator-poter-ot-medlennyh-otvetov",
-    title: "Где сгорают ваши лиды: Аудит ночных ответов и упущенная выручка",
-    description: "Как проведать свой отдел продаж за 15 минут. Экспресс-формула подсчета чистых убытков из-за паузы в ответах.",
-    date: "2026-08-05",
-    readTime: "5 мин",
-    category: "Экономика & ROI",
-    image: "/blog/cat-crisis.png",
-    author: {
-      name: "Алексей Самарцев",
-      role: "Основатель Samartsev AI",
-      avatar: "/founder.jpg"
+    "slug": "ii-agent-dlya-salona-krasoty",
+    "title": "ИИ-агент для салона красоты — запись через WhatsApp, интеграция YCLIENTS и возврат клиентов",
+    "description": "Виртуальный администратор для beauty-салона: запись к мастеру 24/7, реактивация базы, up-sell процедур. Интеграция с YCLIENTS и Dikidi.",
+    "date": "2026-08-11",
+    "readTime": "9 мин",
+    "category": "Отраслевые кейсы",
+    "image": "/blog/cat-funnel.png",
+    "author": {
+      "name": "Алексей Самарцев",
+      "role": "Основатель Samartsev AI",
+      "avatar": "/founder.jpg"
     },
-    content: `
-<p class="text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold">
-Реальный кейс: клиент оставляет заявку в 21:15 в пятницу. Менеджер перезванивает в субботу в 11:30. В 90% случаев клиент ответит: <em>«Спасибо, я уже договорился с другими»</em>. Пока ваш менеджер спал, автоответчик конкурента дал первичный ответ за 3 секунды и забронировал встречу.
-</p>
-
-<div class="my-6 text-center">
-  <img src="/blog/cat-crisis.png" alt="Кот в утомлении у ноутбука" class="rounded-xl border border-[#E5E7EB] shadow-sm max-w-md mx-auto" />
-  <span class="block text-xs text-[#828D99] mt-2">Типичная картина: пропущенные обращения в нерабочие часы</span>
-</div>
-
-<div class="bg-[#F9FAFB] border-l-4 border-[#00E68A] p-5 rounded-r-2xl my-6 border border-[#E5E7EB]">
-  <div class="font-bold text-sm text-[#111111] mb-2">📐 Формула расчета потерянной выручки:</div>
-  <code class="text-xs sm:text-sm text-[#00E68A] bg-[#0F231B] p-3 rounded-xl font-mono block overflow-x-auto">
-Упущенная прибыль = (Лидов в мес) × (% ответов > 15 мин) × (Средний чек) × (Конверсия) × 0.35
-  </code>
-</div>
-
-<h2 class="text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4">
-Как провести экспресс-аудит за 15 минут:
-</h2>
-
-<ol class="space-y-3 mb-6">
-  <li class="flex items-start gap-2 text-sm text-[#374151]">
-    <span class="font-bold text-[#00E68A]">1.</span>
-    <span>Зайдите в вашу amoCRM или Битрикс24 в раздел сделок.</span>
-  </li>
-  <li class="flex items-start gap-2 text-sm text-[#374151]">
-    <span class="font-bold text-[#00E68A]">2.</span>
-    <span>Отфильтруйте входящие лиды за прошлые выходные или за вечер после 19:00.</span>
-  </li>
-  <li class="flex items-start gap-2 text-sm text-[#374151]">
-    <span class="font-bold text-[#00E68A]">3.</span>
-    <span>Сравните время создания сделки и время отправки первого сообщения менеджера. Вы удивитесь объему пропущенных денег!</span>
-  </li>
-</ol>
-`,
-    faq: [
+    "content": "\n<p class=\"text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold\">\nСфера Beauty — это бизнес высокой эмоциональной привязанности и регулярного повторного спроса. Клиентки выбирают не просто услугу «маникюр», они записываются к конкретному мастеру, просят прислать свежие фото работ из инстаграма и подбирают время с точностью до 15 минут. Если администратор салона отвлечен на встречу гостя или рассчет на кассе, входящий диалог в мессенджере зависает на полчаса.\n</p>\n\n<p class=\"mb-6 leading-relaxed text-[#374151]\">\nВнедрение автономного ИИ-агента превращает мессенджер вашего салона красоты в непрерывный канал продаж, который сам ведет запись в YCLIENTS / Dikidi / Altegio, допродает параллельные услуги и возвращает «уснувших» клиентов через 30 дней.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n1. Как ИИ-агент ведет диалог записи в WhatsApp (Сценарий)\n</h2>\n\n<div class=\"bg-[#F3F4F6] p-5 rounded-2xl border border-[#E5E7EB] space-y-3 font-sans text-xs sm:text-sm my-6\">\n  <div class=\"bg-white p-3 rounded-xl border border-[#E5E7EB] max-w-[85%] text-[#1A1D20]\">\n    <strong>Гость (19:20):</strong> Здравствуйте! Хочу записаться к Анне на сложные окрашивание аиртач на пятницу или субботу. Какая цена на длинные волосы?\n  </div>\n  <div class=\"bg-[#0F231B] text-white p-3 rounded-xl max-w-[85%] ml-auto border border-[#00E68A]/30\">\n    <strong>ИИ-Администратор (19:20:02):</strong> Добрый вечер! Анна — наш топ-колорист. Окрашивание Airtouch на длинные волосы (3 длина) занимает около 3.5-4 часов, стоимость под ключ с премиум-защитой Olaplex — 12 500 ₽. <br/><br/>Свободные окна у Анны: в пятницу на 11:00 и в субботу на 15:30. Какое время забронируем за вами?\n  </div>\n  <div class=\"bg-white p-3 rounded-xl border border-[#E5E7EB] max-w-[85%] text-[#1A1D20]\">\n    <strong>Гость (19:21):</strong> Давайте на субботу 15:30! А успеем еще маску сделать?\n  </div>\n  <div class=\"bg-[#0F231B] text-white p-3 rounded-xl max-w-[85%] ml-auto border border-[#00E68A]/30\">\n    <strong>ИИ-Администратор (19:21:03):</strong> Да, конечно! Добавил в запись молекулярный уход Tokio Inkarami (+2 500 ₽), он отлично увлажняет волосы после осветления. Записал вас в субботу к Анне на 15:30. Ждем вас по адресу: ул. Арбат, 12!\n  </div>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n2. Увеличение чека: Автоматический Up-sell дополнительных процедур\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nАдминистратор на зарплате часто стесняется или просто забывает предлагать сопутствующие услуги. ИИ-агент делает это мягко и в 100% случаев:\n</p>\n\n<ul class=\"space-y-3 mb-6\">\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✦</span>\n    <span>При записи на маникюр ➔ предлагает выравнивание ногтевой пластины или SPA-уход для рук (+600 ₽ к чеку).</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✦</span>\n    <span>При записи на стрижку ➔ предлагает экспресс-уход для кожи головы или тонирование (+1 500 ₽).</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✦</span>\n    <span>При записи перед праздниками ➔ предлагает комплексный визит «Маникюр + Брови» в 4 руки.</span>\n  </li>\n</ul>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n3. Реактивация базы: Возврат «уснувших» клиентов через 30-45 дней\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nПривлечение нового клиента в салон красоты стоит от 1 200 до 3 000 рублей. В то же время до 40% гостей забывают записаться повторно вовремя. ИИ-агент сканирует историю визитов в YCLIENTS / Dikidi и через 28-35 дней отправляет персонализированное сообщение в WhatsApp:\n</p>\n\n<blockquote class=\"border-l-4 border-[#00E68A] pl-4 py-2 my-6 bg-[#F9FAFB] rounded-r-xl italic text-sm text-[#1A1D20]\">\n«Ольга, здравствуйте! Прошло 4 недели с вашего визита к топ-мастеру Екатерине. Чтобы ногти выглядели ухоженно, самое время обновить покрытие. На этой неделе у Екатерины есть окна в четверг в 14:00 и в пятницу в 18:00. Записать вас?»\n</blockquote>\n\n<p class=\"mb-6 text-[#374151] leading-relaxed font-bold text-[#00E68A]\">\nРезультат: Конверсия такой реактивации составляет от 18% до 26% без единого рубля затрат на таргетированную рекламу.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n4. Сбор отзывов и защита репутации на Яндекс.Картах\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nЧерез 2 часа после окончания визита ИИ-агент отправляет коротки запрос оценки качества:\n</p>\n\n<ol class=\"space-y-3 mb-6\">\n  <li class=\"flex items-start gap-2 text-sm text-[#374151]\">\n    <span class=\"font-bold text-[#00E68A]\">1.</span>\n    <span>Если клиент ставит 5 звезд ➔ ИИ-агент благодарит и отправляет прямую ссылку с просьбой продублировать отзыв на Яндекс.Картах или 2GIS за бонусные баллы.</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#374151]\">\n    <span class=\"font-bold text-[#00E68A]\">2.</span>\n    <span>Если клиент ставит 1-3 звезды ➔ ИИ не публикует негатив наружу, а запрашивает детальную причину недовольства и мгновенно алертит управляющему салона в Telegram для урегулирования конфликта.</span>\n  </li>\n</ol>\n\n<div class=\"bg-[#0F231B] text-white p-6 sm:p-8 rounded-2xl border border-[#00E68A]/30 my-8\">\n  <h3 class=\"text-lg sm:text-xl font-bold font-display text-white mb-2\">\n    Готовы увеличить повторные записи в салон красоты на 25%?\n  </h3>\n  <p class=\"text-xs sm:text-sm text-gray-300 mb-6\">\n    Подключим ИИ-агента к YCLIENTS или Dikidi за 3 дня с бесплатным тестовым периодом.\n  </p>\n  <a href=\"https://t.me/samartsev_blog\" target=\"_blank\" rel=\"noreferrer\" class=\"inline-block px-6 py-3 rounded-xl bg-[#00E68A] hover:bg-[#00E68A]/90 text-[#111111] font-bold text-sm transition-colors\">\n    Подписаться на блог в Telegram\n  </a>\n</div>\n",
+    "faq": [
       {
-        question: "Может ли ИИ-агент сам закрыть клиента на оплату?",
-        answer: "ИИ-агент квалифицирует лид, ответит на частые вопросы по прайсу и забронирует слот в CRM. Финальное закрытие сделки выполняет менеджер по подготовленной карточке."
+        "question": "Работает ли ИИ-агент с платформой Dikidi?",
+        "answer": "Да, поддерживает полную двухстороннюю синхронизацию услуг, мастеров и временных слотов."
+      },
+      {
+        "question": "Может ли бот отправлять фото работ мастеров?",
+        "answer": "Да, ИИ-агент подтягивает нужные примеры окрашиваний или дизайна ногтей из привязанного медиа-архива прямо в чат мессенджера."
+      }
+    ]
+  },
+  {
+    "slug": "ii-agent-dlya-avtoservisa",
+    "title": "ИИ-агент для автосервиса — запись на ремонт, учёт работ и контроль механиков",
+    "description": "Telegram-бот для СТО: запись клиентов, распознавание VIN по фото, расчёт стоимости работ и прозрачная зарплата механикам.",
+    "date": "2026-08-11",
+    "readTime": "10 мин",
+    "category": "Отраслевые кейсы",
+    "image": "/blog/cat-crisis.png",
+    "author": {
+      "name": "Алексей Самарцев",
+      "role": "Основатель Samartsev AI",
+      "avatar": "/founder.jpg"
+    },
+    "content": "\n<p class=\"text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold\">\nТипичный будний день на независимой СТО или в специализированном автотехцентре: мастера-приемщики завалены оформлением заказ-нарядов, подбором оригинальных запчастей и выдачей автомобилей. В этот момент звонит или пишет в Telegram новый клиент с вопросом про замену ГРМ. Никто не берет трубку, и клиент моментально уезжает в соседний автосервис.\n</p>\n\n<p class=\"mb-6 leading-relaxed text-[#374151]\">\nИИ-агент для автосервиса берёт на себя всю первичную квалификацию, определение марки и проблемы, бронирование слесарных подъемников или постов сход-развала, а также помогает контролировать внутреннюю выработку механиков.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n1. Автоматический расчет ТО и бронь подъемника 24/7\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nВместо долгого выяснения деталей вручную, ИИ-агент моментально запрашивает данные по автомобилю:\n</p>\n\n<div class=\"bg-[#F3F4F6] p-5 rounded-2xl border border-[#E5E7EB] space-y-3 font-sans text-xs sm:text-sm my-6\">\n  <div class=\"bg-white p-3 rounded-xl border border-[#E5E7EB] max-w-[85%] text-[#1A1D20]\">\n    <strong>Клиент (21:10):</strong> Добрый вечер! Замена масла и фильтров на Kia Sportage 2.0 2021 года сколько выйдет по работам и расходникам?\n  </div>\n  <div class=\"bg-[#0F231B] text-white p-3 rounded-xl max-w-[85%] ml-auto border border-[#00E68A]/30\">\n    <strong>ИИ-Ассистент СТО (21:10:02):</strong> Здравствуйте! Плановое ТО на Kia Sportage 2.0 (масло синтетика 5W-30 + масляный, воздушный и салонный фильтры + диагностика ходовой в подарок): <br/>• Работа — 2 200 ₽ <br/>• Запчасти и масло (оригинал/аналог) — 6 800 ₽. <br/><br/>Завтра свободен подъемник масляного поста на 11:00 и на 16:30. На какое время записать ваш автомобиль?\n  </div>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n2. Распознавание VIN по фото СТС через Vision AI\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nСамый частый затор при подборе автозапчастей — ошибки в 17-значном VIN-коде при ручном вводе. ИИ-агент предлагает автовладельцу просто прислать фотографию свидетельства о регистрации ТС (СТС):\n</p>\n\n<div class=\"p-5 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] my-6\">\n  <div class=\"font-bold text-sm text-[#111111] mb-2\">📷 Алгоритм обработки фото СТС:</div>\n  <p class=\"text-xs sm:text-sm text-[#4B5563] m-0 leading-relaxed\">\n    1. Клиент скидывает фото СТС в чат. <br/>\n    2. Нейросеть Vision AI за 1.5 секунды распознает VIN, марку, модель, год выпуска и мощность двигателя. <br/>\n    3. Данные автоматически передаются в 1С:Автосервис / Альфа-Авто менеджеру по закупкам.\n  </p>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n3. Внутренняя автоматизация СТО: Контроль механиков и смен\n</h2>\n\n<div class=\"overflow-x-auto my-6 border border-[#E5E7EB] rounded-2xl bg-white shadow-sm\">\n  <table class=\"w-full text-left text-sm text-[#1A1D20]\">\n    <thead class=\"bg-[#F9FAFB] border-b border-[#E5E7EB] text-xs uppercase font-bold text-[#828D99]\">\n      <tr>\n        <th class=\"p-4\">Внутренняя задача</th>\n        <th class=\"p-4\">Ручной подход</th>\n        <th class=\"p-4 text-[#00E68A]\">ИИ-агент в Telegram</th>\n      </tr>\n    </thead>\n    <tbody class=\"divide-y divide-[#E5E7EB]\">\n      <tr>\n        <td class=\"p-4 font-semibold\">Учёт выработки смены</td>\n        <td class=\"p-4 text-red-500\">Записи на бумаге или вечерний подсчет в Excel</td>\n        <td class=\"p-4 text-[#00E68A] font-bold\">Механик жмет «Старт/Финиш» заказ-наряда в Telegram-боте</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">Простой постов</td>\n        <td class=\"p-4 text-red-500\">Управляющий не знает о простоях подъемников</td>\n        <td class=\"p-4 font-semibold\">Бот присылает алерт при просте поста более 30 минут</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">Прозрачный расчет ЗП</td>\n        <td class=\"p-4\">Конфликты в конце месяца по нормо-часам</td>\n        <td class=\"p-4 font-bold text-[#00E68A]\">Каждый слесарь видит свой баланс выработки в реальном времени</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n\n<div class=\"bg-[#0F231B] text-white p-6 sm:p-8 rounded-2xl border border-[#00E68A]/30 my-8\">\n  <h3 class=\"text-lg sm:text-xl font-bold font-display text-white mb-2\">\n    Загрузите подъемники вашего автосервиса на 100%!\n  </h3>\n  <p class=\"text-xs sm:text-sm text-gray-300 mb-6\">\n    Продемонстрируем систему записи и распознавания VIN-кодов для автосервисов за 15 минут.\n  </p>\n  <a href=\"https://t.me/alekseysmrtsv\" target=\"_blank\" rel=\"noreferrer\" class=\"inline-block px-6 py-3 rounded-xl bg-[#00E68A] hover:bg-[#00E68A]/90 text-[#111111] font-bold text-sm transition-colors\">\n    Записаться на демонстрацию в Telegram\n  </a>\n</div>\n",
+    "faq": [
+      {
+        "question": "Интегрируется ли ИИ-агент с программой Альфа-Авто?",
+        "answer": "Да, поддерживается интеграция с 1С:Автосервис и Альфа-Авто для передачи заказ-нарядов и клиентов."
+      },
+      {
+        "question": "Как ИИ понимает какой именно подъемник свободен?",
+        "answer": "В базе n8n заводится сетка постов (слесарные, электрик, сход-развал) с регламентом времени на каждую типовую процедуру."
+      }
+    ]
+  },
+  {
+    "slug": "skolko-stoit-ii-agent",
+    "title": "Сколько стоит ИИ-агент для бизнеса — цена внедрения, содержание и расчёт окупаемости",
+    "description": "Разбираем реальную стоимость ИИ-агента: от 45 000₽ за базовое внедрение до 350 000₽ за enterprise. Формула расчёта ROI и срок окупаемости.",
+    "date": "2026-08-11",
+    "readTime": "12 мин",
+    "category": "Экономика & ROI",
+    "image": "/blog/cat-sales.png",
+    "author": {
+      "name": "Алексей Самарцев",
+      "role": "Основатель Samartsev AI",
+      "avatar": "/founder.jpg"
+    },
+    "content": "\n<p class=\"text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold\">\nНа рынке внедрения искусственного интеллекта царит абсолютная неопределенность в ценах. Одни подрядчики предлагают «ИИ-бота под ключ» за 5 000 рублей на Авито, а крупные агентства выставляют сметы на 2.5 миллиона рублей за базовый проект. В результате владельцы малого и среднего бизнеса не понимают, из чего складывается честная стоимость ИИ-агента и как заранее рассчитать окупаемость вложений (ROI).\n</p>\n\n<p class=\"mb-6 leading-relaxed text-[#374151]\">\nВ этой статье я открыто разберу ценообразование нашей студии, покажу тарифную сетку внедрения, смету затрат на поддержку и на конкретном примере клиники докажу, почему правильный ИИ-агент окупается за 17–30 дней.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n1. Из чего складывается реальная стоимость проекта\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nСтоимость внедрения автономного цифрового сотрудника состоит из четырех ключевых блоков:\n</p>\n\n<ul class=\"space-y-3 mb-6\">\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">1.</span>\n    <span><strong>Архитектура и RAG-база знаний:</strong> Анализ скриптов продаж, оцифровка регламентов, настройка векторизации базы знаний и написание системных промптов (Tone of Voice).</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">2.</span>\n    <span><strong>Разработка n8n пайплайнов и API-интеграция:</strong> Настройка двусторонних связок с CRM/МИС (YCLIENTS, Ident, amoCRM, Битрикс24), обработка опечаток и ошибок сети.</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">3.</span>\n    <span><strong>Модуль защиты 152-ФЗ:</strong> Подключение и тестирование локальных санитайзеров данных на серверах в РФ во избежание штрафов.</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">4.</span>\n    <span><strong>Тестирование и интеграция с персоналом:</strong> Обучение ваших менеджеров работе с ассистентом и передаче сложных диалогов.</span>\n  </li>\n</ul>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n2. Тарифная сетка внедрения Samartsev AI\n</h2>\n\n<div class=\"overflow-x-auto my-6 border border-[#E5E7EB] rounded-2xl bg-white shadow-sm\">\n  <table class=\"w-full text-left text-sm text-[#1A1D20]\">\n    <thead class=\"bg-[#F9FAFB] border-b border-[#E5E7EB] text-xs uppercase font-bold text-[#828D99]\">\n      <tr>\n        <th class=\"p-4\">Тариф</th>\n        <th class=\"p-4\">Стоимость проекта</th>\n        <th class=\"p-4\">Что входит в стоимость</th>\n        <th class=\"p-4 text-[#00E68A]\">Для кого поднимется</th>\n      </tr>\n    </thead>\n    <tbody class=\"divide-y divide-[#E5E7EB]\">\n      <tr>\n        <td class=\"p-4 font-bold\">«Старт»</td>\n        <td class=\"p-4 font-bold text-[#111111]\">45 000 – 65 000 ₽</td>\n        <td class=\"p-4\">Первичный ИИ-автоответчик в 1 канал (TG/WhatsApp), база знаний по услугам, запись в 1 CRM.</td>\n        <td class=\"p-4 text-[#00E68A] font-medium\">Небольшие салоны, СТО, локальные клиники</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-bold text-[#00E68A]\">«PRO»</td>\n        <td class=\"p-4 font-bold text-[#00E68A]\">120 000 – 180 000 ₽</td>\n        <td class=\"p-4\">Полный омниканал (Сайт+TG+WhatsApp), каскадные напоминания, реактивация базы, интеграция с YCLIENTS/Ident/1С + 152-ФЗ.</td>\n        <td class=\"p-4 font-bold text-[#00E68A]\">Сетевой бизнес, средние клиники, B2B отделы продаж</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-bold\">«Enterprise»</td>\n        <td class=\"p-4 font-bold text-[#111111]\">от 350 000 ₽</td>\n        <td class=\"p-4\">Кастомные LLM-модели на собственном GPU-сервере, кастомные MCP-адаптеры, голосовой ИИ (Speech-to-Text/TTS), индивидуальные NDA.</td>\n        <td class=\"p-4 font-medium\">Крупные сети, банки, федеральные ритейлеры</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n3. Сравнение затрат: ИИ-агент vs Менеджер на зарплате\n</h2>\n\n<div class=\"my-6 border border-[#E5E7EB] rounded-2xl bg-white p-6 shadow-sm space-y-4\">\n  <div class=\"flex justify-between items-center border-b border-[#E5E7EB] pb-3\">\n    <span class=\"text-sm font-semibold text-[#111111]\">Штатный менеджер 24/7 (2 человека 2/2):</span>\n    <span class=\"text-sm font-bold text-red-500\">140 000 ₽ / мес (ФОТ + Налоги 30%)</span>\n  </div>\n  <div class=\"flex justify-between items-center pt-1\">\n    <span class=\"text-sm font-semibold text-[#111111]\">ИИ-агент Samartsev AI (Обслуживание VPS + API):</span>\n    <span class=\"text-sm font-bold text-[#00E68A]\">5 000 – 15 000 ₽ / мес</span>\n  </div>\n</div>\n\n<p class=\"mb-6 text-[#374151] leading-relaxed\">\n<strong>Чистая экономия только на операционных расходах составляет до 1 500 000 рублей в год!</strong>\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n4. Математическая формула ROI и кейс окупаемости за 17 дней\n</h2>\n\n<div class=\"bg-[#F9FAFB] border-l-4 border-[#00E68A] p-5 rounded-r-2xl my-6 border border-[#E5E7EB]\">\n  <div class=\"font-bold text-sm text-[#111111] mb-2\">📐 Формула расчета возврата инвестиций (ROI):</div>\n  <code class=\"text-xs sm:text-sm text-[#00E68A] bg-[#0F231B] p-3 rounded-xl font-mono block overflow-x-auto\">\nROI = ((Дополнительная прибыль от ИИ + Экономия ФОТ) - Стоимость внедрения) / Стоимость внедрения × 100%\n  </code>\n</div>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\n<strong>Кейс клиники на 800 входящих обращений в месяц:</strong>\n<br/>• До внедрения: 35% ночных и вечерних лидов не получали ответ до утра (потеря 280 обращений).\n<br/>• После внедрения ИИ-агента за 140 000 ₽: ИИ записал 42 новых пациента на первичный прием со средним чеком 8 500 ₽.\n<br/>• Заработана дополнительная маржинальная прибыль: <strong>357 000 ₽</strong> в первый же месяц.\n<br/>• **Результат:** Проект полностью окупил затраты на 17-й день работы.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n5. Подвох дешевых SaaS-конструкторов за 900 ₽/мес\n</h2>\n\n<p class=\"mb-6 text-[#374151] leading-relaxed\">\nМногие предприниматели поддаются на рекламу дешевых облачных ботов за 900 рублей в месяц. Важно понимать риски:\n<br/>1. **Vendor Lock-in:** Все связки и клиентская база хранятся на стороннем сервисе. Если сервис закроется или заблокирует аккаунт — вы теряете всё.\n<br/>2. **Жесткие лимиты:** При превышении 100 сообщений в день сервис списывает крупную доплату.\n<br/>3. **Утечка данных:** Данные клиентов передаются в третьи руки без защиты 152-ФЗ.\n</p>\n\n<div class=\"bg-[#0F231B] text-white p-6 sm:p-8 rounded-2xl border border-[#00E68A]/30 my-8\">\n  <h3 class=\"text-lg sm:text-xl font-bold font-display text-white mb-2\">\n    Хотите точный расчёт окупаемости ИИ-агента для вашего бизнеса?\n  </h3>\n  <p class=\"text-xs sm:text-sm text-gray-300 mb-6\">\n    Воспользуйтесь нашим интерактивным калькулятором на главной странице или получите финансовую модель у Алексея в Telegram.\n  </p>\n  <a href=\"/#calculator\" class=\"inline-block px-6 py-3 rounded-xl bg-[#00E68A] hover:bg-[#00E68A]/90 text-[#111111] font-bold text-sm transition-colors\">\n    Рассчитать окупаемость на сайте\n  </a>\n</div>\n",
+    "faq": [
+      {
+        "question": "Нужно ли платить ежемесячную подписку за использование n8n?",
+        "answer": "Нет. Мы устанавливаем n8n Community Edition на ваш собственный VPS-сервер. Вы платите только за сам сервер (около 500-1000 ₽/мес) и токены LLM."
+      },
+      {
+        "question": "Предоставляется ли гарантия на выполненные работы?",
+        "answer": "Да, в договоре прописывается гарантийное техническое обслуживание и бесплатное устранение любых возможных сбоев в течение 30 дней."
+      }
+    ]
+  },
+  {
+    "slug": "oshibki-vnedreniya-ii-agentov",
+    "title": "7 ошибок при внедрении ИИ-агента, которые убивают конверсию",
+    "description": "Почему ИИ-бот не работает: жёсткие скрипты, нет передачи оператору, нарушение 152-ФЗ и другие ошибки. Как избежать и что делать.",
+    "date": "2026-08-11",
+    "readTime": "11 мин",
+    "category": "Практика & Антикейсы",
+    "image": "/blog/cat-crisis.png",
+    "author": {
+      "name": "Алексей Самарцев",
+      "role": "Основатель Samartsev AI",
+      "avatar": "/founder.jpg"
+    },
+    "content": "\n<p class=\"text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold\">\nИскусственный интеллект сегодня — главный хайп в B2B-продажах. Однако до 60% компаний, попытавшихся самостоятельно или через неквалифицированных фрилансеров внедрить «ИИ-помощника», получают противоположный результат: клиенты раздражаются от невпопад отправленных ответов, а конверсия из заявки в запись падает на 20-30%.\n</p>\n\n<p class=\"mb-6 leading-relaxed text-[#374151]\">\nВ этом материале я разоберу 7 самых фатальных ошибок при внедрении ИИ-агентов и дам конкретные инструкции, как их избежать.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\nОшибка 1: Жёсткие скрипты кнопок вместо NLU-нейросети\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nПопытка загнать живой диалог человека в искусственные кнопочные рамки. Живой человек пишет так, как ему удобно, отправляет голосовые или пишет по три коротких сообщения подряд. Если ваш автоответчик сбрасывает контекст и требует <em>«Нажмите 1 для выбора услуги»</em> — вы теряете клиента.\n</p>\n\n<div class=\"bg-[#FEF2F2] border-l-4 border-red-500 p-4 rounded-r-xl my-4 text-xs sm:text-sm text-[#1A1D20]\">\n<strong>Как правильно:</strong> Использовать NLU-модули на базе гибридных языковых моделей (GigaChat / Gemini Flash), которые считывают общий смысл смыслового блока, даже при наличии опечаток.\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\nОшибка 2: Отсутствие бесшовного перевода на человека\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nИИ-агент не должен имитировать всезнающего Бога. Если клиент задает узкоспециализированный нестандартный вопрос (например, по сложному химическому составу препарата или условиям договора), ИИ не должен галлюцинировать и выдумывать факты.\n</p>\n\n<div class=\"bg-[#ECFDF5] border-l-4 border-[#00E68A] p-4 rounded-r-xl my-4 text-xs sm:text-sm text-[#1A1D20]\">\n<strong>Как правильно:</strong> Настроить правила деликатного переключения: <em>«Игорь, чтобы дать вам 100% точную информацию по этому составу, я уже подключил нашего главного технолога. Он ответит вам в течение 5 минут прямо в этот чат!»</em>.\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\nОшибка 3: Передача персональных данных в зарубежные API (Нарушение 152-ФЗ)\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nПрямая отправка сообщений с именами, номерами телефонов и адресами клиентов в OpenAI (ChatGPT) или Anthropic (Claude). Это прямое нарушение 152-ФЗ «О персональных данных» с риском штрафа до 18 млн рублей и блокировки Роскомнадзором.\n</p>\n\n<div class=\"bg-[#ECFDF5] border-l-4 border-[#00E68A] p-4 rounded-r-xl my-4 text-xs sm:text-sm text-[#1A1D20]\">\n<strong>Как правильно:</strong> Строить двухконтурную схему n8n на защищенных VPS в РФ, где отечественный санитайзер вырезает ПДн до отправки во внешнюю сеть.\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\nОшибка 4: Сухой роботоподобный tone-of-voice\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nОтветы в стиле сухой инструкции: <em>«Здравствуйте. Ваше обращение зарегистрировано под номером 45812. Ожидайте ответа»</em>. Современный клиент ждет дружелюбного, экспертного и динамичного общения без канцелярских штампов.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\nОшибка 5: Отсутствие двусторонней интеграции с CRM\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nБот вежливо пообщался с клиентом, но не создал сделки в amoCRM / Битрикс24 и не поставил задачу менеджеру. В итоге диалог «погребен» в чате мессенджера, а клиент остался без фактической записи.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\nОшибка 6: Отсутствие аналитики и замера конверсий\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nЗапуск системы без отслеживания ключевых метрик: % успешно квалифицированных диалогов, время первого ответа, конверсия из диалога в запись, количество эскалаций на оператора.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\nОшибка 7: Автоматизация незадокументированного хаоса\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nЕсли в компании нет прописанного регламента работы с входящим лидом и понятного прайса — ИИ-агент не сможет угадать ваши мысли. Автоматизация беспорядка всегда дает автоматизированный беспорядок.\n</p>\n\n<div class=\"bg-[#0F231B] text-white p-6 sm:p-8 rounded-2xl border border-[#00E68A]/30 my-8\">\n  <h3 class=\"text-lg sm:text-xl font-bold font-display text-white mb-2\">\n    Хотите проверить ваш отдел продаж и узнать, где теряются клиенты?\n  </h3>\n  <p class=\"text-xs sm:text-sm text-gray-300 mb-6\">\n    Проведем экспресс-аудит ваших диалогов и покажем узкие места абсолютно бесплатно.\n  </p>\n  <a href=\"https://t.me/alekseysmrtsv\" target=\"_blank\" rel=\"noreferrer\" class=\"inline-block px-6 py-3 rounded-xl bg-[#00E68A] hover:bg-[#00E68A]/90 text-[#111111] font-bold text-sm transition-colors\">\n    Записаться на бесплатный аудит\n  </a>\n</div>\n",
+    "faq": [
+      {
+        "question": "Как проверить, нарушает ли наш текущий чат-бот 152-ФЗ?",
+        "answer": "Если ваш бот отправляет текст сообщения с телефоном или именем клиента в сервисы OpenAI/Make без локального сервера анонимизации — это нарушение."
+      },
+      {
+        "question": "Сколько времени нужно на настройку верного Tone of Voice?",
+        "answer": "Обычно мы тестируем промпт на массиве из 50 реальных прошлых диалогов вашей компании в течение 1-2 дней."
+      }
+    ]
+  },
+  {
+    "slug": "ii-agent-obrabotka-zayavok-24-7",
+    "title": "Потеря клиентов из-за скорости ответа — как ИИ-агент обрабатывает заявки ночью",
+    "description": "80% бизнесов не отвечают после 21:00. Формула расчёта упущенной выручки и как ИИ-агент закрывает ночные заявки за 3 секунды.",
+    "date": "2026-08-11",
+    "readTime": "10 мин",
+    "category": "Экономика & ROI",
+    "image": "/blog/cat-funnel.png",
+    "author": {
+      "name": "Алексей Самарцев",
+      "role": "Основатель Samartsev AI",
+      "avatar": "/founder.jpg"
+    },
+    "content": "\n<p class=\"text-base sm:text-lg text-[#111111] leading-relaxed mb-6 font-semibold\">\nВ августе 2026 года наша команда провела независимый эксперимент: мы оставили 50 первичных заявок на услуги с 22:30 до 00:00 в коммерческие компании Москвы и Петербурга (стоматологии, автосервисы, салоны красоты и B2B-поставщики). Результат оказался шокирующим: <strong>82% компаний не ответили до 10:00 следующего дня</strong>. К этому моменту клиент уже успевает купить у более быстрых конкурентов.\n</p>\n\n<p class=\"mb-6 leading-relaxed text-[#374151]\">\nВ этой статье я выведу четкую математическую формулу упущенной выручки и покажу, как внедрение первой линии на базе ИИ-агента позволяет отвечать за 2.5 секунды в любое время суток.\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n1. Математическая формула упущенной выручки\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nКаждый час задержки ответа снижает вероятность успешной конверсии в сделку по экспоненте. Для расчета чистых убытков бизнеса мы используем следующую проверенную формулу:\n</p>\n\n<div class=\"bg-[#F9FAFB] border-l-4 border-[#00E68A] p-5 rounded-r-2xl my-6 border border-[#E5E7EB]\">\n  <div class=\"font-bold text-sm text-[#111111] mb-2\">📐 Формула потерь от медленных ответов:</div>\n  <code class=\"text-xs sm:text-sm text-[#00E68A] bg-[#0F231B] p-3 rounded-xl font-mono block overflow-x-auto\">\nПотери = (Входящие лиды / мес) × (% ответов > 15 мин) × (Средний чек) × (Конверсия в продажу) × 0.35\n  </code>\n</div>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n2. Реальный пример расчета для стоматологической клиники\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nВозьмем среднюю стоматологию на 4 кресла:\n<br/>• Входящих лидов в месяц: <strong>200 обращений</strong>\n<br/>• Доля вечерних и ночных заявках (после 20:00): <strong>35% (70 лидов)</strong>\n<br/>• Средний чек первичного приема и лечения: <strong>9 500 ₽</strong>\n<br/>• Стандартная конверсия клиники из вовремя обработанной заявки: <strong>30%</strong>\n</p>\n\n<p class=\"mb-6 text-[#374151] leading-relaxed font-bold text-red-500\">\nПрямые ежемесячные финансовые потери от отсутствия ночного администратора: <br/>\n70 лидов × 9 500 ₽ × 30% × 0.35 = 69 825 ₽ чистой упущенной прибыли КАЖДЫЙ МЕСЯЦ. За год эта сумма превышает 830 000 рублей!\n</p>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n3. Как ИИ-агент закрывает ночные заявки за 3 секунды\n</h2>\n\n<p class=\"mb-4 text-[#374151] leading-relaxed\">\nВ отличие от дежурного менеджера, который спит или отвлекается:\n</p>\n\n<ul class=\"space-y-3 mb-6\">\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✓</span>\n    <span><strong>Скорость 2.5 секунды:</strong> Мгновенный первичный приветственный ответ со считыванием намерений.</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✓</span>\n    <span><strong>Проводка по воронке:</strong> Уточнение деталей, презентация прайса и подбор свободного окна в расписании CRM.</span>\n  </li>\n  <li class=\"flex items-start gap-2 text-sm text-[#1A1D20]\">\n    <span class=\"text-[#00E68A] font-bold\">✓</span>\n    <span><strong>Готовая карточка к 9:00:</strong> К приходу дневного менеджера в CRM висит полностью оформленная бронь со всеми контактами.</span>\n  </li>\n</ul>\n\n<h2 class=\"text-xl sm:text-2xl font-bold text-[#111111] font-display mt-8 mb-4\">\n4. Ночной менеджер vs ИИ-агент Samartsev AI\n</h2>\n\n<div class=\"overflow-x-auto my-6 border border-[#E5E7EB] rounded-2xl bg-white shadow-sm\">\n  <table class=\"w-full text-left text-sm text-[#1A1D20]\">\n    <thead class=\"bg-[#F9FAFB] border-b border-[#E5E7EB] text-xs uppercase font-bold text-[#828D99]\">\n      <tr>\n        <th class=\"p-4\">Критерий</th>\n        <th class=\"p-4\">Ночной менеджер (ФОТ)</th>\n        <th class=\"p-4 text-[#00E68A]\">ИИ-агент на VPS</th>\n      </tr>\n    </thead>\n    <tbody class=\"divide-y divide-[#E5E7EB]\">\n      <tr>\n        <td class=\"p-4 font-semibold\">ФОТ и ежемесячные затраты</td>\n        <td class=\"p-4 text-red-500 font-medium\">от 60 000 ₽ / мес</td>\n        <td class=\"p-4 text-[#00E68A] font-bold\">5 000 – 15 000 ₽ / мес</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">Скорость ответа</td>\n        <td class=\"p-4\">5–15 минут (если не спит)</td>\n        <td class=\"p-4 font-bold\">2–3 секунды гарантированно</td>\n      </tr>\n      <tr>\n        <td class=\"p-4 font-semibold\">Человеческий фактор</td>\n        <td class=\"p-4 text-red-500\">Забывчивость, ошибки в CRM</td>\n        <td class=\"p-4 font-semibold text-[#00E68A]\">100% занесение всех данных в базу</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n\n<div class=\"bg-[#0F231B] text-white p-6 sm:p-8 rounded-2xl border border-[#00E68A]/30 my-8\">\n  <h3 class=\"text-lg sm:text-xl font-bold font-display text-white mb-2\">\n    Перестаньте дарить ваших ночных клиентов конкурентам!\n  </h3>\n  <p class=\"text-xs sm:text-sm text-gray-300 mb-6\">\n    Рассчитайте финансовые потери вашего отдела продаж за 1 минуту на нашем калькуляторе.\n  </p>\n  <a href=\"/#calculator\" class=\"inline-block px-6 py-3 rounded-xl bg-[#00E68A] hover:bg-[#00E68A]/90 text-[#111111] font-bold text-sm transition-colors\">\n    Перейти к калькулятору потерь\n  </a>\n</div>\n",
+    "faq": [
+      {
+        "question": "Может ли ИИ-агент принимать предоплату за ночные записи?",
+        "answer": "Да, через генерацию официальных платежных ссылок ЮKassa / Т-Банк прямо в чате."
+      },
+      {
+        "question": "Сколько времени забирает внедрение ночного ИИ-ассистента?",
+        "answer": "Стандартное внедрение под ключ занимает 3 рабочих дня."
       }
     ]
   }
