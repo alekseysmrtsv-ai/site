@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { ARTICLES } from "@/data/articles";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.ai";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.tech";
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [

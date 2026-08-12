@@ -23,7 +23,7 @@ export const ARTICLES: Article[] = [
     "date": "2026-08-11",
     "readTime": "10 мин",
     "category": "Архитектура & Стек",
-    "image": "/blog/cat-sales.png",
+    "image": "/blog/cat-sales.webp",
     "author": {
       "name": "Алексей Самарцев",
       "role": "Основатель Samartsev AI",
@@ -48,7 +48,7 @@ export const ARTICLES: Article[] = [
     "date": "2026-08-11",
     "readTime": "11 мин",
     "category": "Отраслевые кейсы",
-    "image": "/blog/cat-sales.png",
+    "image": "/blog/cat-sales.webp",
     "author": {
       "name": "Алексей Самарцев",
       "role": "Основатель Samartsev AI",
@@ -73,7 +73,7 @@ export const ARTICLES: Article[] = [
     "date": "2026-08-11",
     "readTime": "9 мин",
     "category": "Отраслевые кейсы",
-    "image": "/blog/cat-funnel.png",
+    "image": "/blog/cat-funnel.webp",
     "author": {
       "name": "Алексей Самарцев",
       "role": "Основатель Samartsev AI",
@@ -98,7 +98,7 @@ export const ARTICLES: Article[] = [
     "date": "2026-08-11",
     "readTime": "10 мин",
     "category": "Отраслевые кейсы",
-    "image": "/blog/cat-crisis.png",
+    "image": "/blog/cat-crisis.webp",
     "author": {
       "name": "Алексей Самарцев",
       "role": "Основатель Samartsev AI",
@@ -123,7 +123,7 @@ export const ARTICLES: Article[] = [
     "date": "2026-08-11",
     "readTime": "12 мин",
     "category": "Экономика & ROI",
-    "image": "/blog/cat-sales.png",
+    "image": "/blog/cat-sales.webp",
     "author": {
       "name": "Алексей Самарцев",
       "role": "Основатель Samartsev AI",
@@ -148,7 +148,7 @@ export const ARTICLES: Article[] = [
     "date": "2026-08-11",
     "readTime": "11 мин",
     "category": "Практика & Антикейсы",
-    "image": "/blog/cat-crisis.png",
+    "image": "/blog/cat-crisis.webp",
     "author": {
       "name": "Алексей Самарцев",
       "role": "Основатель Samartsev AI",
@@ -173,7 +173,7 @@ export const ARTICLES: Article[] = [
     "date": "2026-08-11",
     "readTime": "10 мин",
     "category": "Экономика & ROI",
-    "image": "/blog/cat-funnel.png",
+    "image": "/blog/cat-funnel.webp",
     "author": {
       "name": "Алексей Самарцев",
       "role": "Основатель Samartsev AI",

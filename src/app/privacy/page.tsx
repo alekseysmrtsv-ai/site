@@ -32,7 +32,7 @@ export default function PrivacyPage() {
             <h2 className="font-display text-xl font-bold text-heavy mb-3">1. Общие положения</h2>
             <p className="text-text-muted leading-relaxed">
               Настоящая политика конфиденциальности определяет порядок обработки персональных данных
-              пользователей сайта <strong>samartsev.ai</strong> в соответствии с Федеральным законом
+              пользователей сайта <strong>samartsev.tech</strong> в соответствии с Федеральным законом
               №152-ФЗ «О персональных данных».
             </p>
           </section>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             <h2 className="font-display text-xl font-bold text-heavy mb-3">5. Ваши права</h2>
             <p className="text-text-muted leading-relaxed">
               Вы вправе в любой момент запросить удаление, изменение или предоставление ваших данных.
-              Для этого напишите на <a href="mailto:hello@samartsev.ai" className="text-heavy underline hover:text-primary transition-colors">hello@samartsev.ai</a>.
+              Для этого напишите на <a href="mailto:hello@samartsev.tech" className="text-heavy underline hover:text-primary transition-colors">hello@samartsev.tech</a>.
             </p>
           </section>
 
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="font-display text-xl font-bold text-heavy mb-3">7. Контакты</h2>
             <p className="text-text-muted leading-relaxed">
-              По вопросам обработки персональных данных: <a href="mailto:hello@samartsev.ai" className="text-heavy underline hover:text-primary transition-colors">hello@samartsev.ai</a>
+              По вопросам обработки персональных данных: <a href="mailto:hello@samartsev.tech" className="text-heavy underline hover:text-primary transition-colors">hello@samartsev.tech</a>
             </p>
           </section>
         </div>

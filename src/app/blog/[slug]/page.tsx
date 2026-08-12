@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = ARTICLES.find((a) => a.slug === slug);
   if (!article) return {};
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.ai";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.tech";
 
   return {
     title: `${article.title} | Samartsev AI`,
@@ -46,7 +46,7 @@ export default async function ArticleDetailPage({ params }: Props) {
     notFound();
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.ai";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.tech";
 
   // Schema.org Microdata
   const techArticleSchema = {

@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Условия использования | Samartsev AI",
   description:
-    "Условия использования сайта samartsev.ai и предоставляемых услуг.",
+    "Условия использования сайта samartsev.tech и предоставляемых услуг.",
 };
 
 export default function TermsPage() {
@@ -40,7 +40,7 @@ export default function TermsPage() {
             </h2>
             <p className="text-text-muted leading-relaxed">
               Настоящие условия регулируют использование сайта{" "}
-              <strong>samartsev.ai</strong> и услуг по внедрению ИИ-автоматизации,
+              <strong>samartsev.tech</strong> и услуг по внедрению ИИ-автоматизации,
               предоставляемых ИП Самарцев Алексей (далее — «Исполнитель»).
               Используя сайт, вы соглашаетесь с данными условиями.
             </p>
@@ -131,10 +131,10 @@ export default function TermsPage() {
             <p className="text-text-muted leading-relaxed">
               По всем вопросам:{" "}
               <a
-                href="mailto:hello@samartsev.ai"
+                href="mailto:hello@samartsev.tech"
                 className="text-heavy underline hover:text-primary transition-colors"
               >
-                hello@samartsev.ai
+                hello@samartsev.tech
               </a>
             </p>
           </section>

@@ -44,13 +44,13 @@ export default function Footer() {
             TG Канал
           </a>
           <a
-            href="mailto:hello@samartsev.ai"
+            href="mailto:hello@samartsev.tech"
             className="text-text-muted hover:text-heavy transition-colors flex items-center gap-1.5"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
-            hello@samartsev.ai
+            hello@samartsev.tech
           </a>
           <a href="/privacy" className="text-text-muted hover:text-heavy transition-colors">
             Политика конфиденциальности
