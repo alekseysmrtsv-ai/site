@@ -1,4 +1,4 @@
-const FOUNDER_PHOTO = "https://lh3.googleusercontent.com/aida-public/AB6AXuBwfety_ktLf92tgu5cnEbB_h-2FlYuPndcMH4JEdmRxHGnFvwiEXXD05CDoy04ucABSFYH6zbDb0gJbUFVuz9W1BFyBMI6Exol7F5fUk_CHJ2oeEnDuVCs5oX6z5x6Ga0f0p627QZMJ6uOndlvi98ZYyx7-M-YNuYRjhSIhvhU6_XMJ6ZyBIsOUZegMs6Q11gus7dc0ZTjXD54UxgFb2urJh838WGGYWuw9W2BMJq7JkUWc0YFKG0jbnsuQqJ4J0LTEx-tOTR6I8w";
+const FOUNDER_PHOTO = "/founder_portrait.webp";
 
 export default function FounderSection() {
   return (

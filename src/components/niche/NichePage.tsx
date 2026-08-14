@@ -53,6 +53,12 @@ export interface NicheConfig {
     result: string;
   }[];
   faq: FAQItem[];
+  blogArticle?: {
+    title: string;
+    slug: string;
+    description: string;
+    readTime: string;
+  };
 }
 
 /* ═══════════════════════════════════════════════════
@@ -446,6 +452,33 @@ export default function NichePage({ config }: { config: NicheConfig }) {
             </div>
           </div>
         </section>
+
+        {/* ── BLOG CASE STUDY LINK ──────────────────── */}
+        {c.blogArticle && (
+          <section className="w-full py-12 px-6 bg-surface/50 border-t border-border">
+            <div className="max-w-4xl mx-auto">
+              <div className="p-6 sm:p-8 rounded-2xl border border-border bg-surface flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sm hover:border-primary/40 transition-all">
+                <div className="space-y-2 max-w-xl">
+                  <span className="inline-block px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 rounded">
+                    Практический кейс в блоге • {c.blogArticle.readTime}
+                  </span>
+                  <h3 className="font-display text-lg sm:text-xl font-bold text-heavy leading-snug">
+                    {c.blogArticle.title}
+                  </h3>
+                  <p className="text-text-muted text-xs sm:text-sm leading-relaxed">
+                    {c.blogArticle.description}
+                  </p>
+                </div>
+                <a
+                  href={`/blog/${c.blogArticle.slug}`}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-heavy text-surface hover:bg-primary hover:text-heavy font-display font-semibold text-xs tracking-wider uppercase transition-all shrink-0"
+                >
+                  Читать разбор →
+                </a>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ── FOUNDER ────────────────────────────────── */}
         <FounderSection />
