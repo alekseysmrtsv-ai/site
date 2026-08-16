@@ -20,7 +20,7 @@ function LoginContent() {
         `Доступ запрещен. Ваш Telegram ID (${idParam || "не указан"}) отсутствует в списке разрешенных администраторов (TELEGRAM_ADMIN_ID).`
       );
     } else if (errorParam === "invalid_signature") {
-      setErrorMessage("Ошибка валидации подписи Telegram. Проверьте правильность TELEGRAM_BOT_TOKEN.");
+      setErrorMessage("Ошибка проверки подписи Telegram. Токен в переменных Vercel (TELEGRAM_BOT_TOKEN) не совпадает с токеном бота @lead_manager_for_site_bot или был перевыпущен.");
     } else if (errorParam === "no_bot_token") {
       setErrorMessage("На сервере не настроена переменная TELEGRAM_BOT_TOKEN в переменных окружения.");
     } else if (errorParam) {

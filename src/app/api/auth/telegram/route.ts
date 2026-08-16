@@ -1,26 +1,40 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
-function checkSignature(data: any, botToken: string): boolean {
-  if (!botToken) return false;
+function checkSignature(data: any, botToken: string): { isValid: boolean; debug?: any } {
+  if (!botToken) return { isValid: false, debug: "missing_token" };
   
+  const cleanBotToken = botToken.trim().replace(/^["']|["']$/g, '');
   const { hash, ...dataToCheck } = data;
-  if (!hash) return false;
+  if (!hash) return { isValid: false, debug: "missing_hash" };
   
   // 1. Сортируем ключи по алфавиту и собираем строку
-  const checkString = Object.keys(dataToCheck)
-    .sort()
-    .map(k => `${k}=${dataToCheck[k]}`)
-    .join('\n');
+  const checkArr: string[] = [];
+  for (const key of Object.keys(dataToCheck).sort()) {
+    const val = dataToCheck[key];
+    if (val !== undefined && val !== null && val !== '') {
+      checkArr.push(`${key}=${val}`);
+    }
+  }
+  const checkString = checkArr.join('\n');
 
   // 2. Генерируем секретный ключ (SHA256 от токена)
-  const secretKey = crypto.createHash('sha256').update(botToken).digest();
+  const secretKey = crypto.createHash('sha256').update(cleanBotToken).digest();
 
   // 3. Считаем HMAC-SHA256
   const hmac = crypto.createHmac('sha256', secretKey).update(checkString).digest('hex');
 
-  // 4. Сравниваем
-  return hmac === hash;
+  const isValid = hmac.toLowerCase() === hash.toString().toLowerCase();
+
+  return {
+    isValid,
+    debug: {
+      checkString,
+      receivedHash: hash,
+      computedHmac: hmac,
+      tokenPreview: `${cleanBotToken.slice(0, 5)}...${cleanBotToken.slice(-4)}`
+    }
+  };
 }
 
 export async function GET(request: Request) {
@@ -36,21 +50,23 @@ export async function GET(request: Request) {
   }
 
   // 1. Проверяем подпись Telegram
-  const isValid = checkSignature(data, botToken);
+  const { isValid, debug } = checkSignature(data, botToken);
   if (!isValid) {
-    console.warn("Invalid Telegram signature for login attempt:", data);
+    console.warn("Invalid Telegram signature for login attempt:", debug);
     return NextResponse.redirect(new URL('/login?error=invalid_signature', request.url));
   }
 
   // 2. Проверяем, есть ли этот пользователь в белом списке (Admin ID)
-  const allowedAdminIds = adminIdStr ? adminIdStr.split(',').map(id => id.trim()) : [];
+  const cleanAdminIdStr = (adminIdStr || '').trim().replace(/^["']|["']$/g, '');
+  const allowedAdminIds = cleanAdminIdStr ? cleanAdminIdStr.split(',').map(id => id.trim()) : [];
   if (!allowedAdminIds.includes(data.id?.toString())) {
     console.warn(`Unauthorized Telegram ID attempt: ${data.id}. Allowed: ${allowedAdminIds.join(', ')}`);
     return NextResponse.redirect(new URL(`/login?error=unauthorized_id&id=${encodeURIComponent(data.id || '')}`, request.url));
   }
 
   // 3. Все проверки пройдены, ставим криптографически подписанный токен сессии (auth_ID.HMAC)
-  const hmac = crypto.createHmac('sha256', botToken).update(data.id.toString()).digest('hex');
+  const cleanBotToken = botToken.trim().replace(/^["']|["']$/g, '');
+  const hmac = crypto.createHmac('sha256', cleanBotToken).update(data.id.toString()).digest('hex');
   const sessionToken = `auth_${data.id}.${hmac}`;
 
   const response = NextResponse.redirect(new URL('/crm', request.url));
@@ -77,17 +93,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: "no_bot_token" }, { status: 500 });
     }
 
-    const isValid = checkSignature(data, botToken);
+    const { isValid, debug } = checkSignature(data, botToken);
     if (!isValid) {
-      return NextResponse.json({ success: false, error: "invalid_signature" }, { status: 401 });
+      console.warn("POST Telegram signature mismatch:", debug);
+      return NextResponse.json({
+        success: false,
+        error: "invalid_signature",
+        tokenPreview: debug?.tokenPreview
+      }, { status: 401 });
     }
 
-    const allowedAdminIds = adminIdStr ? adminIdStr.split(',').map(id => id.trim()) : [];
+    const cleanAdminIdStr = (adminIdStr || '').trim().replace(/^["']|["']$/g, '');
+    const allowedAdminIds = cleanAdminIdStr ? cleanAdminIdStr.split(',').map(id => id.trim()) : [];
     if (!allowedAdminIds.includes(data.id?.toString())) {
       return NextResponse.json({ success: false, error: "unauthorized_id", id: data.id }, { status: 403 });
     }
 
-    const hmac = crypto.createHmac('sha256', botToken).update(data.id.toString()).digest('hex');
+    const cleanBotToken = botToken.trim().replace(/^["']|["']$/g, '');
+    const hmac = crypto.createHmac('sha256', cleanBotToken).update(data.id.toString()).digest('hex');
     const sessionToken = `auth_${data.id}.${hmac}`;
 
     const response = NextResponse.json({ success: true, redirect: '/crm' });
