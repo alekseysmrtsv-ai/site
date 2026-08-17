@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import ChatWidget from "@/components/ChatWidget";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -61,6 +62,40 @@ export default function HeroSection() {
                   {hero.ctaSecondary}
                 </a>
               </Button>
+            </div>
+
+            {/* Niche Pills / Ready Solutions */}
+            <div id="niches" className="flex flex-col gap-2.5 scroll-mt-28">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                Готовые решения по нишам:
+              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href="/med"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border hover:border-[#4A9EFF] hover:text-[#4A9EFF] hover:bg-[#4A9EFF]/5 transition-all shadow-subtle group"
+                >
+                  <span className="text-sm">🦷</span>
+                  <span>Стоматологии</span>
+                  <span className="text-[10px] text-text-muted group-hover:text-[#4A9EFF] transition-colors">→</span>
+                </Link>
+                <Link
+                  href="/beauty"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border hover:border-[#C77DFF] hover:text-[#C77DFF] hover:bg-[#C77DFF]/5 transition-all shadow-subtle group"
+                >
+                  <span className="text-sm">💇‍♀️</span>
+                  <span>Салоны красоты</span>
+                  <span className="text-[10px] text-text-muted group-hover:text-[#C77DFF] transition-colors">→</span>
+                </Link>
+                <Link
+                  href="/auto"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border hover:border-[#FF6B4A] hover:text-[#FF6B4A] hover:bg-[#FF6B4A]/5 transition-all shadow-subtle group"
+                >
+                  <span className="text-sm">🚗</span>
+                  <span>Автосервисы</span>
+                  <span className="text-[10px] text-text-muted group-hover:text-[#FF6B4A] transition-colors">→</span>
+                </Link>
+              </div>
             </div>
 
             {/* Trust Bar */}
