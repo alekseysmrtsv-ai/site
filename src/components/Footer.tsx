@@ -72,13 +72,13 @@ export default function Footer() {
             </span>
             <ul className="space-y-2 text-xs font-medium text-text-muted">
               <li>
-                <a href="https://t.me/alekseysmrtsv" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-1.5">
-                  <span>✈️</span> Написать Алексею в TG
+                <a href="https://t.me/samartsev_ai" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-1.5">
+                  <span>✈️</span> Telegram (@samartsev_ai)
                 </a>
               </li>
               <li>
-                <a href="mailto:hello@samartsev.tech" className="hover:text-heavy transition-colors">
-                  hello@samartsev.tech
+                <a href="mailto:aleksei.samartsev.ya@yandex.ru" className="hover:text-heavy transition-colors">
+                  aleksei.samartsev.ya@yandex.ru
                 </a>
               </li>
             </ul>

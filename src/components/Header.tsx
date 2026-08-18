@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -55,8 +56,8 @@ export default function Header() {
     >
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12 h-[68px] flex items-center justify-between">
         {/* Logo */}
-        <a
-          href="#"
+        <Link
+          href="/"
           onClick={handleLogoClick}
           className="flex items-center gap-3 text-heavy group select-none"
           aria-label="Samartsev AI — главная"
@@ -71,7 +72,7 @@ export default function Header() {
             </svg>
           </div>
           <span className="font-display font-bold text-xl tracking-tight">Samartsev AI</span>
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
@@ -116,7 +117,11 @@ export default function Header() {
           </SheetTrigger>
           <SheetContent side="right" className="w-[280px]">
             <SheetHeader>
-              <SheetTitle>Samartsev AI</SheetTitle>
+              <SheetTitle>
+                <Link href="/" className="hover:text-primary transition-colors">
+                  Samartsev AI
+                </Link>
+              </SheetTitle>
             </SheetHeader>
             <nav className="flex flex-col gap-1 px-6 py-6">
               {navLinks.map((link) => (

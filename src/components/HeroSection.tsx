@@ -64,36 +64,77 @@ export default function HeroSection() {
               </Button>
             </div>
 
-            {/* Niche Pills / Ready Solutions */}
-            <div id="niches" className="flex flex-col gap-2.5 scroll-mt-28">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Готовые решения по нишам:
-              </span>
-              <div className="flex flex-wrap items-center gap-2">
+            {/* Niche Solutions Box (Prominent & High-converting) */}
+            <div id="niches" className="p-4 sm:p-5 rounded-2xl bg-surface border-2 border-border/80 shadow-md scroll-mt-28 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-bold font-display uppercase tracking-wider text-heavy flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  Готовые отраслевые решения:
+                </span>
+                <span className="text-[11px] font-semibold text-primary hidden sm:inline-block">
+                  Демо-стенды 24/7
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <Link
                   href="/med"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border hover:border-[#4A9EFF] hover:text-[#4A9EFF] hover:bg-[#4A9EFF]/5 transition-all shadow-subtle group"
+                  className="group flex flex-col justify-between p-3.5 rounded-xl bg-bg border border-border hover:border-[#4A9EFF] hover:bg-[#4A9EFF]/5 transition-all shadow-subtle"
                 >
-                  <span className="text-sm">🦷</span>
-                  <span>Стоматологии</span>
-                  <span className="text-[10px] text-text-muted group-hover:text-[#4A9EFF] transition-colors">→</span>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-2xl">🦷</span>
+                      <span className="text-[11px] font-bold text-[#4A9EFF] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+                        Демо →
+                      </span>
+                    </div>
+                    <span className="font-display font-bold text-sm text-heavy group-hover:text-[#4A9EFF] transition-colors block">
+                      Стоматологии
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-text-muted leading-tight mt-1">
+                    Запись 24/7 в Ident & YCLIENTS
+                  </span>
                 </Link>
+
                 <Link
                   href="/beauty"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border hover:border-[#C77DFF] hover:text-[#C77DFF] hover:bg-[#C77DFF]/5 transition-all shadow-subtle group"
+                  className="group flex flex-col justify-between p-3.5 rounded-xl bg-bg border border-border hover:border-[#C77DFF] hover:bg-[#C77DFF]/5 transition-all shadow-subtle"
                 >
-                  <span className="text-sm">💇‍♀️</span>
-                  <span>Салоны красоты</span>
-                  <span className="text-[10px] text-text-muted group-hover:text-[#C77DFF] transition-colors">→</span>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-2xl">💇‍♀️</span>
+                      <span className="text-[11px] font-bold text-[#C77DFF] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+                        Демо →
+                      </span>
+                    </div>
+                    <span className="font-display font-bold text-sm text-heavy group-hover:text-[#C77DFF] transition-colors block">
+                      Салоны красоты
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-text-muted leading-tight mt-1">
+                    WhatsApp-запись к мастерам
+                  </span>
                 </Link>
+
                 <Link
                   href="/auto"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border hover:border-[#FF6B4A] hover:text-[#FF6B4A] hover:bg-[#FF6B4A]/5 transition-all shadow-subtle group"
+                  className="group flex flex-col justify-between p-3.5 rounded-xl bg-bg border border-border hover:border-[#FF6B4A] hover:bg-[#FF6B4A]/5 transition-all shadow-subtle"
                 >
-                  <span className="text-sm">🚗</span>
-                  <span>Автосервисы</span>
-                  <span className="text-[10px] text-text-muted group-hover:text-[#FF6B4A] transition-colors">→</span>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-2xl">🚗</span>
+                      <span className="text-[11px] font-bold text-[#FF6B4A] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+                        Демо →
+                      </span>
+                    </div>
+                    <span className="font-display font-bold text-sm text-heavy group-hover:text-[#FF6B4A] transition-colors block">
+                      Автосервисы
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-text-muted leading-tight mt-1">
+                    Заявки 18:00+, 1С и Vision AI
+                  </span>
                 </Link>
               </div>
             </div>
