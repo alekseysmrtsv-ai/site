@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import content from "../../content/landing/index.json";
+import { ymEvent } from "@/components/YandexMetrika";
 
 const TABS = [
 
@@ -64,6 +65,7 @@ export default function CalculatorSection({
 
   const handleStopLoss = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
+    ymEvent('calculator_used');
     const chatEl = document.getElementById("chat-widget");
     if (chatEl) {
       chatEl.scrollIntoView({ behavior: "smooth", block: "center" });

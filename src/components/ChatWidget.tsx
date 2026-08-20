@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, MoreVertical } from "lucide-react";
+import { ymEvent } from "@/components/YandexMetrika";
 
 /* ──────────────── Types ──────────────── */
 
@@ -165,6 +166,19 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
   const scrollRef                     = useRef<HTMLDivElement>(null);
   const timeoutRef                    = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const messagesRef = useRef(messages);
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  const hasTrackedOpen = useRef(false);
+  const trackChatOpen = useCallback(() => {
+    if (!hasTrackedOpen.current) {
+      hasTrackedOpen.current = true;
+      ymEvent('chat_opened', { niche: niche || 'main' });
+    }
+  }, [niche]);
+
   const PLACEHOLDERS = [
     "Введите сообщение…",
     "Спросите меня: «Где хранятся данные?»",
@@ -183,12 +197,13 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
   useEffect(() => {
     const handleHighlight = () => {
       setIsHighlighted(true);
+      trackChatOpen();
       const timer = setTimeout(() => setIsHighlighted(false), 2000);
       return () => clearTimeout(timer);
     };
     window.addEventListener("highlight-chat", handleHighlight);
     return () => window.removeEventListener("highlight-chat", handleHighlight);
-  }, []);
+  }, [trackChatOpen]);
 
   const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
@@ -211,6 +226,12 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
   /* ── FAQ click ── */
 
   const handleFaqClick = (faq: FaqButtonData) => {
+    trackChatOpen();
+    const userMessages = messagesRef.current.filter(m => m.role === 'user');
+    if (userMessages.length === 0) {
+      ymEvent('chat_message_sent', { niche: niche || 'main' });
+    }
+
     setMessages((prev) => [...prev, { role: "user", text: faq.label, time: nowTime() }]);
     setShowFaq(false);
 
@@ -233,6 +254,18 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
 
   const sendMessage = useCallback(async (text: string) => {
     if (!text || statusRef.current === "loading") return;
+
+    trackChatOpen();
+
+    const hasContact = /(\+7|8\d{10}|@\w+|[\w.-]+@[\w.-]+)/i.test(text);
+    if (hasContact) {
+      ymEvent('chat_lead_captured', { niche: niche || 'main' });
+    }
+
+    const userMessages = messagesRef.current.filter(m => m.role === 'user');
+    if (userMessages.length === 0) {
+      ymEvent('chat_message_sent', { niche: niche || 'main' });
+    }
 
     setMessages((prev) => [...prev, { role: "user", text, time: nowTime() }]);
     setInput("");
@@ -319,7 +352,7 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
       console.error("ChatWidget Error:", err);
       addBotMessages([FALLBACK_MESSAGE]);
     }
-  }, [faqItems, addBotMessages, niche]);
+  }, [faqItems, addBotMessages, niche, trackChatOpen]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -410,7 +443,10 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
       </div>
 
       {/* Chat Card */}
-      <div className={`bg-surface rounded-md border border-border shadow-card flex flex-col h-[420px] sm:h-[520px] overflow-hidden transition-all duration-300 ${isHighlighted ? "chat-glow-pulse" : ""}`}>
+      <div
+        onClick={trackChatOpen}
+        className={`bg-surface rounded-md border border-border shadow-card flex flex-col h-[420px] sm:h-[520px] overflow-hidden transition-all duration-300 ${isHighlighted ? "chat-glow-pulse" : ""}`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-bg/50">
           <div className="flex items-center gap-3 relative group/conn cursor-help">
@@ -530,6 +566,7 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
           <input
             type="text"
             value={input}
+            onFocus={trackChatOpen}
             onChange={(e) => setInput(e.target.value)}
             placeholder={PLACEHOLDERS[placeholderIdx]}
             aria-label="Введите сообщение"

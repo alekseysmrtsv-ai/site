@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { CheckCircle, Loader2, AlertCircle, ArrowRight, ArrowLeft } from "lucide-react";
+import { ymEvent } from "@/components/YandexMetrika";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
@@ -76,6 +77,7 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
   };
 
   const handleQuizSubmit = () => {
+    ymEvent('quiz_completed', { niche: niche || defaultNiche || 'main' });
     if (typeof window !== "undefined") {
       window.dispatchEvent(
         new CustomEvent("quiz-data", {
@@ -126,7 +128,11 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
                 {NICHES.map(n => (
                   <button
                     key={n}
-                    onClick={() => { setNiche(n); setTimeout(() => setStep(2), 200); }}
+                    onClick={() => {
+                      ymEvent('quiz_started');
+                      setNiche(n);
+                      setTimeout(() => setStep(2), 200);
+                    }}
                     className={`p-3 sm:p-4 text-left border rounded-md transition-all text-sm sm:text-base ${niche === n ? 'border-primary bg-primary/5 text-primary font-medium shadow-sm' : 'border-border text-text-main hover:border-text-muted hover:bg-bg'}`}
                   >
                     {n}
@@ -267,6 +273,7 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
         // Demo mode
         await new Promise((r) => setTimeout(r, 1500));
         setFormState("success");
+        ymEvent('form_submitted', { niche: formNiche || niche || defaultNiche || 'main' });
         return;
       }
 
@@ -278,6 +285,7 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
 
       if (!res.ok) throw new Error("Ошибка сервера");
       setFormState("success");
+      ymEvent('form_submitted', { niche: formNiche || niche || defaultNiche || 'main' });
     } catch {
       setFormState("error");
       setErrorMsg("Не удалось отправить заявку. Напишите нам напрямую в Telegram.");
