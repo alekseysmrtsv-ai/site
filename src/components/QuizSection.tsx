@@ -335,6 +335,7 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
               </label>
               <select
                 id="contact-niche" name="niche"
+                defaultValue={defaultNiche || ""}
                 className="w-full bg-bg border border-border rounded-md px-4 py-3 text-text-main text-sm focus:outline-none focus:border-primary transition-colors appearance-none"
               >
                 <option value="">Выберите нишу…</option>

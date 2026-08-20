@@ -1357,8 +1357,20 @@ export function CrmKanban() {
                       <input 
                         value={editForm.niche || ""} 
                         onChange={e => setEditForm({...editForm, niche: e.target.value})}
+                        list="crm-niche-options"
+                        placeholder="Например: Стоматология"
                         className="font-medium text-gray-900 w-full bg-transparent focus:outline-none"
                       />
+                      <datalist id="crm-niche-options">
+                        <option value="Стоматология" />
+                        <option value="Салон красоты" />
+                        <option value="Автосервис" />
+                        <option value="Детейлинг" />
+                        <option value="Медицина" />
+                        <option value="Недвижимость" />
+                        <option value="E-commerce" />
+                        <option value="B2B SaaS" />
+                      </datalist>
                     </div>
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Оценка (Score)</p>
@@ -1519,7 +1531,23 @@ export function CrmKanban() {
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1">Ниша</label>
-                <input name="niche" type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-500 focus:border-emerald-500 outline-none" placeholder="Стоматология" />
+                <input 
+                  name="niche" 
+                  type="text" 
+                  list="add-crm-niche-options"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-emerald-500 focus:border-emerald-500 outline-none" 
+                  placeholder="Например: Стоматология" 
+                />
+                <datalist id="add-crm-niche-options">
+                  <option value="Стоматология" />
+                  <option value="Салон красоты" />
+                  <option value="Автосервис" />
+                  <option value="Детейлинг" />
+                  <option value="Медицина" />
+                  <option value="Недвижимость" />
+                  <option value="E-commerce" />
+                  <option value="B2B SaaS" />
+                </datalist>
               </div>
               
               <button type="submit" className="w-full mt-6 bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg transition-colors shadow-sm">
