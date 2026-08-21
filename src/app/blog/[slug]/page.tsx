@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { ArticleReadingProgress } from "@/components/blog/ArticleReadingProgress";
 import { ArticleShareBar } from "@/components/blog/ArticleShareBar";
 import { ArticleTableOfContents } from "@/components/blog/ArticleTableOfContents";
+import ConversionSpeedSimulator from "@/components/blog/ConversionSpeedSimulator";
 import { extractTocAndProcessContent } from "@/lib/toc";
 import { ArrowRight, BookOpen, ChevronRight, HelpCircle } from "lucide-react";
 
@@ -202,6 +203,11 @@ export default async function ArticleDetailPage({ params }: Props) {
               dangerouslySetInnerHTML={{ __html: processedHtml }}
             />
           </article>
+
+          {/* Interactive Conversion Speed Simulator for relevant articles */}
+          {(article.slug === 'ii-agent-obrabotka-zayavok-24-7' || article.slug === 'skolko-stoit-ii-agent' || article.slug === 'chto-takoe-ii-agent-dlya-biznesa') && (
+            <ConversionSpeedSimulator />
+          )}
 
           {/* Share & Copy Link Bar */}
           <ArticleShareBar title={article.title} />
