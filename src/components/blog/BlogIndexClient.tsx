@@ -81,12 +81,12 @@ export function BlogIndexClient({ articles }: Props) {
               {article.image && (
                 <Link
                   href={`/blog/${article.slug}`}
-                  className="w-full sm:w-44 h-40 flex-shrink-0 rounded-xl overflow-hidden bg-[#F3F4F6] border border-[#E5E7EB] block"
+                  className="w-full sm:w-52 h-44 sm:h-36 flex-shrink-0 rounded-xl overflow-hidden bg-white border border-[#E5E7EB] block p-1"
                 >
                   <img
                     src={article.image}
                     alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
                 </Link>
