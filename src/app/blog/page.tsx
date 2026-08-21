@@ -8,16 +8,16 @@ export const metadata: Metadata = {
   title: "Блог и База Знаний ИИ-автоматизации B2B | Samartsev AI",
   description: "Практические статьи, разборы 152-ФЗ, n8n архитектуры, экономика ИИ-агентов и инструкции по повышению конверсии отдела продаж.",
   alternates: {
-    canonical: "https://samartsev.tech/blog",
+    canonical: "https://www.samartsev.tech/blog",
   },
   openGraph: {
     title: "Блог и База Знаний ИИ-автоматизации B2B | Samartsev AI",
     description: "Практические статьи, разборы 152-ФЗ, n8n архитектуры, экономика ИИ-агентов и инструкции по повышению конверсии отдела продаж.",
-    url: "https://samartsev.tech/blog",
+    url: "https://www.samartsev.tech/blog",
     type: "website",
     images: [
       {
-        url: "https://samartsev.tech/blog/cat-sales.webp",
+        url: "https://www.samartsev.tech/blog/cat-sales.webp",
         width: 1200,
         height: 630,
         alt: "Блог Samartsev AI",
@@ -32,7 +32,7 @@ export default function BlogIndexPage() {
     "@type": "Blog",
     name: "Блог Samartsev AI — ИИ-автоматизация бизнеса",
     description: "Статьи и гайды по внедрению ИИ-агентов, n8n и 152-ФЗ.",
-    url: "https://samartsev.tech/blog",
+    url: "https://www.samartsev.tech/blog",
     blogPost: ARTICLES.map((a) => ({
       "@type": "BlogPosting",
       headline: a.title,

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = ARTICLES.find((a) => a.slug === slug);
   if (!article) return {};
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.tech";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.samartsev.tech";
   const imageUrl = article.image 
     ? (article.image.startsWith("http") ? article.image : `${baseUrl}${article.image}`)
     : `${baseUrl}/blog/cat-sales.webp`;
@@ -62,7 +62,7 @@ export default async function ArticleDetailPage({ params }: Props) {
     notFound();
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samartsev.tech";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.samartsev.tech";
 
   // Process ToC and inject IDs into headings
   const { processedHtml, tocItems } = extractTocAndProcessContent(article.content);

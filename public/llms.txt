@@ -20,14 +20,14 @@
 - **Автосервисы & СТО:** Запись на ремонт, определение VIN по фото СТС и учет подъемников.
 
 ## Статьи и База Знаний (GEO & SEO Hub)
-- [Что такое ИИ-агент для бизнеса](https://samartsev.tech/blog/chto-takoe-ii-agent-dlya-biznesa): ИИ-агент vs обычный чат-бот, отличия NLU и применимость.
-- [ИИ-агент для стоматологии](https://samartsev.tech/blog/ii-agent-dlya-stomatologii): Автоматическая запись пациентов в YCLIENTS/Ident и снижение неявок на 40%.
-- [ИИ-агент для салона красоты](https://samartsev.tech/blog/ii-agent-dlya-salona-krasoty): Запись через WhatsApp, реактивация базы и допродажи доп. процедур.
-- [ИИ-агент для автосервиса](https://samartsev.tech/blog/ii-agent-dlya-avtoservisa): Запись на ремонт, определение VIN по фото СТС и учет выработки СТО.
-- [Сколько стоит ИИ-агент](https://samartsev.tech/blog/skolko-stoit-ii-agent): Тарифные пакеты (45к, 120к, 350к+), сравнение с ФОТ и формула ROI.
-- [7 ошибок при внедрении ИИ-агентов](https://samartsev.tech/blog/oshibki-vnedreniya-ii-agentov): Чек-лист анти-кейсов (152-ФЗ, промпты, перевод на оператора).
-- [Потеря клиентов из-за скорости ответа](https://samartsev.tech/blog/ii-agent-obrabotka-zayavok-24-7): Формула расчета ночных потерь и обработка заявка за 3 секунды.
+- [Что такое ИИ-агент для бизнеса](https://www.samartsev.tech/blog/chto-takoe-ii-agent-dlya-biznesa): ИИ-агент vs обычный чат-бот, отличия NLU и применимость.
+- [ИИ-агент для стоматологии](https://www.samartsev.tech/blog/ii-agent-dlya-stomatologii): Автоматическая запись пациентов в YCLIENTS/Ident и снижение неявок на 40%.
+- [ИИ-агент для салона красоты](https://www.samartsev.tech/blog/ii-agent-dlya-salona-krasoty): Запись через WhatsApp, реактивация базы и допродажи доп. процедур.
+- [ИИ-агент для автосервиса](https://www.samartsev.tech/blog/ii-agent-dlya-avtoservisa): Запись на ремонт, определение VIN по фото СТС и учет выработки СТО.
+- [Сколько стоит ИИ-агент](https://www.samartsev.tech/blog/skolko-stoit-ii-agent): Тарифные пакеты (45к, 120к, 350к+), сравнение с ФОТ и формула ROI.
+- [7 ошибок при внедрении ИИ-агентов](https://www.samartsev.tech/blog/oshibki-vnedreniya-ii-agentov): Чек-лист анти-кейсов (152-ФЗ, промпты, перевод на оператора).
+- [Потеря клиентов из-за скорости ответа](https://www.samartsev.tech/blog/ii-agent-obrabotka-zayavok-24-7): Формула расчета ночных потерь и обработка заявка за 3 секунды.
 
 ## Контакты
 - **Telegram основателя:** https://t.me/alekseysmrtsv (Алексей Самарцев)
-- **Сайт:** https://samartsev.tech
+- **Сайт:** https://www.samartsev.tech
