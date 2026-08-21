@@ -23,7 +23,7 @@ export const ARTICLES: Article[] = [
     "date": "2026-08-11",
     "readTime": "10 мин",
     "category": "Архитектура & Стек",
-    "image": "/blog/cat-sales.webp",
+    "image": "/blog/cat-bot-vs-agent-cover.webp",
     "author": {
       "name": "Алексей Самарцев",
       "role": "Основатель Samartsev AI",
