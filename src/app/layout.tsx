@@ -7,7 +7,7 @@ import MatrixMode from "@/components/MatrixMode";
 import YandexMetrika from "@/components/YandexMetrika";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://samartsev.tech"),
+  metadataBase: new URL("https://www.samartsev.tech"),
   title: {
     default: "Samartsev AI — Ваш бизнес продаёт, пока вы спите",
     template: "%s | Samartsev AI",
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     "ИИ агент", "автоматизация бизнеса", "n8n", "чат-бот", "CRM интеграция",
     "amoCRM", "Bitrix24", "Telegram бот", "лид квалификация", "AI автоматизация",
   ],
-  authors: [{ name: "Алексей Самарцев", url: "https://samartsev.tech" }],
+  authors: [{ name: "Алексей Самарцев", url: "https://www.samartsev.tech" }],
   creator: "Алексей Самарцев",
   openGraph: {
     type: "website",
     locale: "ru_RU",
-    url: "https://samartsev.tech",
+    url: "https://www.samartsev.tech",
     siteName: "Samartsev AI",
     title: "Samartsev AI — Ваш бизнес продаёт, пока вы спите",
     description:
@@ -64,9 +64,9 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Person",
-      "@id": "https://samartsev.tech/#person",
+      "@id": "https://www.samartsev.tech/#person",
       name: "Алексей Самарцев",
-      url: "https://samartsev.tech",
+      url: "https://www.samartsev.tech",
       jobTitle: "AI Automation Engineer",
       description:
         "Внедряю автономных ИИ-агентов на базе n8n для малого и среднего бизнеса",
@@ -74,10 +74,10 @@ const jsonLd = {
     },
     {
       "@type": "LocalBusiness",
-      "@id": "https://samartsev.tech/#business",
+      "@id": "https://www.samartsev.tech/#business",
       name: "Samartsev AI",
-      url: "https://samartsev.tech",
-      founder: { "@id": "https://samartsev.tech/#person" },
+      url: "https://www.samartsev.tech",
+      founder: { "@id": "https://www.samartsev.tech/#person" },
       description:
         "ИИ-автоматизация для малого бизнеса: чат-боты, лид-квалификация, интеграция с CRM",
       areaServed: "RU",
