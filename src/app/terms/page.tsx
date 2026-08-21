@@ -41,7 +41,7 @@ export default function TermsPage() {
             <p className="text-text-muted leading-relaxed">
               Настоящие условия регулируют использование сайта{" "}
               <strong>samartsev.tech</strong> и услуг по внедрению ИИ-автоматизации,
-              предоставляемых ИП Самарцев Алексей (далее — «Исполнитель»).
+              предоставляемых — Самозанятый Самарцев Алексей (далее — «Исполнитель»).
               Используя сайт, вы соглашаетесь с данными условиями.
             </p>
           </section>
@@ -131,10 +131,19 @@ export default function TermsPage() {
             <p className="text-text-muted leading-relaxed">
               По всем вопросам:{" "}
               <a
-                href="mailto:hello@samartsev.tech"
+                href="mailto:aleksei.samartsev.ya@yandex.ru"
                 className="text-heavy underline hover:text-primary transition-colors"
               >
-                hello@samartsev.tech
+                aleksei.samartsev.ya@yandex.ru
+              </a>{" "}
+              или в Telegram:{" "}
+              <a
+                href="https://t.me/samartsev_ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-heavy underline hover:text-primary transition-colors"
+              >
+                @samartsev_ai
               </a>
             </p>
           </section>

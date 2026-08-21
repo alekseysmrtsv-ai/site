@@ -32,8 +32,8 @@ export default function PrivacyPage() {
             <h2 className="font-display text-xl font-bold text-heavy mb-3">1. Общие положения</h2>
             <p className="text-text-muted leading-relaxed">
               Настоящая политика конфиденциальности определяет порядок обработки персональных данных
-              пользователей сайта <strong>samartsev.tech</strong> в соответствии с Федеральным законом
-              №152-ФЗ «О персональных данных».
+              пользователей сайта <strong>samartsev.tech</strong> оператором — <strong>Самозанятый Самарцев Алексей</strong> (далее — «Оператор»),
+              в соответствии с Федеральным законом №152-ФЗ «О персональных данных».
             </p>
           </section>
 
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             <h2 className="font-display text-xl font-bold text-heavy mb-3">5. Ваши права</h2>
             <p className="text-text-muted leading-relaxed">
               Вы вправе в любой момент запросить удаление, изменение или предоставление ваших данных.
-              Для этого напишите на <a href="mailto:hello@samartsev.tech" className="text-heavy underline hover:text-primary transition-colors">hello@samartsev.tech</a>.
+              Для этого напишите на <a href="mailto:aleksei.samartsev.ya@yandex.ru" className="text-heavy underline hover:text-primary transition-colors">aleksei.samartsev.ya@yandex.ru</a>.
             </p>
           </section>
 
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="font-display text-xl font-bold text-heavy mb-3">7. Контакты</h2>
             <p className="text-text-muted leading-relaxed">
-              По вопросам обработки персональных данных: <a href="mailto:hello@samartsev.tech" className="text-heavy underline hover:text-primary transition-colors">hello@samartsev.tech</a>
+              По вопросам обработки персональных данных: <a href="mailto:aleksei.samartsev.ya@yandex.ru" className="text-heavy underline hover:text-primary transition-colors">aleksei.samartsev.ya@yandex.ru</a> или в Telegram: <a href="https://t.me/samartsev_ai" target="_blank" rel="noopener noreferrer" className="text-heavy underline hover:text-primary transition-colors">@samartsev_ai</a>
             </p>
           </section>
         </div>

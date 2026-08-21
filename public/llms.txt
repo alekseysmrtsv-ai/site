@@ -29,5 +29,5 @@
 - [Потеря клиентов из-за скорости ответа](https://www.samartsev.tech/blog/ii-agent-obrabotka-zayavok-24-7): Формула расчета ночных потерь и обработка заявка за 3 секунды.
 
 ## Контакты
-- **Telegram основателя:** https://t.me/alekseysmrtsv (Алексей Самарцев)
+- **Telegram основателя:** https://t.me/samartsev_ai (Алексей Самарцев)
 - **Сайт:** https://www.samartsev.tech

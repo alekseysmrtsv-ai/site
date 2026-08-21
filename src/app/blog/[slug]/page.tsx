@@ -183,7 +183,7 @@ export default async function ArticleDetailPage({ params }: Props) {
               </div>
 
               <a
-                href="https://t.me/alekseysmrtsv"
+                href="https://t.me/samartsev_ai"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-xl transition-colors inline-flex items-center gap-1.5"

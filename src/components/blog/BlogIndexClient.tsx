@@ -186,7 +186,7 @@ export function BlogIndexClient({ articles }: Props) {
               Внедряю автономных цифровых сотрудников для клиник, автосервисов и B2B. Ликвидирую потери на ночных и медленных ответах.
             </p>
             <a
-              href="https://t.me/alekseysmrtsv"
+              href="https://t.me/samartsev_ai"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-xs font-semibold text-gray-800 transition-colors"
