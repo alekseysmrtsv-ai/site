@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+const CRM_API_URL = "http://84.22.148.12:5679";
 const N8N_URL = "http://84.22.148.12:5678";
 
 function normalizeLead(l: any) {
@@ -93,14 +94,17 @@ function normalizeLead(l: any) {
 
 export async function GET() {
   try {
-    const res = await fetch(`${N8N_URL}/webhook/get-leads`, { cache: 'no-store' });
-    if (!res.ok) throw new Error("Failed to fetch leads");
+    let res = await fetch(`${CRM_API_URL}/leads`, { cache: 'no-store' }).catch(() => null);
+    if (!res || !res.ok) {
+      res = await fetch(`${N8N_URL}/webhook/get-leads`, { cache: 'no-store' });
+    }
+    if (!res || !res.ok) throw new Error("Failed to fetch leads");
     const data = await res.json();
     const leadsArray = Array.isArray(data) ? data : (data ? [data] : []);
     const mapped = leadsArray.map(normalizeLead);
     return NextResponse.json(mapped);
   } catch (error) {
-    console.error("n8n not reachable, returning mock data", error);
+    console.error("CRM backend not reachable, returning mock data", error);
     return NextResponse.json([
       { id: 1, type: "outreach", name: "Стоматология Улыбка", website: "ulibka.ru", phone: "+7 (999) 123-45-67", niche: "Стоматология", status: "new", score: 5, response_time: null, comment: "Выглядят перспективно, надо писать директору.", updated_at: new Date().toISOString() },
       { id: 2, type: "outreach", name: "ДентаЛюкс", website: "dentalux.ru", phone: "+7 (999) 765-43-21", niche: "Стоматология", status: "testing", score: 4, response_time: null, comment: "", updated_at: new Date(Date.now() - 86400000).toISOString() },
@@ -115,17 +119,22 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const res = await fetch(`${N8N_URL}/webhook/update-lead`, {
+    let res = await fetch(`${CRM_API_URL}/update-lead`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
-    });
-    if (!res.ok) {
-      console.warn(`n8n update-lead responded with ${res.status}`);
+    }).catch(() => null);
+
+    if (!res || !res.ok) {
+      await fetch(`${N8N_URL}/webhook/update-lead`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      }).catch(() => null);
     }
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("n8n not reachable, mocking success", error);
+    console.error("CRM backend not reachable, mocking success", error);
     return NextResponse.json({ success: true });
   }
 }

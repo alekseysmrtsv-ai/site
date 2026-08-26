@@ -34,7 +34,11 @@ import {
   Square, 
   Timer,
   FileText,
-  RotateCcw
+  RotateCcw,
+  MessageSquare,
+  MessageCircle,
+  Bot,
+  User
 } from "lucide-react";
 import { DndContext, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent, DragStartEvent, DragOverlay, useDroppable } from '@dnd-kit/core';
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
@@ -54,6 +58,28 @@ export type Lead = {
   comment?: string | null;
   updated_at?: string;
   data_quality?: any;
+};
+
+export type ChatMessage = {
+  id: number;
+  role: "user" | "assistant" | "system";
+  message: string;
+  created_at: string;
+};
+
+export type ConversationThread = {
+  session_id: string;
+  lead_id: number;
+  lead_name: string;
+  lead_phone: string;
+  lead_email?: string;
+  lead_niche: string;
+  lead_status: string;
+  lead_score: number;
+  lead_created_at?: string;
+  message_count: number;
+  last_message_at: string;
+  messages: ChatMessage[];
 };
 
 const OUTREACH_COLUMNS = [
@@ -288,7 +314,7 @@ function Column({ col, children, count }: { col: any, children: React.ReactNode,
 export function CrmKanban() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"outreach" | "inbound" | "archive">("outreach");
+  const [activeTab, setActiveTab] = useState<"outreach" | "inbound" | "dialogues" | "archive">("outreach");
   
   // View mode: Kanban vs Table
   const [viewMode, setViewMode] = useState<"kanban" | "table">("kanban");
@@ -300,6 +326,12 @@ export function CrmKanban() {
   const [staleOnly, setStaleOnly] = useState<boolean>(false);
   const [hasScriptOnly, setHasScriptOnly] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<"default" | "score_desc" | "score_asc" | "date_desc" | "date_asc" | "name_asc">("default");
+
+  // Conversations State
+  const [conversations, setConversations] = useState<ConversationThread[]>([]);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+  const [convSearch, setConvSearch] = useState("");
+  const [convCopied, setConvCopied] = useState(false);
 
   // Bulk operations
   const [selectedLeadIds, setSelectedLeadIds] = useState<number[]>([]);
@@ -321,6 +353,20 @@ export function CrmKanban() {
   const [isEditingComment, setIsEditingComment] = useState(false);
   const [modalCopied, setModalCopied] = useState(false);
 
+  const loadConversations = () => {
+    fetch("/api/conversations")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setConversations(data);
+          if (data.length > 0) {
+            setSelectedSessionId((prev) => prev || data[0].session_id);
+          }
+        }
+      })
+      .catch((err) => console.error("Error loading conversations:", err));
+  };
+
   useEffect(() => {
     fetch("/api/leads")
       .then((res) => res.json())
@@ -328,6 +374,7 @@ export function CrmKanban() {
         setLeads(data);
         setLoading(false);
       });
+    loadConversations();
   }, []);
 
   useEffect(() => {
@@ -380,6 +427,31 @@ export function CrmKanban() {
     setStaleOnly(false);
     setHasScriptOnly(false);
     setSortBy("default");
+  };
+
+  // Filtered Conversations
+  const filteredConversations = useMemo(() => {
+    return conversations.filter((c) => {
+      if (!convSearch.trim()) return true;
+      const q = convSearch.toLowerCase();
+      const matchName = (c.lead_name || "").toLowerCase().includes(q);
+      const matchPhone = (c.lead_phone || "").toLowerCase().includes(q);
+      const matchNiche = (c.lead_niche || "").toLowerCase().includes(q);
+      const matchMsg = c.messages?.some((m) => m.message.toLowerCase().includes(q));
+      return matchName || matchPhone || matchNiche || matchMsg;
+    });
+  }, [conversations, convSearch]);
+
+  const selectedConversation = useMemo(() => {
+    return conversations.find((c) => c.session_id === selectedSessionId) || conversations[0] || null;
+  }, [conversations, selectedSessionId]);
+
+  const copyConversationText = (conv: ConversationThread) => {
+    const text = `💬 ДИАЛОГ: ${conv.lead_name || 'Клиент'} (${conv.lead_niche || 'Общая'})\nТелефон: ${conv.lead_phone || '—'}\nСессия: ${conv.session_id}\nДата: ${formatDate(conv.last_message_at)}\n====================================\n\n` +
+      conv.messages.map(m => `[${m.role === 'user' ? '👤 Клиент' : '🤖 ИИ-Агент Samartsev AI'}] (${formatDate(m.created_at)}):\n${m.message}`).join('\n\n');
+    navigator.clipboard.writeText(text);
+    setConvCopied(true);
+    setTimeout(() => setConvCopied(false), 2000);
   };
 
   // Filtered & Sorted Leads
@@ -697,26 +769,38 @@ export function CrmKanban() {
             <div className="flex bg-gray-200/60 p-1 rounded-xl border border-gray-200 shadow-inner">
               <button 
                 onClick={() => { setActiveTab("outreach"); setSelectedLeadIds([]); }}
-                className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "outreach" ? "bg-white text-emerald-700 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "outreach" ? "bg-white text-emerald-700 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
               >
                 Холодный аутрич
               </button>
               <button 
                 onClick={() => { setActiveTab("inbound"); setSelectedLeadIds([]); }}
-                className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "inbound" ? "bg-white text-emerald-700 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "inbound" ? "bg-white text-emerald-700 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
               >
                 Входящие заявки
               </button>
               <button 
+                onClick={() => { setActiveTab("dialogues"); setSelectedLeadIds([]); }}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 ${activeTab === "dialogues" ? "bg-white text-emerald-700 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
+              >
+                <MessageSquare className="w-4 h-4 text-emerald-600" />
+                <span>Диалоги чата</span>
+                {conversations.length > 0 && (
+                  <span className="bg-emerald-100 text-emerald-800 text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                    {conversations.length}
+                  </span>
+                )}
+              </button>
+              <button 
                 onClick={() => { setActiveTab("archive"); setSelectedLeadIds([]); }}
-                className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "archive" ? "bg-white text-red-600 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "archive" ? "bg-white text-red-600 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
               >
                 Архив ({archivedLeads.length})
               </button>
             </div>
 
             {/* View Mode Toggle */}
-            {activeTab !== "archive" && (
+            {activeTab !== "archive" && activeTab !== "dialogues" && (
               <div className="flex bg-gray-200/60 p-1 rounded-xl border border-gray-200">
                 <button
                   onClick={() => setViewMode("kanban")}
@@ -762,7 +846,7 @@ export function CrmKanban() {
       </div>
 
       {/* KPI Summary Ribbon (Only on Active Pipelines) */}
-      {activeTab !== "archive" && (
+      {activeTab !== "archive" && activeTab !== "dialogues" && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
           <div className="bg-white border border-gray-200/80 rounded-xl p-3.5 shadow-sm">
             <p className="text-xs text-gray-500 font-medium">Всего в воронке</p>
@@ -825,7 +909,7 @@ export function CrmKanban() {
       )}
 
       {/* FILTER & SEARCH TOOLBAR */}
-      {activeTab !== "archive" && (
+      {activeTab !== "archive" && activeTab !== "dialogues" && (
         <div className="bg-white border border-gray-200 rounded-2xl p-4 mt-4 shadow-sm space-y-3">
           {/* Top Row: Search & Dropdowns */}
           <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
@@ -973,8 +1057,187 @@ export function CrmKanban() {
         </div>
       )}
 
-      {/* ARCHIVE VIEW */}
-      {activeTab === "archive" ? (
+      {/* DIALOGUES VIEW */}
+      {activeTab === "dialogues" ? (
+        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 mt-4 min-h-[720px]">
+          {/* Left List of Dialogues */}
+          <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col h-[750px]">
+            <div className="p-4 border-b border-gray-100 bg-gray-50/70 space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-gray-900 text-base flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-emerald-600" />
+                  Активные диалоги ({filteredConversations.length})
+                </h3>
+                <button
+                  onClick={loadConversations}
+                  title="Обновить диалоги"
+                  className="p-1.5 hover:bg-gray-200 rounded-lg text-gray-500 transition-colors"
+                >
+                  <RefreshCcw className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="relative">
+                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Поиск по имени, номеру, тексту..."
+                  value={convSearch}
+                  onChange={(e) => setConvSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-emerald-500 transition-all placeholder:text-gray-400"
+                />
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto divide-y divide-gray-100 p-2 space-y-1 custom-scrollbar">
+              {filteredConversations.length === 0 ? (
+                <div className="text-center py-16 text-gray-400 text-sm">
+                  Диалоги не найдены
+                </div>
+              ) : (
+                filteredConversations.map((conv) => {
+                  const isSelected = selectedConversation?.session_id === conv.session_id;
+                  const lastMsg = conv.messages && conv.messages.length > 0 
+                    ? conv.messages[conv.messages.length - 1] 
+                    : null;
+                  return (
+                    <button
+                      key={conv.session_id}
+                      onClick={() => setSelectedSessionId(conv.session_id)}
+                      className={`w-full text-left p-3.5 rounded-xl transition-all flex flex-col gap-1.5 ${
+                        isSelected
+                          ? "bg-emerald-50/90 border border-emerald-300 shadow-sm ring-1 ring-emerald-400/30"
+                          : "hover:bg-gray-50 border border-transparent"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-sm text-gray-900 truncate max-w-[200px]">
+                          {conv.lead_name || `Посетитель #${conv.lead_id || conv.session_id.slice(0, 6)}`}
+                        </span>
+                        <span className="text-[11px] text-gray-400 font-medium">
+                          {formatDate(conv.last_message_at)}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 flex-wrap text-xs">
+                        <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-semibold text-[10px]">
+                          {conv.lead_niche || "Общая"}
+                        </span>
+                        {conv.lead_phone && (
+                          <span className="text-gray-600 font-medium text-[11px]">
+                            {conv.lead_phone}
+                          </span>
+                        )}
+                        <span className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded font-bold ml-auto">
+                          💬 {conv.message_count || conv.messages.length}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mt-0.5">
+                        {lastMsg ? `${lastMsg.role === 'user' ? 'Клиент: ' : 'AI: '}${lastMsg.message}` : "Нет сообщений"}
+                      </p>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* Right Chat History View */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col h-[750px] overflow-hidden">
+            {selectedConversation ? (
+              <>
+                {/* Chat Top Header */}
+                <div className="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/70 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <h2 className="text-lg font-bold text-gray-900">
+                        {selectedConversation.lead_name || "Посетитель сайта"}
+                      </h2>
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">
+                        {selectedConversation.lead_niche || "Общая"}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mt-1">
+                      {selectedConversation.lead_phone ? (
+                        <a 
+                          href={`tel:${selectedConversation.lead_phone}`}
+                          className="font-semibold text-emerald-700 hover:underline flex items-center gap-1"
+                        >
+                          <Phone className="w-3.5 h-3.5" />
+                          {selectedConversation.lead_phone}
+                        </a>
+                      ) : (
+                        <span className="text-gray-400">Телефон не указан</span>
+                      )}
+                      <span>• Всего сообщений: {selectedConversation.messages.length}</span>
+                      <span>• Сессия: {selectedConversation.session_id.slice(0, 8)}...</span>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => copyConversationText(selectedConversation)}
+                      className="px-3.5 py-2 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 text-xs font-semibold text-gray-700 flex items-center gap-1.5 transition-all shadow-sm"
+                    >
+                      {convCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-gray-500" />}
+                      {convCopied ? "Скопировано!" : "Скопировать диалог"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Messages Feed */}
+                <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#F9FAFB]/60 custom-scrollbar">
+                  {selectedConversation.messages.map((msg, idx) => {
+                    const isUser = msg.role === "user";
+                    return (
+                      <div
+                        key={msg.id || idx}
+                        className={`flex gap-3 items-start ${isUser ? "justify-end" : "justify-start"}`}
+                      >
+                        {!isUser && (
+                          <div className="w-8 h-8 rounded-full bg-[#111827] text-[#00E68A] flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-sm border border-emerald-500/30">
+                            AI
+                          </div>
+                        )}
+
+                        <div
+                          className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 shadow-sm text-sm ${
+                            isUser
+                              ? "bg-emerald-600 text-white rounded-tr-none"
+                              : "bg-white text-gray-900 rounded-tl-none border border-gray-200"
+                          }`}
+                        >
+                          <div className={`flex items-center justify-between gap-4 mb-1.5 text-[11px] ${isUser ? "text-emerald-100" : "text-gray-400"}`}>
+                            <span className="font-semibold">
+                              {isUser ? "Клиент" : "ИИ-Агент Samartsev AI 24/7"}
+                            </span>
+                            <span>{formatDate(msg.created_at)}</span>
+                          </div>
+                          <p className="whitespace-pre-wrap leading-relaxed font-sans">
+                            {msg.message}
+                          </p>
+                        </div>
+
+                        {isUser && (
+                          <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold flex-shrink-0 border border-emerald-200">
+                            👤
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-gray-400 py-32">
+                <MessageSquare className="w-12 h-12 mb-3 stroke-[1.5] text-gray-300" />
+                <p className="font-semibold text-gray-600">Выберите диалог слева для просмотра</p>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : activeTab === "archive" ? (
         <div className="bg-white border border-gray-200 rounded-2xl p-6 mt-4 min-h-[60vh]">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
