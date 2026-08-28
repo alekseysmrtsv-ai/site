@@ -27,12 +27,24 @@ interface CalculatorSectionProps {
   defaultLeads?: number;
   defaultCheck?: number;
   defaultLoss?: number;
+  isCompact?: boolean;
+  title?: string;
+  subtitle?: string;
+  hideMobileSticky?: boolean;
+  customCtaUrl?: string;
+  customCtaText?: string;
 }
 
 export default function CalculatorSection({
   defaultLeads = 100,
   defaultCheck = 15000,
   defaultLoss = 20,
+  isCompact = false,
+  title,
+  subtitle,
+  hideMobileSticky = false,
+  customCtaUrl,
+  customCtaText,
 }: CalculatorSectionProps) {
   const [tab, setTab]     = useState("night");
   const [leads, setLeads] = useState(defaultLeads); // Теперь это лидов в МЕСЯЦ
@@ -84,19 +96,22 @@ export default function CalculatorSection({
     window.dispatchEvent(highlightEvent);
   }, [leads, check, loss, lossPerMonth]);
 
+  const sectionTitle = title || content.calculator.title;
+  const sectionSubtitle = subtitle || "Рассчитайте упущенную выручку из-за человеческого фактора и медленных ответов.";
+
   return (
     <section
       id="calculator"
-      className="w-full py-16 md:py-20 relative"
+      className={isCompact ? "w-full my-8 relative" : "w-full py-16 md:py-20 relative"}
     >
-      <div className="max-w-3xl mx-auto px-6 flex flex-col items-center">
+      <div className={isCompact ? "w-full flex flex-col items-center" : "max-w-3xl mx-auto px-6 flex flex-col items-center"}>
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="font-display font-bold text-4xl md:text-5xl text-heavy tracking-tight mb-4 text-balance">
-            {content.calculator.title}
+        <div className={isCompact ? "text-center mb-8" : "text-center mb-12"}>
+          <h2 className={`font-display font-bold text-heavy tracking-tight mb-3 text-balance ${isCompact ? "text-2xl sm:text-3xl" : "text-4xl md:text-5xl"}`}>
+            {sectionTitle}
           </h2>
-          <p className="text-text-muted text-lg max-w-xl mx-auto font-body">
-            Рассчитайте упущенную выручку из-за человеческого фактора и медленных ответов.
+          <p className={`text-text-muted max-w-xl mx-auto font-body ${isCompact ? "text-sm sm:text-base" : "text-lg"}`}>
+            {sectionSubtitle}
           </p>
         </div>
 
@@ -225,11 +240,13 @@ export default function CalculatorSection({
                 </p>
               )}
               <a
-                href="#chat-widget"
-                onClick={handleStopLoss}
-                className="w-full md:w-auto px-8 py-4 bg-primary text-heavy font-display font-semibold text-base uppercase tracking-widest rounded-md hover:bg-primary-hover transition-all duration-300 flex items-center justify-center gap-2 group active:scale-95"
+                href={customCtaUrl || "#chat-widget"}
+                onClick={customCtaUrl ? undefined : handleStopLoss}
+                target={customCtaUrl?.startsWith("http") ? "_blank" : undefined}
+                rel={customCtaUrl?.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="w-full md:w-auto px-8 py-4 bg-primary text-heavy font-display font-semibold text-base uppercase tracking-widest rounded-md hover:bg-primary-hover transition-all duration-300 flex items-center justify-center gap-2 group active:scale-95 text-center"
               >
-                Остановить потери
+                {customCtaText || "Остановить потери"}
                 <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
                 </svg>
@@ -247,35 +264,39 @@ export default function CalculatorSection({
         </div>
 
         {/* Agent Prompt Box */}
-        <div className="mt-8 w-full rounded-md p-6 text-center border border-primary/20 bg-primary/5 shadow-subtle relative overflow-hidden">
-           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-           <h3 className="font-display font-semibold text-lg text-heavy mb-3">
-             Как остановить потери? Спросите агента по кнопке выше 👆
-           </h3>
-           <p className="text-text-muted text-sm leading-relaxed max-w-2xl mx-auto font-body">
-             <strong className="text-heavy font-semibold">Это не демо.</strong> Это реальный автономный агент, работающий на том же движке, который мы внедряем клиентам.
-             <br className="hidden sm:block" />
-             Он <span className="text-primary font-medium">уже знает</span> вашу сумму потерь из калькулятора. Попробуйте спросить его, как вернуть упущенную прибыль.
-           </p>
-        </div>
+        {!isCompact && (
+          <div className="mt-8 w-full rounded-md p-6 text-center border border-primary/20 bg-primary/5 shadow-subtle relative overflow-hidden">
+             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+             <h3 className="font-display font-semibold text-lg text-heavy mb-3">
+               Как остановить потери? Спросите агента по кнопке выше 👆
+             </h3>
+             <p className="text-text-muted text-sm leading-relaxed max-w-2xl mx-auto font-body">
+               <strong className="text-heavy font-semibold">Это не демо.</strong> Это реальный автономный агент, работающий на том же движке, который мы внедряем клиентам.
+               <br className="hidden sm:block" />
+               Он <span className="text-primary font-medium">уже знает</span> вашу сумму потерь из калькулятора. Попробуйте спросить его, как вернуть упущенную прибыль.
+             </p>
+          </div>
+        )}
       </div>
 
       {/* Mobile sticky result bar */}
-      <div className="fixed bottom-0 left-0 w-full bg-surface border-t border-border shadow-floating z-40 md:hidden">
-        <div className="p-4 flex items-center justify-between gap-4">
-          <div className="flex flex-col">
-            <span className="text-[10px] font-display uppercase tracking-wider text-text-muted">Потери / мес</span>
-            <span className={`font-display font-bold text-lg tabular-nums transition-colors duration-300 ${getResultColorClass(loss)}`}>{fmt(lossPerMonth)} ₽</span>
+      {!hideMobileSticky && (
+        <div className="fixed bottom-0 left-0 w-full bg-surface border-t border-border shadow-floating z-40 md:hidden">
+          <div className="p-4 flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-display uppercase tracking-wider text-text-muted">Потери / мес</span>
+              <span className={`font-display font-bold text-lg tabular-nums transition-colors duration-300 ${getResultColorClass(loss)}`}>{fmt(lossPerMonth)} ₽</span>
+            </div>
+            <a
+              href="#chat-widget"
+              onClick={handleStopLoss}
+              className="px-6 py-3 bg-primary text-heavy font-display font-semibold text-sm uppercase tracking-wide rounded-md hover:bg-primary-hover transition-colors whitespace-nowrap active:scale-95"
+            >
+              Остановить
+            </a>
           </div>
-          <a
-            href="#chat-widget"
-            onClick={handleStopLoss}
-            className="px-6 py-3 bg-primary text-heavy font-display font-semibold text-sm uppercase tracking-wide rounded-md hover:bg-primary-hover transition-colors whitespace-nowrap active:scale-95"
-          >
-            Остановить
-          </a>
         </div>
-      </div>
+      )}
     </section>
   );
 }

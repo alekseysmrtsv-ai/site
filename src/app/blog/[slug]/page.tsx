@@ -8,8 +8,12 @@ import { ArticleReadingProgress } from "@/components/blog/ArticleReadingProgress
 import { ArticleShareBar } from "@/components/blog/ArticleShareBar";
 import { ArticleTableOfContents } from "@/components/blog/ArticleTableOfContents";
 import ConversionSpeedSimulator from "@/components/blog/ConversionSpeedSimulator";
+import LiveWhatsAppDialog from "@/components/blog/widgets/LiveWhatsAppDialog";
+import BotVsAgentSplitCompare from "@/components/blog/widgets/BotVsAgentSplitCompare";
+import SecurityPipelineFlow from "@/components/blog/widgets/SecurityPipelineFlow";
+import CalculatorSection from "@/components/CalculatorSection";
 import { extractTocAndProcessContent } from "@/lib/toc";
-import { ArrowRight, BookOpen, ChevronRight, HelpCircle } from "lucide-react";
+import { ArrowRight, BookOpen, ChevronRight, HelpCircle, Sparkles } from "lucide-react";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -74,6 +78,31 @@ export default async function ArticleDetailPage({ params }: Props) {
     .slice(0, 2);
 
   // Schema.org Microdata
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Главная",
+        item: baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Блог",
+        item: `${baseUrl}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: article.title,
+        item: `${baseUrl}/blog/${article.slug}`,
+      },
+    ],
+  };
+
   const techArticleSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -86,6 +115,10 @@ export default async function ArticleDetailPage({ params }: Props) {
       name: article.author.name,
       jobTitle: article.author.role,
       image: `${baseUrl}/founder.webp`,
+      sameAs: [
+        "https://t.me/samartsev_blog",
+        "https://t.me/samartsev_ai"
+      ]
     },
     publisher: {
       "@type": "Organization",
@@ -112,6 +145,10 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(techArticleSchema) }}
@@ -193,6 +230,24 @@ export default async function ArticleDetailPage({ params }: Props) {
             </div>
           </header>
 
+          {/* TL;DR Quick Summary Box for readers & AI Search Engines */}
+          {article.tldr && article.tldr.length > 0 && (
+            <div className="mb-8 p-5 sm:p-6 bg-white rounded-2xl border-l-4 border-l-[#00E68A] border border-[#E5E7EB] shadow-sm">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800 mb-3">
+                <Sparkles className="w-4 h-4 text-[#00E68A]" />
+                Ключевые тезисы статьи (TL;DR за 30 секунд)
+              </div>
+              <ul className="space-y-2 text-xs sm:text-sm text-[#1A1D20] font-medium leading-relaxed">
+                {article.tldr.map((bullet, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00E68A] mt-2 shrink-0" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* Table of Contents */}
           <ArticleTableOfContents items={tocItems} />
 
@@ -204,9 +259,35 @@ export default async function ArticleDetailPage({ params }: Props) {
             />
           </article>
 
-          {/* Interactive Conversion Speed Simulator for relevant articles */}
-          {(article.slug === 'ii-agent-obrabotka-zayavok-24-7' || article.slug === 'skolko-stoit-ii-agent' || article.slug === 'chto-takoe-ii-agent-dlya-biznesa') && (
+          {/* Contextual Interactive / Remotion TSX Widget */}
+          {article.widgetType === "whatsapp" && (
+            <LiveWhatsAppDialog initialNiche={article.whatsappNiche || "stomatology"} />
+          )}
+          {article.widgetType === "bot-vs-agent" && (
+            <BotVsAgentSplitCompare />
+          )}
+          {article.widgetType === "security-flow" && (
+            <SecurityPipelineFlow />
+          )}
+          {article.widgetType === "conversion-speed" && (
             <ConversionSpeedSimulator />
+          )}
+
+          {/* Embedded Niche Calculator if configured */}
+          {article.calculatorConfig && (
+            <div className="my-10 bg-white p-6 sm:p-8 rounded-3xl border border-[#E5E7EB] shadow-sm">
+              <CalculatorSection
+                isCompact={true}
+                hideMobileSticky={true}
+                defaultLeads={article.calculatorConfig.defaultLeads}
+                defaultCheck={article.calculatorConfig.defaultCheck}
+                defaultLoss={article.calculatorConfig.defaultLoss}
+                title={article.calculatorConfig.title}
+                subtitle={article.calculatorConfig.subtitle || "Рассчитайте финансовые потери вашего бизнеса и окупаемость внедрения ИИ-агента."}
+                customCtaUrl="https://t.me/samartsev_ai"
+                customCtaText="Обсудить расчет в Telegram →"
+              />
+            </div>
           )}
 
           {/* Share & Copy Link Bar */}
