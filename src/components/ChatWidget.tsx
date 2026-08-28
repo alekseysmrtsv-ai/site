@@ -172,6 +172,8 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
   }, [messages]);
 
   const hasTrackedOpen = useRef(false);
+  const hasTrackedUserMessage = useRef(false);
+
   const trackChatOpen = useCallback(() => {
     if (!hasTrackedOpen.current) {
       hasTrackedOpen.current = true;
@@ -197,13 +199,12 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
   useEffect(() => {
     const handleHighlight = () => {
       setIsHighlighted(true);
-      trackChatOpen();
       const timer = setTimeout(() => setIsHighlighted(false), 2000);
       return () => clearTimeout(timer);
     };
     window.addEventListener("highlight-chat", handleHighlight);
     return () => window.removeEventListener("highlight-chat", handleHighlight);
-  }, [trackChatOpen]);
+  }, []);
 
   const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
@@ -226,12 +227,6 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
   /* ── FAQ click ── */
 
   const handleFaqClick = (faq: FaqButtonData) => {
-    trackChatOpen();
-    const userMessages = messagesRef.current.filter(m => m.role === 'user');
-    if (userMessages.length === 0) {
-      ymEvent('chat_message_sent', { niche: niche || 'main' });
-    }
-
     setMessages((prev) => [...prev, { role: "user", text: faq.label, time: nowTime() }]);
     setShowFaq(false);
 
@@ -252,19 +247,20 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
     statusRef.current = status;
   }, [status]);
 
-  const sendMessage = useCallback(async (text: string) => {
+  const sendMessage = useCallback(async (text: string, source: "manual" | "calculator" | "quiz" = "manual") => {
     if (!text || statusRef.current === "loading") return;
 
-    trackChatOpen();
+    // Цели Яндекс Метрики: фиксируем ТОЛЬКО когда человек САМ ввёл и отправил сообщение
+    if (source === "manual") {
+      const hasContact = /(\+7|8\d{10}|@\w+|[\w.-]+@[\w.-]+)/i.test(text);
+      if (hasContact) {
+        ymEvent('chat_lead_captured', { niche: niche || 'main' });
+      }
 
-    const hasContact = /(\+7|8\d{10}|@\w+|[\w.-]+@[\w.-]+)/i.test(text);
-    if (hasContact) {
-      ymEvent('chat_lead_captured', { niche: niche || 'main' });
-    }
-
-    const userMessages = messagesRef.current.filter(m => m.role === 'user');
-    if (userMessages.length === 0) {
-      ymEvent('chat_message_sent', { niche: niche || 'main' });
+      if (!hasTrackedUserMessage.current) {
+        hasTrackedUserMessage.current = true;
+        ymEvent('chat_message_sent', { niche: niche || 'main' });
+      }
     }
 
     setMessages((prev) => [...prev, { role: "user", text, time: nowTime() }]);
@@ -352,13 +348,13 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
       console.error("ChatWidget Error:", err);
       addBotMessages([FALLBACK_MESSAGE]);
     }
-  }, [faqItems, addBotMessages, niche, trackChatOpen]);
+  }, [faqItems, addBotMessages, niche]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     const text = input.trim();
     if (text) {
-      sendMessage(text);
+      sendMessage(text, "manual");
     }
   };
 
@@ -380,7 +376,7 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
 
 Как мне остановить эти потери?`;
 
-      sendMessage(text);
+      sendMessage(text, "calculator");
     };
 
     window.addEventListener("calculate-loss", handleCalculateLoss);
@@ -406,7 +402,7 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
 
 Что вы можете мне предложить?`;
 
-      sendMessage(text);
+      sendMessage(text, "quiz");
       
       setTimeout(() => {
         document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -444,7 +440,6 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
 
       {/* Chat Card */}
       <div
-        onClick={trackChatOpen}
         className={`bg-surface rounded-md border border-border shadow-card flex flex-col h-[420px] sm:h-[520px] overflow-hidden transition-all duration-300 ${isHighlighted ? "chat-glow-pulse" : ""}`}
       >
         {/* Header */}
