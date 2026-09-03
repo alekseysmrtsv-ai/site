@@ -48,6 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/prom`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
   ];
 
   const articlePages: MetadataRoute.Sitemap = ARTICLES.map((article) => ({

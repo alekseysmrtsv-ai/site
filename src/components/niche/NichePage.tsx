@@ -35,6 +35,7 @@ export interface NicheConfig {
     ctaPrimary: string;
     ctaSecondary: string;
   };
+  stats?: { value: number; suffix: string; label: string }[];
   calculator: {
     leads: number;
     check: number;
@@ -46,6 +47,8 @@ export interface NicheConfig {
     subtitle: string;
     rows: { label: string; old: string; ai: string }[];
   };
+  scenariosHeadline?: string;
+  scenariosSubtitle?: string;
   scenarios: {
     icon: string;
     time: string;
@@ -104,7 +107,15 @@ function AnimatedStat({ value, suffix, label, color }: { value: number; suffix: 
   );
 }
 
-export default function NichePage({ config }: { config: NicheConfig }) {
+export default function NichePage({
+  config,
+  customHeroWidget,
+  customCalculator,
+}: {
+  config: NicheConfig;
+  customHeroWidget?: React.ReactNode;
+  customCalculator?: React.ReactNode;
+}) {
   const { chatWidget } = content;
   const c = config;
 
@@ -199,31 +210,37 @@ export default function NichePage({ config }: { config: NicheConfig }) {
                 </div>
               </div>
 
-              {/* Right: Chat Demo */}
-              <div className="flex flex-col items-center gap-4 lg:sticky lg:top-24">
-                <div className="relative">
-                  <ChatWidget chatWidgetData={chatWidget} niche={c.nicheKey} />
-                  {/* Glow ring around chat */}
-                  <div
-                    className="absolute -inset-1 rounded-2xl opacity-20 blur-xl -z-10"
-                    style={{ background: c.accentColor }}
-                  />
-                </div>
-                <div
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border"
-                  style={{
-                    borderColor: `rgba(${c.accentColorRGB}, 0.3)`,
-                    background: `rgba(${c.accentColorRGB}, 0.05)`,
-                  }}
-                >
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: c.accentColor }} />
-                    <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: c.accentColor }} />
-                  </span>
-                  <span className="text-[12px] font-display font-semibold" style={{ color: c.accentColor }}>
-                    Протестируйте агента в боевых условиях
-                  </span>
-                </div>
+              {/* Right: Chat Demo or Custom Hero Widget */}
+              <div className="flex flex-col items-center gap-4 lg:sticky lg:top-24 w-full">
+                {customHeroWidget ? (
+                  customHeroWidget
+                ) : (
+                  <>
+                    <div className="relative w-full">
+                      <ChatWidget chatWidgetData={chatWidget} niche={c.nicheKey} />
+                      {/* Glow ring around chat */}
+                      <div
+                        className="absolute -inset-1 rounded-2xl opacity-20 blur-xl -z-10"
+                        style={{ background: c.accentColor }}
+                      />
+                    </div>
+                    <div
+                      className="flex items-center gap-2 px-4 py-2 rounded-full border"
+                      style={{
+                        borderColor: `rgba(${c.accentColorRGB}, 0.3)`,
+                        background: `rgba(${c.accentColorRGB}, 0.05)`,
+                      }}
+                    >
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: c.accentColor }} />
+                        <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: c.accentColor }} />
+                      </span>
+                      <span className="text-[12px] font-display font-semibold" style={{ color: c.accentColor }}>
+                        Протестируйте агента в боевых условиях
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -232,10 +249,18 @@ export default function NichePage({ config }: { config: NicheConfig }) {
         {/* ── ANIMATED STATS STRIP ────────────────────── */}
         <section className="w-full border-y border-border py-12">
           <div className="max-w-[1000px] mx-auto px-6 flex flex-wrap justify-center gap-8 md:gap-0 md:divide-x md:divide-border">
-            <AnimatedStat value={2} suffix="с" label="Скорость ответа" color={c.accentColor} />
-            <AnimatedStat value={24} suffix="/7" label="Без выходных" color={c.accentColor} />
-            <AnimatedStat value={0} suffix="" label="Пропущенных заявок" color={c.accentColor} />
-            <AnimatedStat value={3} suffix=" дня" label="До запуска" color={c.accentColor} />
+            {c.stats && c.stats.length > 0 ? (
+              c.stats.map((s, idx) => (
+                <AnimatedStat key={idx} value={s.value} suffix={s.suffix} label={s.label} color={c.accentColor} />
+              ))
+            ) : (
+              <>
+                <AnimatedStat value={2} suffix="с" label="Скорость ответа" color={c.accentColor} />
+                <AnimatedStat value={24} suffix="/7" label="Без выходных" color={c.accentColor} />
+                <AnimatedStat value={0} suffix="" label="Пропущенных заявок" color={c.accentColor} />
+                <AnimatedStat value={3} suffix=" дня" label="До запуска" color={c.accentColor} />
+              </>
+            )}
           </div>
         </section>
 
@@ -250,10 +275,10 @@ export default function NichePage({ config }: { config: NicheConfig }) {
           <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
             <div className="text-center mb-16 space-y-4 max-w-2xl mx-auto">
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-heavy">
-                Реальные сценарии работы
+                {c.scenariosHeadline || "Возможные сценарии применения"}
               </h2>
               <p className="text-text-muted text-lg font-body">
-                Как ваш ИИ-агент обрабатывает заявки прямо сейчас
+                {c.scenariosSubtitle || "Как ИИ-агент автоматизирует типовые процессы"}
               </p>
             </div>
 
@@ -317,12 +342,16 @@ export default function NichePage({ config }: { config: NicheConfig }) {
           </div>
         </section>
 
-        {/* ── CALCULATOR ─────────────────────────────── */}
-        <CalculatorSection
-          defaultLeads={c.calculator.leads}
-          defaultCheck={c.calculator.check}
-          defaultLoss={c.calculator.loss}
-        />
+        {/* ── CALCULATOR / INFOGRAPHIC ────────────────── */}
+        {customCalculator ? (
+          customCalculator
+        ) : (
+          <CalculatorSection
+            defaultLeads={c.calculator.leads}
+            defaultCheck={c.calculator.check}
+            defaultLoss={c.calculator.loss}
+          />
+        )}
 
         {/* ── COMPARISON ─────────────────────────────── */}
         <section className="relative w-full py-20 overflow-hidden">

@@ -38,6 +38,11 @@ export default function Footer() {
                   <span>🚗</span> ИИ для автосервисов
                 </Link>
               </li>
+              <li>
+                <Link href="/prom" className="hover:text-primary transition-colors flex items-center gap-1.5">
+                  <span>🏭</span> ИИ для заводов и B2B
+                </Link>
+              </li>
             </ul>
           </div>
 

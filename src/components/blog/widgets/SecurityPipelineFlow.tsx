@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { ShieldCheck, Server, Lock, Database, Cpu, ArrowRight, Play, Pause, RotateCcw, CheckCircle2 } from "lucide-react";
@@ -29,7 +29,7 @@ const NODES: PipelineNode[] = [
     id: "docker_vps",
     stepNumber: 2,
     title: "Контур n8n в РФ",
-    sub: "Docker на Selectel (Москва)",
+    sub: "Защищенный Docker (Москва)",
     iconName: "server",
     techStack: "Self-hosted Docker n8n Community",
     securityNote: "Сервер физически расположен в РФ. Корневой сертификат НУЦ Минцифры РФ.",
