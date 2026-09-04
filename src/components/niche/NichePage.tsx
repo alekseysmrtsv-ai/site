@@ -12,7 +12,8 @@ import ChatWidget from "@/components/ChatWidget";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import contentRaw from "../../../content/landing/index.json";
-import { LandingContent, FAQItem } from "@/types/landing";
+import { LandingContent, FAQItem, ChatWidgetContent } from "@/types/landing";
+import { NICHE_DATA } from "./nicheData";
 
 const content = contentRaw as LandingContent;
 
@@ -62,6 +63,7 @@ export interface NicheConfig {
     description: string;
     readTime: string;
   };
+  chatWidget?: ChatWidgetContent;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -116,8 +118,9 @@ export default function NichePage({
   customHeroWidget?: React.ReactNode;
   customCalculator?: React.ReactNode;
 }) {
-  const { chatWidget } = content;
   const c = config;
+  const nicheEntry = (NICHE_DATA as Record<string, any>)[c.nicheKey];
+  const chatWidget = c.chatWidget || nicheEntry?.chatWidget || content.chatWidget;
 
   return (
     <div
