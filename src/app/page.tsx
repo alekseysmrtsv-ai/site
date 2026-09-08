@@ -16,6 +16,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Samartsev AI — Ваш бизнес продаёт, пока вы спите",
+  alternates: {
+    canonical: "https://www.samartsev.tech",
+  },
 };
 
 export default function HomePage() {

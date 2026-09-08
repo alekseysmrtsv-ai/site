@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Условия использования | Samartsev AI",
   description:
     "Условия использования сайта samartsev.tech и предоставляемых услуг.",
+  alternates: {
+    canonical: "https://www.samartsev.tech/terms",
+  },
 };
 
 export default function TermsPage() {

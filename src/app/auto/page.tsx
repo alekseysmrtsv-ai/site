@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "ИИ-агент для автосервиса — приём заявок 24/7 | Samartsev AI",
   description:
     "ИИ-ассистент для автосервисов. Принимает заявки ночью и в выходные. Интеграция с CRM и 1С.",
+  alternates: {
+    canonical: "https://www.samartsev.tech/auto",
+  },
 };
 
 export default function AutoPage() {

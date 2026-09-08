@@ -4,6 +4,9 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Политика конфиденциальности | Samartsev AI",
   description: "Политика обработки персональных данных в соответствии с ФЗ №152.",
+  alternates: {
+    canonical: "https://www.samartsev.tech/privacy",
+  },
 };
 
 export default function PrivacyPage() {

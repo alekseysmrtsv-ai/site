@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "ИИ-агент для салона красоты — онлайн-запись 24/7 | Samartsev AI",
   description:
     "ИИ-ассистент для beauty-салонов. Записывает клиентов, отвечает в мессенджерах, снижает потери заявок.",
+  alternates: {
+    canonical: "https://www.samartsev.tech/beauty",
+  },
 };
 
 export default function BeautyPage() {
