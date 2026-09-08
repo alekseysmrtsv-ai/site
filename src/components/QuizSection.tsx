@@ -139,21 +139,12 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
       timestamp: new Date().toISOString(),
     };
 
-    let webhookUrl = process.env.NEXT_PUBLIC_N8N_FORM_WEBHOOK;
-    if (webhookUrl && process.env.NODE_ENV === "production") {
+    let webhookUrl = process.env.NEXT_PUBLIC_N8N_FORM_WEBHOOK || "/api/n8n/webhook/contact-form";
+    if (process.env.NODE_ENV === "production" && webhookUrl.includes("/webhook-test/")) {
       webhookUrl = webhookUrl.replace("/webhook-test/", "/webhook/");
     }
 
     try {
-      if (!webhookUrl) {
-        // Demo mode fallback
-        await new Promise((r) => setTimeout(r, 1200));
-        setFormState("success");
-        ymEvent("quiz_lead_captured", { niche: niche || defaultNiche || "main", channel: preferredChannel });
-        ymEvent("form_submitted", { niche: niche || defaultNiche || "main", source: "quiz_funnel" });
-        return;
-      }
-
       const res = await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -161,13 +152,15 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
       });
 
       if (!res.ok) {
-        throw new Error("Ошибка сервера при отправке");
+        const errorData = await res.json().catch(() => null);
+        throw new Error(errorData?.message || `HTTP ${res.status}`);
       }
 
       setFormState("success");
       ymEvent("quiz_lead_captured", { niche: niche || defaultNiche || "main", channel: preferredChannel });
       ymEvent("form_submitted", { niche: niche || defaultNiche || "main", source: "quiz_funnel" });
-    } catch {
+    } catch (err) {
+      console.error("Quiz submission error:", err);
       setFormState("error");
       setErrorMsg("Не удалось отправить заявку через форму. Пожалуйста, напишите нам напрямую в Telegram @samartsev_ai — мы сразу ответим.");
     }
@@ -513,10 +506,22 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
                 <div
                   role="alert"
                   aria-live="polite"
-                  className="flex items-start gap-2 text-xs sm:text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3"
+                  className="space-y-2 text-xs sm:text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3"
                 >
-                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <span>{errorMsg}</span>
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span>{errorMsg}</span>
+                  </div>
+                  <a
+                    href={`https://t.me/samartsev_ai?text=${encodeURIComponent(
+                      `Здравствуйте! Оставляю заявку с квиза:\n• Ниша: ${niche || "Не указана"}\n• Имя: ${name}\n• Контакт: ${phone} (${preferredChannel})\n• Задачи: ${tasks.join(", ")}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 font-semibold text-primary hover:underline pt-1 text-xs"
+                  >
+                    <Send className="w-3.5 h-3.5" /> Отправить напрямую в Telegram (@samartsev_ai)
+                  </a>
                 </div>
               )}
 

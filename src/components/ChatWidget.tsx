@@ -290,19 +290,9 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
     }, TIMEOUT_MS);
 
     try {
-      let webhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK;
-      if (webhookUrl && process.env.NODE_ENV === "production") {
+      let webhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK || "/api/n8n/webhook/chat-widget";
+      if (process.env.NODE_ENV === "production" && webhookUrl.includes("/webhook-test/")) {
         webhookUrl = webhookUrl.replace("/webhook-test/", "/webhook/");
-      }
-
-      if (!webhookUrl) {
-        await new Promise((r) => setTimeout(r, 1800));
-        clearTimeout(timeoutRef.current!);
-        setStatus("idle");
-        addBotMessages([
-          `Интересный вопрос! Для детального ответа давайте обсудим вашу задачу подробнее. Расскажите, с какими процессами вы хотите работать?`,
-        ]);
-        return;
       }
 
       const res = await fetch(webhookUrl, {
