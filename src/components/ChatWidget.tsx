@@ -171,15 +171,7 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
     messagesRef.current = messages;
   }, [messages]);
 
-  const hasTrackedOpen = useRef(false);
   const hasTrackedUserMessage = useRef(false);
-
-  const trackChatOpen = useCallback(() => {
-    if (!hasTrackedOpen.current) {
-      hasTrackedOpen.current = true;
-      ymEvent('chat_opened', { niche: niche || 'main' });
-    }
-  }, [niche]);
 
   const PLACEHOLDERS = [
     "Введите сообщение…",
@@ -520,7 +512,6 @@ export default function ChatWidget({ chatWidgetData, niche }: ChatWidgetProps) {
           <input
             type="text"
             value={input}
-            onFocus={trackChatOpen}
             onChange={(e) => setInput(e.target.value)}
             placeholder={PLACEHOLDERS[placeholderIdx]}
             aria-label="Введите сообщение"
