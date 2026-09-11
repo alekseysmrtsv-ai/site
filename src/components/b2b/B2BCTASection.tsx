@@ -49,19 +49,19 @@ export default function B2BCTASection() {
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-heavy leading-tight">
               Готовы оцифровать процессы и убрать до 80% рутины?
             </h2>
-            <p className="text-text-muted text-base sm:text-lg font-body leading-relaxed">
+            <p className="text-slate-200 text-base sm:text-lg font-body leading-relaxed">
               Разберем узкие места в ваших продажах и операционке, покажем прототип решения под ваш стек (CRM, 1С, Telegram) и посчитаем реальную окупаемость.
             </p>
           </div>
 
           {/* Quick Contact Form or Direct Telegram */}
           {status === "success" ? (
-            <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 space-y-2 max-w-md w-full">
+            <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 space-y-2 max-w-md w-full">
               <div className="flex items-center justify-center gap-2 font-display font-bold text-lg">
                 <CheckCircle2 className="w-5 h-5" />
                 <span>Заявка принята!</span>
               </div>
-              <p className="text-xs text-text-muted">
+              <p className="text-xs sm:text-sm text-slate-200">
                 Алексей Самарцев свяжется с вами в течение рабочего дня для согласования удобного времени аудита.
               </p>
             </div>
@@ -74,7 +74,7 @@ export default function B2BCTASection() {
                   value={phoneOrTg}
                   onChange={(e) => setPhoneOrTg(e.target.value)}
                   placeholder="Телефон или @username Telegram"
-                  className="flex-1 px-4 py-3 rounded-xl bg-bg border border-border text-sm text-heavy placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors"
+                  className="flex-1 px-4 py-3 rounded-xl bg-bg border-2 border-border text-sm text-heavy placeholder:text-slate-400 focus:outline-none focus:border-primary transition-colors"
                 />
                 <Button
                   type="submit"
@@ -85,20 +85,20 @@ export default function B2BCTASection() {
                   {status === "loading" ? "Отправка..." : "Заказать аудит"}
                 </Button>
               </div>
-              <p className="text-[11px] text-text-muted text-center">
+              <p className="text-xs text-slate-300 text-center">
                 Конфиденциально · Подписание NDA до старта · 152-ФЗ
               </p>
             </form>
           )}
 
           {/* Direct Telegram Alternative */}
-          <div className="pt-4 border-t border-border/60 w-full max-w-md flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-semibold text-text-muted">
+          <div className="pt-4 border-t border-border/80 w-full max-w-md flex flex-col sm:flex-row items-center justify-center gap-4 text-xs sm:text-sm font-semibold text-slate-200">
             <span>Или сразу напрямую:</span>
             <a
               href="https://t.me/samartsev_ai"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-bg border border-border hover:border-primary/50 text-heavy transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-bg border-2 border-border hover:border-primary/50 text-heavy transition-colors"
             >
               <MessageSquare className="w-4 h-4 text-primary" />
               <span>Написать Алексею в Telegram</span>
@@ -107,9 +107,9 @@ export default function B2BCTASection() {
           </div>
 
           {/* Trust points */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 text-xs text-text-muted max-w-2xl w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 text-xs sm:text-sm text-slate-200 max-w-2xl w-full">
             <div className="flex items-center justify-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>Без навязывания лишних услуг</span>
             </div>
             <div className="flex items-center justify-center gap-2">

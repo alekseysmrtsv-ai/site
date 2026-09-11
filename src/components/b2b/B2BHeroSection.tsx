@@ -32,19 +32,19 @@ export default function B2BHeroSection() {
               Автоматизация бизнес-процессов с ИИ для B2B
             </h1>
 
-            <p className="font-body text-base sm:text-lg text-text-muted leading-relaxed">
+            <p className="font-body text-base sm:text-lg text-slate-200 leading-relaxed">
               Устраняем невидимые затраты компании: алгоритмы за 30 секунд готовят КП, вытаскивают реквизиты из входящей почты, синхронизируют CRM с 1С и дают команде мгновенный доступ к корпоративной базе знаний.
             </p>
 
             {/* Quick Metrics */}
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-text-muted pt-1">
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm font-semibold pt-1">
               <div className="flex items-center gap-1.5 text-heavy">
                 <Zap className="w-4 h-4 text-primary" />
                 <span>До -80% рутины команды</span>
               </div>
               <div className="w-px h-3.5 bg-border hidden sm:block" />
               <div className="flex items-center gap-1.5 text-heavy">
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 <span>152-ФЗ и закрытый контур</span>
               </div>
               <div className="w-px h-3.5 bg-border hidden sm:block" />
@@ -68,7 +68,7 @@ export default function B2BHeroSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Обсудить в Telegram"
-                  className="flex items-center justify-center gap-2"
+                  className="flex items-center justify-center gap-2 text-heavy hover:text-primary"
                 >
                   <span>Написать в Telegram</span>
                   <ArrowRight className="w-4 h-4" />
@@ -78,14 +78,14 @@ export default function B2BHeroSection() {
 
             {/* Trust Bar */}
             <div className="flex flex-col gap-2.5 pt-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-text-muted">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
                 Бесшовно связываем ваши системы:
               </span>
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                 {["amoCRM", "Битрикс24", "1С:ERP", "Telegram", "WhatsApp", "YandexGPT"].map((tool) => (
                   <span
                     key={tool}
-                    className="font-display font-bold text-sm tracking-tight opacity-50 hover:opacity-100 transition-opacity cursor-default text-heavy"
+                    className="font-display font-bold text-sm tracking-tight text-slate-200 hover:text-heavy transition-colors cursor-default"
                   >
                     {tool}
                   </span>

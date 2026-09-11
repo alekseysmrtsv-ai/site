@@ -101,42 +101,42 @@ export default function HeroSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <Link
-            href="/med"
-            className="group flex flex-col justify-between p-4 rounded-xl bg-bg border border-border hover:border-[#4A9EFF] hover:bg-[#4A9EFF]/5 transition-all shadow-subtle min-h-[110px]"
+            href="/b2b"
+            className="group flex flex-col justify-between p-4 rounded-xl bg-bg border-2 border-primary/40 hover:border-primary hover:bg-primary/5 transition-all shadow-subtle min-h-[110px]"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl">🦷</span>
-                <span className="text-[11px] font-bold text-[#4A9EFF] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
-                  Демо →
+                <span className="text-2xl">💼</span>
+                <span className="text-[11px] font-bold text-primary group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+                  Новое →
                 </span>
               </div>
-              <span className="font-display font-bold text-sm text-heavy group-hover:text-[#4A9EFF] transition-colors block">
-                Стоматологии
+              <span className="font-display font-bold text-sm text-heavy group-hover:text-primary transition-colors block">
+                B2B Автоматизация
               </span>
             </div>
             <span className="text-[11px] text-text-muted leading-tight mt-2">
-              Запись 24/7 в Ident & YCLIENTS
+              Продажи, операционка и база знаний
             </span>
           </Link>
 
           <Link
-            href="/beauty"
-            className="group flex flex-col justify-between p-4 rounded-xl bg-bg border border-border hover:border-[#C77DFF] hover:bg-[#C77DFF]/5 transition-all shadow-subtle min-h-[110px]"
+            href="/prom"
+            className="group flex flex-col justify-between p-4 rounded-xl bg-bg border border-border hover:border-[#F59E0B] hover:bg-[#F59E0B]/5 transition-all shadow-subtle min-h-[110px]"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl">💇‍♀️</span>
-                <span className="text-[11px] font-bold text-[#C77DFF] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+                <span className="text-2xl">🏭</span>
+                <span className="text-[11px] font-bold text-[#F59E0B] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
                   Демо →
                 </span>
               </div>
-              <span className="font-display font-bold text-sm text-heavy group-hover:text-[#C77DFF] transition-colors block">
-                Салоны красоты
+              <span className="font-display font-bold text-sm text-heavy group-hover:text-[#F59E0B] transition-colors block">
+                Заводы & Производство
               </span>
             </div>
             <span className="text-[11px] text-text-muted leading-tight mt-2">
-              WhatsApp-запись к мастерам
+              Расчет сложных КП по 1С за 30 сек
             </span>
           </Link>
 
@@ -161,22 +161,22 @@ export default function HeroSection() {
           </Link>
 
           <Link
-            href="/prom"
-            className="group flex flex-col justify-between p-4 rounded-xl bg-bg border border-border hover:border-[#F59E0B] hover:bg-[#F59E0B]/5 transition-all shadow-subtle min-h-[110px]"
+            href="/med"
+            className="group flex flex-col justify-between p-4 rounded-xl bg-bg border border-border hover:border-[#4A9EFF] hover:bg-[#4A9EFF]/5 transition-all shadow-subtle min-h-[110px]"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl">🏭</span>
-                <span className="text-[11px] font-bold text-[#F59E0B] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+                <span className="text-2xl">🦷</span>
+                <span className="text-[11px] font-bold text-[#4A9EFF] group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
                   Демо →
                 </span>
               </div>
-              <span className="font-display font-bold text-sm text-heavy group-hover:text-[#F59E0B] transition-colors block">
-                Заводы & B2B
+              <span className="font-display font-bold text-sm text-heavy group-hover:text-[#4A9EFF] transition-colors block">
+                Стоматологии
               </span>
             </div>
             <span className="text-[11px] text-text-muted leading-tight mt-2">
-              Расчет сложных КП по 1С за 30 сек
+              Запись 24/7 в Ident & YCLIENTS
             </span>
           </Link>
         </div>

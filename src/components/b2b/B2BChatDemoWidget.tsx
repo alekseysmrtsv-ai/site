@@ -1,167 +1,173 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
-  FileText,
   Send,
   X,
   FileCheck2,
-  Database,
-  Briefcase,
-  Layers,
   Sparkles,
   Bot,
   User,
   CheckCircle2,
+  ArrowRight,
+  FileText,
 } from "lucide-react";
 
-type ModeKey = "sales" | "ops" | "knowledge";
-
-interface ScenarioMessage {
-  role: "system_event" | "client" | "ai" | "user";
-  text?: string;
-  badge?: string;
-  attachment?: { name: string; size: string };
-  metrics?: { label: string; value: string; color?: string }[];
-  actionBtn?: { label: string; action: () => void };
+interface ChatMessage {
+  id: string;
+  role: "bot" | "user";
+  text: string;
+  time: string;
+  actionBtn?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
+function getNowTime() {
+  return new Date().toLocaleTimeString("ru-RU", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+const PRESET_TOPICS = [
+  {
+    id: "sales",
+    buttonLabel: "📈 Как ускорить продажи и расчет КП?",
+    userPrompt: "Расскажите, как автоматизировать продажи и подготовку КП?",
+    botReply:
+      "Мы внедряем OCR-оцифровку входящих заявок из почты и мессенджеров со связкой с вашей 1С или CRM:\n\n• Заказчик присылает спецификацию в PDF или Excel.\n• Алгоритм за 30 секунд сверяет наличие на складе и считает скидку.\n• Менеджер получает готовое брендированное КП в PDF.\n\nВремя подготовки КП сокращается с 3 часов до 30 секунд.",
+    actionLabel: "📄 Посмотреть пример сформированного КП в PDF",
+  },
+  {
+    id: "ops",
+    buttonLabel: "⚙️ Как автоматизировать договоры и 1С?",
+    userPrompt: "Как убрать рутину с документами, договорами и переносом данных в 1С?",
+    botReply:
+      "В операционке ИИ закрывает самую дорогую скрытую рутину:\n\n• Извлекает реквизиты (ИНН, КПП, расчетный счет, подписант) из сканов или почты.\n• Проверяет контрагента по ЕГРЮЛ и автоматически формирует договор и счет.\n• Синхронизирует данные между CRM и 1С без ручной перебивки операторами.",
+    actionLabel: "📄 Посмотреть пример сгенерированного договора",
+  },
+  {
+    id: "knowledge",
+    buttonLabel: "🧠 Как работает умная база знаний?",
+    userPrompt: "Как создать базу знаний, чтобы сотрудники не отвлекали руководство?",
+    botReply:
+      "Корпоративный RAG индексирует все ваши регламенты, инструкции, файлы Google Drive и Notion в единый защищенный векторный индекс:\n\n• Сотрудник задает вопрос в Telegram или чате компании.\n• ИИ за 1.5 секунды находит точный пункт регламента с цитатой.\n• РОП и старшие специалисты освобождаются от 80% однотипных вопросов.",
+    actionLabel: "💡 Посмотреть пример регламентного ответа",
+  },
+];
+
 export default function B2BChatDemoWidget() {
-  const [activeMode, setActiveMode] = useState<ModeKey>("sales");
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: "greeting",
+      role: "bot",
+      text: "Здравствуйте! Я ИИ-ассистент по автоматизации бизнеса Samartsev AI.\n\nГотов показать, как ИИ ускоряет продажи, убирает рутину в операционке и отвечает сотрудникам по базе знаний компании. О чем рассказать?",
+      time: getNowTime(),
+    },
+  ]);
+  const [isTyping, setIsTyping] = useState(false);
   const [inputText, setInputText] = useState("");
-  const [customMessages, setCustomMessages] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Quick questions bank
-  const quickQuestions = [
-    {
-      q: "С какими CRM работает?",
-      a: "Интегрируемся с amoCRM, Битрикс24, 1С (любые конфигурации по REST/OData) и кастомными системами через webhooks и n8n.",
-    },
-    {
-      q: "Сроки и стоимость пилота?",
-      a: "Пилотный MVP на один процесс запускаем за 10–14 рабочих дней (от 150 000 ₽). Вы получаете работающий сценарий на реальных данных.",
-    },
-    {
-      q: "Безопасность 152-ФЗ?",
-      a: "Все данные обрабатываются в закрытом контуре серверов в РФ (Yandex Cloud, On-Premise) с маскированием персональных данных.",
-    },
-  ];
-
-  // Pre-configured scenario streams for each pillar
-  const scenarios: Record<ModeKey, ScenarioMessage[]> = {
-    sales: [
-      {
-        role: "client",
-        text: "Добрый день! Нужен расчет поставки оборудования на 4 объекта. Спецификация во вложении. Сроки поджимают.",
-        attachment: { name: "ТЗ_Комплектация_Объекты_Юг.xlsx", size: "420 КБ" },
-      },
-      {
-        role: "ai",
-        badge: "ИИ-ассистент отдела продаж · 24 сек",
-        text: "Здравствуйте! ТЗ оцифровано, позиции сопоставлены со складом и прайсом в CRM. Сформировал персонализированное КП со скидкой за объем.",
-        metrics: [
-          { label: "Позиций обработано", value: "38 SKU", color: "text-emerald-500" },
-          { label: "Сверка остатков", value: "100% в наличии", color: "text-primary" },
-          { label: "Сумма по смете", value: "2 480 000 ₽", color: "text-amber-500" },
-        ],
-        actionBtn: {
-          label: "Посмотреть сформированное КП в PDF",
-          action: () => {
-            setModalTitle("Коммерческое предложение № КП-2026/09-71");
-            setModalContent(
-              <div className="space-y-4 text-xs font-sans">
-                <div className="p-3 bg-bg rounded-xl border border-border">
-                  <div className="font-bold text-heavy">Клиент: ООО «Инфраструктура-Юг»</div>
-                  <div className="text-text-muted">Менеджер: Автоматический расчет Samartsev AI</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between py-1.5 border-b border-border text-text-muted">
-                    <span>Серверный шкаф 42U 800x1000 (8 шт.)</span>
-                    <span className="font-mono font-bold text-heavy">680 000 ₽</span>
-                  </div>
-                  <div className="flex justify-between py-1.5 border-b border-border text-text-muted">
-                    <span>Коммутаторы L3 48 PoE+ (12 шт.)</span>
-                    <span className="font-mono font-bold text-heavy">1 440 000 ₽</span>
-                  </div>
-                  <div className="flex justify-between py-1.5 border-b border-border text-text-muted">
-                    <span>Комплект кабельных трасс и патч-панелей</span>
-                    <span className="font-mono font-bold text-heavy">360 000 ₽</span>
-                  </div>
-                </div>
-                <div className="p-3 bg-primary/10 rounded-xl border border-primary/30 flex justify-between items-center text-sm font-bold">
-                  <span>Итого со скидкой 5%:</span>
-                  <span className="text-primary font-display text-base">2 480 000 ₽ с НДС</span>
-                </div>
-              </div>
-            );
-            setIsModalOpen(true);
-          },
-        },
-      },
-    ],
-    ops: [
-      {
-        role: "client",
-        text: "Входящее письмо с темой «Реквизиты и карточка предприятия для заключения договора поставки».",
-        attachment: { name: "Карточка_ООО_ВостокТрейд_ИНН7701.pdf", size: "180 КБ" },
-      },
-      {
-        role: "ai",
-        badge: "Операционный ИИ-агент · 12 сек",
-        text: "Реквизиты распознаны, юрлицо проверено по ЕГРЮЛ. Сгенерирован типовой договор поставки и счет без участия бэк-офиса.",
-        metrics: [
-          { label: "ИНН / ОГРН", value: "7701894210 / проверен", color: "text-emerald-500" },
-          { label: "Риск-скоринг", value: "Надежный контрагент", color: "text-primary" },
-          { label: "Сверка систем", value: "Синхронизировано с 1С", color: "text-primary" },
-        ],
-        actionBtn: {
-          label: "Посмотреть сформированный договор",
-          action: () => {
-            setModalTitle("Проект договора поставки № Д-142/26");
-            setModalContent(
-              <div className="space-y-3 text-xs">
-                <p className="text-text-muted leading-relaxed">
-                  Договор сформирован по регламентному шаблону компании. Все реквизиты покупателя (ИНН 7701894210, р/с, БИК банка, Генеральный директор) подставлены автоматически без ручных ошибок.
-                </p>
-                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-600 dark:text-emerald-400 font-medium">
-                  ✓ Автоматически зарегистрирован в учетной системе и прикреплен к сделке.
-                </div>
-              </div>
-            );
-            setIsModalOpen(true);
-          },
-        },
-      },
-    ],
-    knowledge: [
-      {
-        role: "user",
-        text: "Какой у нас регламент согласования скидки клиенту свыше 10% и кто ее утверждает?",
-      },
-      {
-        role: "ai",
-        badge: "Корпоративный RAG-ассистент · 1.5 сек",
-        text: "Согласно регламенту продаж (п. 4.2 «Ценообразование и скидки»):\n• Скидки до 10% — применяет менеджер самостоятельно.\n• Скидки 10%–15% — утверждает РОП в Telegram нажатием кнопки.\n• Скидки от 15% — требует визы Коммерческого директора.",
-        metrics: [
-          { label: "Источник", value: "Регламент_продаж_v4.docx", color: "text-primary" },
-          { label: "Время ответа", value: "1.4 сек (без отвлечения РОПа)", color: "text-emerald-500" },
-        ],
-      },
-    ],
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleAskQuick = (qa: { q: string; a: string }) => {
-    setCustomMessages((prev) => [
-      ...prev,
-      { role: "user", text: qa.q },
-      { role: "ai", text: qa.a },
-    ]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isTyping]);
+
+  const openPdfModal = (type: "sales" | "ops" | "knowledge") => {
+    if (type === "sales") {
+      setModalTitle("Коммерческое предложение № КП-2026/09-71");
+      setModalContent(
+        <div className="space-y-4 text-xs sm:text-sm font-sans">
+          <div className="p-3.5 bg-bg rounded-xl border border-border">
+            <div className="font-bold text-heavy text-sm">Заказчик: ООО «Инфраструктура-Юг»</div>
+            <div className="text-slate-300 text-xs mt-0.5">Менеджер: Автоматический расчет Samartsev AI</div>
+          </div>
+          <div className="space-y-2">
+            <div className="flex justify-between py-2 border-b border-border/70 text-slate-200">
+              <span>Серверный шкаф 42U 800x1000 (8 шт.)</span>
+              <span className="font-mono font-bold text-heavy">680 000 ₽</span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-border/70 text-slate-200">
+              <span>Коммутаторы L3 48 PoE+ (12 шт.)</span>
+              <span className="font-mono font-bold text-heavy">1 440 000 ₽</span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-border/70 text-slate-200">
+              <span>Комплект кабельных трасс и патч-панелей</span>
+              <span className="font-mono font-bold text-heavy">360 000 ₽</span>
+            </div>
+          </div>
+          <div className="p-3.5 bg-primary/10 rounded-xl border border-primary/40 flex justify-between items-center text-sm font-bold">
+            <span className="text-heavy">Итого со скидкой 5%:</span>
+            <span className="text-primary font-display text-base">2 480 000 ₽ с НДС</span>
+          </div>
+        </div>
+      );
+    } else if (type === "ops") {
+      setModalTitle("Проект договора поставки № Д-142/26");
+      setModalContent(
+        <div className="space-y-3.5 text-xs sm:text-sm">
+          <p className="text-slate-200 leading-relaxed">
+            Договор сформирован по типовому юридическому шаблону компании. Все реквизиты покупателя (ИНН 7701894210, КПП, расчетный счет, БИК банка, Генеральный директор) подставлены автоматически из входящей карточки.
+          </p>
+          <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400 font-medium">
+            ✓ Документ зарегистрирован в 1С и прикреплен к сделке в amoCRM / Битрикс24.
+          </div>
+        </div>
+      );
+    } else {
+      setModalTitle("Ответ из корпоративной базы знаний RAG");
+      setModalContent(
+        <div className="space-y-3 text-xs sm:text-sm">
+          <div className="p-3 bg-bg rounded-xl border border-border text-slate-200">
+            <span className="font-bold text-heavy block mb-1">Регламент продаж (п. 4.2 «Ценообразование»):</span>
+            «Скидки до 10% применяет менеджер самостоятельно. Скидки от 10% до 15% утверждает РОП в Telegram-боте. Скидки свыше 15% требуют визы Коммерческого директора».
+          </div>
+          <div className="text-xs text-primary font-semibold">
+            ✓ Ответ найден за 1.4 секунды без отвлечения руководителя
+          </div>
+        </div>
+      );
+    }
+    setIsModalOpen(true);
   };
 
-  const handleCustomSend = (e: React.FormEvent) => {
+  const handleTopicClick = (topic: typeof PRESET_TOPICS[0]) => {
+    const userMsg: ChatMessage = {
+      id: String(Date.now()),
+      role: "user",
+      text: topic.userPrompt,
+      time: getNowTime(),
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
+    setIsTyping(true);
+
+    setTimeout(() => {
+      setIsTyping(false);
+      const botMsg: ChatMessage = {
+        id: String(Date.now() + 1),
+        role: "bot",
+        text: topic.botReply,
+        time: getNowTime(),
+        actionBtn: {
+          label: topic.actionLabel,
+          onClick: () => openPdfModal(topic.id as "sales" | "ops" | "knowledge"),
+        },
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    }, 800);
+  };
+
+  const handleCustomSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
 
@@ -169,227 +175,159 @@ export default function B2BChatDemoWidget() {
     const lower = query.toLowerCase();
     setInputText("");
 
-    let reply =
-      "Отличный запрос! В рамках B2B-автоматизации мы настраиваем сценарии индивидуально под ваш бизнес-стек. Напишите нам в Telegram (@samartsev_ai) — Алексей разберет ваши процессы на экспресс-аудите.";
+    const userMsg: ChatMessage = {
+      id: String(Date.now()),
+      role: "user",
+      text: query,
+      time: getNowTime(),
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
+    setIsTyping(true);
+
+    let replyText =
+      "Отличный вопрос! Мы проектируем архитектуру автоматизации индивидуально под ваш бизнес-стек. Напишите нам в Telegram (@samartsev_ai) — Алексей разберет ваши процессы на экспресс-аудите.";
 
     if (lower.includes("crm") || lower.includes("амо") || lower.includes("битрикс") || lower.includes("1с")) {
-      reply =
-        "Мы бесшовно интегрируемся с amoCRM, Битрикс24, 1С и кастомными базами данных. Никакой дублирующей рутины: лиды, сметы и отчеты синхронизируются в реальном времени.";
-    } else if (lower.includes("цен") || lower.includes("стоим") || lower.includes("срок") || lower.includes("пилот")) {
-      reply =
-        "Стоимость пилотного внедрения под ключ — от 150 000 ₽. Срок запуска первого работающего MVP — 10–14 рабочих дней.";
-    } else if (lower.includes("безопасн") || lower.includes("152") || lower.includes("сервер") || lower.includes("контур")) {
-      reply =
-        "Полное соответствие 152-ФЗ: развертывание на защищенных серверах в РФ или On-Premise в вашем контуре. Подписываем официальный NDA до начала работ.";
+      replyText =
+        "Мы нативно интегрируемся с amoCRM, Битрикс24, 1С (любые конфигурации) и кастомными базами данных через REST API и n8n. Никакой ручной перебивки: лиды, сметы и остатки синхронизируются в реальном времени.";
+    } else if (lower.includes("цен") || lower.includes("стоим") || lower.includes("срок") || lower.includes("пилот") || lower.includes("деньг")) {
+      replyText =
+        "Стоимость пилотного внедрения под ключ — от 150 000 ₽. Срок запуска работающего MVP на одном процессе — 10–14 рабочих дней. Окупаемость обычно наступает за 1–2 месяца.";
+    } else if (lower.includes("безопасн") || lower.includes("152") || lower.includes("сервер") || lower.includes("контур") || lower.includes("тайн")) {
+      replyText =
+        "Полное соответствие 152-ФЗ: развертывание в РФ на защищенных серверах или On-Premise в вашем ЦОД. До старта подписываем юридический NDA: данные и коммерческие прайсы не передаются во внешние публичные сети.";
     } else if (lower.includes("баз") || lower.includes("знан") || lower.includes("rag") || lower.includes("регламент")) {
-      reply =
-        "Корпоративный RAG индексирует ваши регламенты, договоры и инструкции. Сотрудники получают точные ответы за 2 секунды со ссылками на первоисточники.";
+      replyText =
+        "Корпоративный RAG индексирует файлы Google Drive, Word, PDF и Notion. Ваши сотрудники получают ответы за 1.5 секунды со строгой ссылкой на утвержденные правила компании.";
     }
 
-    setCustomMessages((prev) => [
-      ...prev,
-      { role: "user", text: query },
-      { role: "ai", text: reply },
-    ]);
+    setTimeout(() => {
+      setIsTyping(false);
+      const botMsg: ChatMessage = {
+        id: String(Date.now() + 1),
+        role: "bot",
+        text: replyText,
+        time: getNowTime(),
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    }, 900);
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto rounded-2xl bg-surface border border-border shadow-xl overflow-hidden font-sans flex flex-col h-[550px]">
-      {/* Header & Pillar Mode Switcher */}
-      <div className="px-5 py-3.5 bg-bg/80 border-b border-border space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-base">
-              🤖
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-bold font-display text-heavy">
-                  B2B ИИ-ассистент
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                  Онлайн
-                </span>
-              </div>
-              <p className="text-[11px] text-text-muted">
-                Выберите процесс для интерактивной демонстрации:
-              </p>
-            </div>
+    <div className="w-full max-w-lg mx-auto rounded-3xl bg-surface border-2 border-border shadow-2xl overflow-hidden font-sans flex flex-col h-[580px] relative">
+      {/* Header with clear Live Status */}
+      <div className="px-6 py-4 bg-bg/90 border-b border-border flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-primary/15 border border-primary/40 flex items-center justify-center text-primary text-lg shrink-0">
+            🤖
           </div>
-        </div>
-
-        {/* 3 Pillar Tabs */}
-        <div className="grid grid-cols-3 gap-1.5 p-1 bg-surface rounded-xl border border-border/70 text-xs">
-          <button
-            onClick={() => {
-              setActiveMode("sales");
-              setCustomMessages([]);
-            }}
-            className={`py-1.5 px-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all ${
-              activeMode === "sales"
-                ? "bg-primary text-surface shadow-sm"
-                : "text-text-muted hover:text-heavy hover:bg-bg/50"
-            }`}
-          >
-            <span>📈</span>
-            <span className="truncate">Продажи</span>
-          </button>
-          <button
-            onClick={() => {
-              setActiveMode("ops");
-              setCustomMessages([]);
-            }}
-            className={`py-1.5 px-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all ${
-              activeMode === "ops"
-                ? "bg-primary text-surface shadow-sm"
-                : "text-text-muted hover:text-heavy hover:bg-bg/50"
-            }`}
-          >
-            <span>⚙️</span>
-            <span className="truncate">Операционка</span>
-          </button>
-          <button
-            onClick={() => {
-              setActiveMode("knowledge");
-              setCustomMessages([]);
-            }}
-            className={`py-1.5 px-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all ${
-              activeMode === "knowledge"
-                ? "bg-primary text-surface shadow-sm"
-                : "text-text-muted hover:text-heavy hover:bg-bg/50"
-            }`}
-          >
-            <span>🧠</span>
-            <span className="truncate">База знаний</span>
-          </button>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-base font-bold font-display text-heavy">
+                B2B ИИ-ассистент
+              </span>
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                В сети
+              </span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Живой демо-диалог · Отвечает за 1 секунду
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Message Stream */}
-      <div className="flex-1 p-5 overflow-y-auto space-y-4 text-xs sm:text-sm">
-        {/* Scenario Messages */}
-        {scenarios[activeMode].map((msg, i) => (
+      <div className="flex-1 p-5 overflow-y-auto space-y-4 text-sm">
+        {messages.map((msg) => (
           <div
-            key={i}
-            className={`flex flex-col gap-1 max-w-[95%] ${
-              msg.role === "client" || msg.role === "user"
-                ? "items-start"
-                : "items-end ml-auto"
+            key={msg.id}
+            className={`flex flex-col gap-1.5 ${
+              msg.role === "user" ? "items-end ml-auto max-w-[88%]" : "items-start max-w-[92%]"
             }`}
           >
-            {msg.badge && (
-              <span className="text-[10px] font-medium text-primary px-1 flex items-center gap-1">
-                <Sparkles className="w-3 h-3" />
-                {msg.badge}
-              </span>
-            )}
+            <div className="flex items-center gap-2 px-1 text-[11px] text-slate-400 font-medium">
+              <span>{msg.role === "user" ? "Вы" : "ИИ-ассистент"}</span>
+              <span>·</span>
+              <span>{msg.time}</span>
+            </div>
+
             <div
-              className={`p-4 rounded-2xl shadow-subtle space-y-2.5 ${
-                msg.role === "client" || msg.role === "user"
-                  ? "bg-bg border border-border text-heavy rounded-tl-sm"
-                  : "bg-primary/5 dark:bg-primary/10 border border-primary/30 text-heavy rounded-tr-sm"
+              className={`p-4 rounded-2xl leading-relaxed shadow-sm ${
+                msg.role === "user"
+                  ? "bg-primary text-surface font-semibold rounded-tr-sm"
+                  : "bg-bg border border-border text-heavy rounded-tl-sm space-y-3"
               }`}
             >
-              <p className="leading-relaxed whitespace-pre-line">{msg.text}</p>
+              <p className="whitespace-pre-line text-xs sm:text-sm font-medium">
+                {msg.text}
+              </p>
 
-              {/* Attachment card if any */}
-              {msg.attachment && (
-                <div className="p-2 rounded-xl bg-surface border border-border/80 flex items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <FileText className="w-4 h-4 text-primary shrink-0" />
-                    <span className="font-semibold text-heavy truncate">
-                      {msg.attachment.name}
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-text-muted shrink-0">
-                    {msg.attachment.size}
-                  </span>
-                </div>
-              )}
-
-              {/* Metrics grid if any */}
-              {msg.metrics && (
-                <div className="space-y-1.5 font-mono text-xs bg-bg/80 p-2.5 rounded-xl border border-border/60">
-                  {msg.metrics.map((m, idx) => (
-                    <div key={idx} className="flex justify-between items-center">
-                      <span className="text-text-muted">{m.label}:</span>
-                      <span className={`font-bold ${m.color || "text-heavy"}`}>
-                        {m.value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Action Button */}
               {msg.actionBtn && (
                 <button
-                  onClick={msg.actionBtn.action}
-                  className="w-full py-2 px-3 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm mt-2"
+                  onClick={msg.actionBtn.onClick}
+                  className="w-full mt-2 py-2.5 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm"
                 >
-                  <FileCheck2 className="w-4 h-4" />
-                  <span>{msg.actionBtn.label}</span>
+                  <FileCheck2 className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{msg.actionBtn.label}</span>
                 </button>
               )}
             </div>
           </div>
         ))}
 
-        {/* Custom interactive conversation messages */}
-        {customMessages.map((msg, i) => (
-          <div
-            key={`custom-${i}`}
-            className={`flex flex-col gap-1 max-w-[90%] ${
-              msg.role === "user" ? "items-end ml-auto" : "items-start"
-            }`}
-          >
-            <span className="text-[10px] font-medium text-text-muted px-1">
-              {msg.role === "user" ? "Вы" : "B2B-ассистент"}
-            </span>
-            <div
-              className={`p-3.5 rounded-2xl text-xs leading-relaxed ${
-                msg.role === "user"
-                  ? "bg-primary text-surface font-semibold rounded-tr-sm"
-                  : "bg-bg border border-border text-heavy rounded-tl-sm shadow-subtle"
-              }`}
-            >
-              {msg.text}
-            </div>
+        {/* Live Typing Indicator */}
+        {isTyping && (
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-bg border border-border w-fit text-xs text-slate-300">
+            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+            <span>ИИ-ассистент печатает ответ...</span>
           </div>
-        ))}
+        )}
+
+        <div ref={messagesEndRef} />
       </div>
 
-      {/* Suggested Quick Question Chips */}
-      <div className="px-4 py-2 bg-bg/50 border-t border-border">
-        <div className="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap scrollbar-none">
-          {quickQuestions.map((qa, i) => (
+      {/* Interactive Scenario Buttons */}
+      <div className="px-4 py-2.5 bg-bg/80 border-t border-border space-y-1.5">
+        <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+          Нажмите, чтобы протестировать сценарий:
+        </div>
+        <div className="flex flex-col gap-1.5">
+          {PRESET_TOPICS.map((topic) => (
             <button
-              key={i}
-              onClick={() => handleAskQuick(qa)}
-              className="px-2.5 py-1 rounded-lg bg-surface hover:bg-surface/80 border border-border text-[11px] font-medium text-heavy hover:border-primary/50 transition-colors shrink-0"
+              key={topic.id}
+              onClick={() => handleTopicClick(topic)}
+              disabled={isTyping}
+              className="w-full text-left px-3 py-2 rounded-xl bg-surface hover:bg-surface/80 border border-border hover:border-primary/60 text-xs font-semibold text-heavy transition-all flex items-center justify-between group disabled:opacity-50"
             >
-              💬 {qa.q}
+              <span className="group-hover:text-primary transition-colors">
+                {topic.buttonLabel}
+              </span>
+              <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
             </button>
           ))}
         </div>
       </div>
 
-      {/* Input Bar */}
+      {/* Input Field with clear visual focus */}
       <form
-        onSubmit={handleCustomSend}
-        className="p-3 bg-surface border-t border-border flex items-center gap-2"
+        onSubmit={handleCustomSubmit}
+        className="p-3.5 bg-surface border-t border-border flex items-center gap-2.5"
       >
         <input
           type="text"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Спросите про CRM, 1С, документы или базу знаний..."
-          className="flex-1 bg-bg border border-border rounded-xl px-3.5 py-2 text-xs text-heavy placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors"
+          placeholder="Или задайте свой вопрос (про 1С, CRM, сроки)..."
+          className="flex-1 bg-bg border-2 border-border focus:border-primary rounded-xl px-4 py-2.5 text-xs sm:text-sm text-heavy placeholder:text-slate-400 focus:outline-none transition-colors"
         />
         <button
           type="submit"
-          disabled={!inputText.trim()}
-          className="p-2 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold transition-colors disabled:opacity-40"
+          disabled={!inputText.trim() || isTyping}
+          className="p-3 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold transition-colors disabled:opacity-40 shrink-0 shadow-sm"
+          aria-label="Отправить вопрос"
         >
           <Send className="w-4 h-4" />
         </button>
@@ -397,38 +335,39 @@ export default function B2BChatDemoWidget() {
 
       {/* Details Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="bg-surface text-heavy rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border border-border">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-surface text-heavy rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative border border-border">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 p-1 rounded-full hover:bg-bg text-text-muted transition-colors"
+              className="absolute top-5 right-5 p-1.5 rounded-full hover:bg-bg text-slate-300 hover:text-heavy transition-colors"
+              aria-label="Закрыть"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <div className="border-b-2 border-primary pb-3 mb-4">
-              <span className="font-display font-bold text-base text-heavy">
+            <div className="border-b-2 border-primary pb-3.5 mb-5">
+              <h3 className="font-display font-bold text-base sm:text-lg text-heavy">
                 {modalTitle}
-              </span>
-              <p className="text-xs text-text-muted mt-0.5">
-                Автоматически сгенерировано ИИ-конвейером Samartsev AI
+              </h3>
+              <p className="text-xs text-slate-300 mt-1">
+                Пример автоматического документа в контуре Samartsev AI
               </p>
             </div>
 
             <div className="mb-6">{modalContent}</div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center gap-2.5">
               <a
                 href="https://t.me/samartsev_ai"
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold text-xs text-center transition-colors shadow-sm"
+                className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold text-xs sm:text-sm text-center transition-colors shadow-md"
               >
-                Обсудить такой процесс для вашей компании
+                Внедрить такой процесс в вашу компанию
               </a>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="py-2.5 px-4 rounded-xl bg-bg hover:bg-bg/80 text-text-muted font-medium text-xs transition-colors border border-border"
+                className="w-full sm:w-auto py-3 px-5 rounded-xl bg-bg hover:bg-bg/80 text-slate-200 font-medium text-xs transition-colors border border-border"
               >
                 Закрыть
               </button>

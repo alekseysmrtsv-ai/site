@@ -1,6 +1,14 @@
 const FOUNDER_PHOTO = "/founder_portrait.webp";
 
-export default function FounderSection() {
+interface FounderSectionProps {
+  description?: string;
+}
+
+export default function FounderSection({ description }: FounderSectionProps = {}) {
+  const bioText =
+    description ||
+    "Внедряю автономных ИИ-агентов на базе n8n, которые квалифицируют лидов и закрывают записи в CRM без участия человека. Гарантирую окупаемость за счёт возврата упущенной выручки.";
+
   return (
     <section className="py-24 px-6 border-t border-border">
       <div className="max-w-3xl mx-auto text-center space-y-8">
@@ -25,9 +33,8 @@ export default function FounderSection() {
           <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-heavy">
             Алексей Самарцев
           </h2>
-          <p className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed font-body">
-            Внедряю автономных ИИ-агентов на базе n8n, которые квалифицируют лидов и закрывают записи в CRM без участия человека.
-            Гарантирую окупаемость за счёт возврата упущенной выручки.
+          <p className="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed font-body">
+            {bioText}
           </p>
           <div className="pt-6 flex flex-col items-center gap-3">
             <span className="font-display text-xl text-text-muted italic opacity-60">

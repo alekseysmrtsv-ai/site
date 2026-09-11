@@ -7,9 +7,9 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose 
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const navLinks = [
-  { href: "/#niches",     label: "Решения" },
+  { href: "/b2b",         label: "B2B автоматизация" },
+  { href: "/#niches",     label: "Отрасли" },
   { href: "/#services",   label: "Услуги" },
-  { href: "/#cases",      label: "Кейсы" },
   { href: "/#calculator", label: "Калькулятор" },
   { href: "/#faq",        label: "FAQ" },
   { href: "/blog",        label: "Блог" },
@@ -71,25 +71,42 @@ export default function Header() {
               />
             </svg>
           </div>
-          <span className="font-display font-bold text-xl tracking-tight">Samartsev AI</span>
+          <span className="font-display font-bold text-lg tracking-tight">
+            Samartsev <span className="text-primary">AI</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <nav className="flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium transition-colors duration-200 ${
-                  active === link.href
-                    ? "text-heavy"
-                    : "text-text-muted hover:text-heavy"
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+          <nav className="flex items-center gap-6 lg:gap-8">
+            {navLinks.map((link) => {
+              const isRoute = link.href.startsWith("/") && !link.href.includes("#");
+              return isRoute ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors duration-200 ${
+                    active === link.href
+                      ? "text-primary font-bold"
+                      : "text-text-muted hover:text-heavy"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors duration-200 ${
+                    active === link.href
+                      ? "text-heavy"
+                      : "text-text-muted hover:text-heavy"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
           <ThemeToggle />
           <a
@@ -124,16 +141,28 @@ export default function Header() {
               </SheetTitle>
             </SheetHeader>
             <nav className="flex flex-col gap-1 px-6 py-6">
-              {navLinks.map((link) => (
-                <SheetClose asChild key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-base font-medium text-text-muted hover:text-heavy py-3 border-b border-border transition-colors last:border-0"
-                  >
-                    {link.label}
-                  </a>
-                </SheetClose>
-              ))}
+              {navLinks.map((link) => {
+                const isRoute = link.href.startsWith("/") && !link.href.includes("#");
+                return (
+                  <SheetClose asChild key={link.href}>
+                    {isRoute ? (
+                      <Link
+                        href={link.href}
+                        className="text-base font-medium text-text-muted hover:text-heavy py-3 border-b border-border transition-colors last:border-0"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="text-base font-medium text-text-muted hover:text-heavy py-3 border-b border-border transition-colors last:border-0"
+                      >
+                        {link.label}
+                      </a>
+                    )}
+                  </SheetClose>
+                );
+              })}
               <SheetClose asChild>
                 <a
                   href="#contact"

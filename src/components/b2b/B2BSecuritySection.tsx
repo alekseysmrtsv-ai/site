@@ -49,7 +49,7 @@ export default function B2BSecuritySection() {
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-heavy leading-tight">
             Российский контур данных и соответствие 152-ФЗ
           </h2>
-          <p className="text-text-muted text-base md:text-lg font-body leading-relaxed">
+          <p className="text-slate-200 text-base md:text-lg font-body leading-relaxed">
             Мы знаем требования служб безопасности и комплаенса: коммерческая тайна, прайсы и персональные данные клиентов никогда не попадают в публичные сети.
           </p>
         </div>
@@ -59,14 +59,14 @@ export default function B2BSecuritySection() {
           {securityFeatures.map((feat, idx) => (
             <div
               key={idx}
-              className="p-7 rounded-3xl bg-surface border border-border hover:border-primary/50 transition-all flex flex-col justify-between space-y-4 shadow-subtle"
+              className="p-7 rounded-3xl bg-surface border-2 border-border hover:border-primary/60 transition-all flex flex-col justify-between space-y-4 shadow-subtle"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="w-12 h-12 rounded-2xl bg-bg border border-border flex items-center justify-center">
                     {feat.icon}
                   </div>
-                  <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-bg border border-border text-text-muted">
+                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-bg border border-border text-slate-200">
                     {feat.badge}
                   </span>
                 </div>
@@ -75,13 +75,13 @@ export default function B2BSecuritySection() {
                   {feat.title}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-body">
                   {feat.description}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-border/60 flex items-center gap-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                <CheckCircle className="w-4 h-4" />
+              <div className="pt-3 border-t border-border/60 flex items-center gap-2 text-xs sm:text-sm font-semibold text-emerald-400">
+                <CheckCircle className="w-4 h-4 shrink-0" />
                 <span>Гарантия конфиденциальности и юридической чистоты</span>
               </div>
             </div>
@@ -89,20 +89,20 @@ export default function B2BSecuritySection() {
         </div>
 
         {/* Security Compliance Banner */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-surface border-2 border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
-          <div className="space-y-1 text-center sm:text-left">
-            <h4 className="font-display font-bold text-base sm:text-lg text-heavy">
+        <div className="p-7 sm:p-9 rounded-3xl bg-surface border-2 border-emerald-500/40 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md">
+          <div className="space-y-1.5 text-center sm:text-left">
+            <h4 className="font-display font-bold text-base sm:text-xl text-heavy">
               Требуется развертывание строго на ваших серверах (On-Premise)?
             </h4>
-            <p className="text-xs sm:text-sm text-text-muted">
-              Упакуем агентов в локальный стек с подключением к корпоративному Git, n8n Self-Hosted и локальной базе знаний.
+            <p className="text-xs sm:text-sm text-slate-200 font-body">
+              Упакуем агентов в изолированный локальный Docker-стек с подключением к корпоративному Git, n8n Self-Hosted и локальной базе знаний.
             </p>
           </div>
           <a
             href="https://t.me/samartsev_ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition-colors shadow-sm"
+            className="shrink-0 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm transition-colors shadow-sm"
           >
             Обсудить требования безопасности
           </a>

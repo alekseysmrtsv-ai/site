@@ -50,14 +50,14 @@ export default function B2BWorkflowSteps() {
     <section id="workflow" className="w-full py-20 bg-surface border-t border-border">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/15 border border-primary/40 text-primary text-xs font-bold uppercase tracking-wider">
             <span>🚀</span>
             <span>Понятный путь внедрения</span>
           </div>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-heavy leading-tight">
             Как мы внедряем автоматизацию: от аудита до масштабирования
           </h2>
-          <p className="text-text-muted text-base md:text-lg font-body leading-relaxed">
+          <p className="text-slate-200 text-base md:text-lg font-body leading-relaxed">
             Без затягивания сроков на месяцы. Вы видите первый осязаемый результат и экономию времени уже через две недели после старта.
           </p>
         </div>
@@ -67,14 +67,14 @@ export default function B2BWorkflowSteps() {
           {steps.map((step, idx) => (
             <div
               key={idx}
-              className="p-7 rounded-3xl bg-bg border border-border hover:border-primary/50 transition-all flex flex-col justify-between space-y-6 shadow-subtle group"
+              className="p-7 rounded-3xl bg-bg border-2 border-border hover:border-primary/60 transition-all flex flex-col justify-between space-y-6 shadow-subtle group"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-display font-black text-3xl text-primary/40 group-hover:text-primary transition-colors">
                     {step.num}
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-surface border border-border text-[11px] font-bold text-heavy">
+                  <span className="px-3 py-1 rounded-full bg-surface border border-border text-xs font-bold text-slate-200">
                     {step.badge}
                   </span>
                 </div>
@@ -87,15 +87,15 @@ export default function B2BWorkflowSteps() {
                   {step.title}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-body">
                   {step.description}
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-border/80 space-y-2 text-xs text-text-muted">
+              <div className="pt-4 border-t border-border/80 space-y-2 text-xs sm:text-sm text-slate-200 font-medium">
                 {step.bullets.map((b, bIdx) => (
                   <div key={bIdx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                     <span>{b}</span>
                   </div>
                 ))}

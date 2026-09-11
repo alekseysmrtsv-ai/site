@@ -22,19 +22,19 @@ export default function B2BFAQSection() {
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-heavy leading-tight">
             Часто задаваемые вопросы по B2B-автоматизации
           </h2>
-          <p className="text-text-muted text-base md:text-lg font-body leading-relaxed">
+          <p className="text-slate-200 text-base md:text-lg font-body leading-relaxed">
             Ответы на ключевые вопросы собственников бизнеса, коммерческих и операционных директоров.
           </p>
         </div>
 
         {/* FAQ Accordion */}
-        <div className="max-w-3xl mx-auto space-y-3">
+        <div className="max-w-3xl mx-auto space-y-3.5">
           {B2B_FAQS.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
               <div
                 key={idx}
-                className="rounded-2xl bg-bg border border-border overflow-hidden transition-colors"
+                className="rounded-2xl bg-bg border-2 border-border overflow-hidden transition-colors"
               >
                 <button
                   onClick={() => toggle(idx)}
@@ -45,8 +45,8 @@ export default function B2BFAQSection() {
                     {faq.question}
                   </span>
                   <div
-                    className={`w-8 h-8 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-primary" : "text-text-muted"
+                    className={`w-9 h-9 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 transition-transform duration-200 ${
+                      isOpen ? "rotate-180 text-primary border-primary/50" : "text-slate-300"
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -54,7 +54,7 @@ export default function B2BFAQSection() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-text-muted leading-relaxed border-t border-border/60">
+                  <div className="px-5 sm:px-6 pb-6 pt-2 text-sm sm:text-base text-slate-200 leading-relaxed border-t border-border/80 font-body">
                     <p className="whitespace-pre-line">{faq.answer}</p>
                   </div>
                 )}

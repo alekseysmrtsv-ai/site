@@ -45,6 +45,8 @@ export const metadata: Metadata = {
   },
 };
 
+import FounderSection from "@/components/FounderSection";
+
 export default function B2BPage() {
   const baseUrl = "https://www.samartsev.tech";
 
@@ -123,6 +125,7 @@ export default function B2BPage() {
         <B2BPillarsSection />
         <B2BWorkflowSteps />
         <B2BSecuritySection />
+        <FounderSection description="Проектирую и внедряю сквозную ИИ-автоматизацию для производств и B2B-компаний. Лично провожу аудит процессов, собираю архитектуру в n8n и отвечаю за окупаемость каждого внедренного сценария." />
         <B2BFAQSection />
         <B2BCTASection />
       </main>
