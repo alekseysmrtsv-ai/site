@@ -12,6 +12,7 @@ import {
   ArrowRight,
   FileText,
 } from "lucide-react";
+import { ymEvent } from "@/components/YandexMetrika";
 
 interface ChatMessage {
   id: string;
@@ -22,6 +23,18 @@ interface ChatMessage {
     label: string;
     onClick: () => void;
   };
+}
+
+function getSessionId(): string {
+  if (typeof window === "undefined") return "ssr";
+  const KEY = "samartsev_chat_session";
+  let id = localStorage.getItem(KEY);
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem(KEY, id);
+    window.dispatchEvent(new Event("chat-session-created"));
+  }
+  return id;
 }
 
 function getNowTime() {
@@ -167,13 +180,78 @@ export default function B2BChatDemoWidget() {
     }, 800);
   };
 
-  const handleCustomSubmit = (e: React.FormEvent) => {
+  const sendToB2bBackend = async (query: string): Promise<string> => {
+    try {
+      let webhookUrl = process.env.NEXT_PUBLIC_N8N_B2B_WEBHOOK || "/api/n8n/webhook/b2b-chat-widget";
+      if (process.env.NODE_ENV === "production" && webhookUrl.includes("/webhook-test/")) {
+        webhookUrl = webhookUrl.replace("/webhook-test/", "/webhook/");
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+      const res = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          message: query,
+          session_id: getSessionId(),
+          source: "b2b_widget",
+          timestamp: Date.now(),
+          niche: "b2b",
+        }),
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
+      const responseText = await res.text();
+      let data: { response?: string; reply?: string; text?: string } = {};
+      try {
+        if (responseText) data = JSON.parse(responseText);
+      } catch {
+        // non-json response
+      }
+
+      return (
+        data.response ||
+        data.reply ||
+        data.text ||
+        "Принял ваш запрос! Свяжемся с вами для детального аудита процессов."
+      );
+    } catch {
+      // Local fallback in case of temporary network glitch
+      const lower = query.toLowerCase();
+      if (lower.includes("crm") || lower.includes("амо") || lower.includes("битрикс") || lower.includes("1с")) {
+        return "Интегрируемся с 1С (ERP, УНФ, УТ, КА) и CRM (Битрикс24, amoCRM) по штатным API. Никакой ручной перебивки: остатки, счета и сделки синхронизируются автоматически.\n\nКакую конфигурацию 1С и CRM вы используете?";
+      } else if (lower.includes("цен") || lower.includes("стоим") || lower.includes("срок") || lower.includes("пилот")) {
+        return "Стоимость пилотного внедрения под ключ — от 150 000 ₽ за 10–14 рабочих дней. Окупаемость — от 1 месяца. Все исходники и доступы передаются в вашу собственность.\n\nХотите провести бесплатный 20-минутный экспресс-аудит?";
+      } else if (lower.includes("безопасн") || lower.includes("152") || lower.includes("сервер") || lower.includes("контур")) {
+        return "Полное соответствие 152-ФЗ: серверы в РФ (Selectel) или On-Premise в вашем контуре. Обязательно подписываем NDA до передачи любых данных.";
+      } else if (lower.includes("что еще") || lower.includes("кроме") || lower.includes("список")) {
+        return "Автоматизируем 3 блока: 1) Продажи (квалификация лидов, генерация КП за 30 сек), 2) Операционка (OCR документов, договоры, 1С), 3) База знаний (ИИ-помощник по регламентам).\n\nВ каком из направлений у вас сейчас больше всего ручной работы?";
+      }
+      return "Мы настраиваем ИИ-автоматизацию индивидуально под задачи B2B-компаний. Оставьте контакт (телефон или Telegram) — Алексей Самарцев подготовит технический план внедрения.";
+    }
+  };
+
+  const handleCustomSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputText.trim()) return;
+    if (!inputText.trim() || isTyping) return;
 
     const query = inputText.trim();
-    const lower = query.toLowerCase();
     setInputText("");
+
+    // Analytics tracking
+    ymEvent("chat_message_sent", { niche: "b2b" });
+    const hasContact = /(\+7|8\d{10}|@\w+|[\w.-]+@[\w.-]+)/i.test(query);
+    if (hasContact) {
+      ymEvent("chat_lead_captured", { niche: "b2b" });
+    }
 
     const userMsg: ChatMessage = {
       id: String(Date.now()),
@@ -185,33 +263,16 @@ export default function B2BChatDemoWidget() {
     setMessages((prev) => [...prev, userMsg]);
     setIsTyping(true);
 
-    let replyText =
-      "Отличный вопрос! Мы проектируем архитектуру автоматизации индивидуально под ваш бизнес-стек. Напишите нам в Telegram (@samartsev_ai) — Алексей разберет ваши процессы на экспресс-аудите.";
+    const reply = await sendToB2bBackend(query);
 
-    if (lower.includes("crm") || lower.includes("амо") || lower.includes("битрикс") || lower.includes("1с")) {
-      replyText =
-        "Мы нативно интегрируемся с amoCRM, Битрикс24, 1С (любые конфигурации) и кастомными базами данных через REST API и n8n. Никакой ручной перебивки: лиды, сметы и остатки синхронизируются в реальном времени.";
-    } else if (lower.includes("цен") || lower.includes("стоим") || lower.includes("срок") || lower.includes("пилот") || lower.includes("деньг")) {
-      replyText =
-        "Стоимость пилотного внедрения под ключ — от 150 000 ₽. Срок запуска работающего MVP на одном процессе — 10–14 рабочих дней. Окупаемость обычно наступает за 1–2 месяца.";
-    } else if (lower.includes("безопасн") || lower.includes("152") || lower.includes("сервер") || lower.includes("контур") || lower.includes("тайн")) {
-      replyText =
-        "Полное соответствие 152-ФЗ: развертывание в РФ на защищенных серверах или On-Premise в вашем ЦОД. До старта подписываем юридический NDA: данные и коммерческие прайсы не передаются во внешние публичные сети.";
-    } else if (lower.includes("баз") || lower.includes("знан") || lower.includes("rag") || lower.includes("регламент")) {
-      replyText =
-        "Корпоративный RAG индексирует файлы Google Drive, Word, PDF и Notion. Ваши сотрудники получают ответы за 1.5 секунды со строгой ссылкой на утвержденные правила компании.";
-    }
-
-    setTimeout(() => {
-      setIsTyping(false);
-      const botMsg: ChatMessage = {
-        id: String(Date.now() + 1),
-        role: "bot",
-        text: replyText,
-        time: getNowTime(),
-      };
-      setMessages((prev) => [...prev, botMsg]);
-    }, 900);
+    setIsTyping(false);
+    const botMsg: ChatMessage = {
+      id: String(Date.now() + 1),
+      role: "bot",
+      text: reply,
+      time: getNowTime(),
+    };
+    setMessages((prev) => [...prev, botMsg]);
   };
 
   return (
