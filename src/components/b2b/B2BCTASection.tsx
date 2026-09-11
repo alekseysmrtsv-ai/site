@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Send, ShieldCheck, Clock, CheckCircle2, MessageSquare } from "lucide-react";
+import { ymEvent } from "@/components/YandexMetrika";
 
 export default function B2BCTASection() {
   const [phoneOrTg, setPhoneOrTg] = useState("");
@@ -27,9 +28,13 @@ export default function B2BCTASection() {
     })
       .then(() => {
         setStatus("success");
+        ymEvent("b2b_form_submitted", { source: "b2b_cta_form" });
+        ymEvent("form_submitted", { niche: "b2b", source: "b2b_cta_form" });
       })
       .catch(() => {
         setStatus("success"); // Fallback friendly UI
+        ymEvent("b2b_form_submitted", { source: "b2b_cta_form" });
+        ymEvent("form_submitted", { niche: "b2b", source: "b2b_cta_form" });
       });
   };
 
@@ -98,6 +103,10 @@ export default function B2BCTASection() {
               href="https://t.me/samartsev_ai"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                ymEvent("b2b_telegram_clicked", { source: "b2b_cta_telegram" });
+                ymEvent("telegram_clicked", { source: "b2b_cta" });
+              }}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-bg border-2 border-border hover:border-slate-400 text-heavy transition-colors shadow-sm"
             >
               <MessageSquare className="w-4 h-4 text-emerald-600" />

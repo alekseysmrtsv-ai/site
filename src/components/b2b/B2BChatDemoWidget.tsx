@@ -150,10 +150,13 @@ export default function B2BChatDemoWidget() {
         </div>
       );
     }
+    ymEvent("b2b_demo_doc_viewed", { doc_type: type });
     setIsModalOpen(true);
   };
 
   const handleTopicClick = (topic: typeof PRESET_TOPICS[0]) => {
+    ymEvent("b2b_demo_scenario_clicked", { topic: topic.id });
+
     const userMsg: ChatMessage = {
       id: String(Date.now()),
       role: "user",
@@ -248,9 +251,11 @@ export default function B2BChatDemoWidget() {
 
     // Analytics tracking
     ymEvent("chat_message_sent", { niche: "b2b" });
+    ymEvent("b2b_chat_message_sent");
     const hasContact = /(\+7|8\d{10}|@\w+|[\w.-]+@[\w.-]+)/i.test(query);
     if (hasContact) {
       ymEvent("chat_lead_captured", { niche: "b2b" });
+      ymEvent("b2b_chat_lead_captured");
     }
 
     const userMsg: ChatMessage = {
@@ -422,6 +427,10 @@ export default function B2BChatDemoWidget() {
                 href="https://t.me/samartsev_ai"
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => {
+                  ymEvent("b2b_telegram_clicked", { source: "modal_doc_cta" });
+                  ymEvent("telegram_clicked", { source: "b2b_modal" });
+                }}
                 className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-heavy hover:bg-heavy/90 text-surface font-bold text-xs sm:text-sm text-center transition-colors shadow-md"
               >
                 Внедрить такой процесс в вашу компанию

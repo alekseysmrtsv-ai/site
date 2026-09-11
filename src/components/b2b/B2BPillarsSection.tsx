@@ -18,6 +18,7 @@ import {
   AlertCircle,
   Link2,
 } from "lucide-react";
+import { ymEvent } from "@/components/YandexMetrika";
 
 interface PillarItem {
   title: string;
@@ -141,6 +142,11 @@ const PILLARS: PillarCategory[] = [
 export default function B2BPillarsSection() {
   const [activeTab, setActiveTab] = useState<string>("sales");
 
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    ymEvent("b2b_pillar_tab_clicked", { pillar: tabId });
+  };
+
   const currentPillar = PILLARS.find((p) => p.id === activeTab) || PILLARS[0];
 
   return (
@@ -164,7 +170,7 @@ export default function B2BPillarsSection() {
         <div className="mb-12 p-6 sm:p-8 rounded-3xl bg-surface border-2 border-border shadow-card">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div
-              onClick={() => setActiveTab("sales")}
+              onClick={() => handleTabChange("sales")}
               className={`p-5 rounded-2xl cursor-pointer transition-all border-2 ${
                 activeTab === "sales"
                   ? "bg-primary/10 border-primary shadow-sm"
@@ -183,7 +189,7 @@ export default function B2BPillarsSection() {
             </div>
 
             <div
-              onClick={() => setActiveTab("ops")}
+              onClick={() => handleTabChange("ops")}
               className={`p-5 rounded-2xl cursor-pointer transition-all border-2 ${
                 activeTab === "ops"
                   ? "bg-primary/10 border-primary shadow-sm"
@@ -202,7 +208,7 @@ export default function B2BPillarsSection() {
             </div>
 
             <div
-              onClick={() => setActiveTab("knowledge")}
+              onClick={() => handleTabChange("knowledge")}
               className={`p-5 rounded-2xl cursor-pointer transition-all border-2 ${
                 activeTab === "knowledge"
                   ? "bg-primary/10 border-primary shadow-sm"
@@ -230,7 +236,7 @@ export default function B2BPillarsSection() {
               return (
                 <button
                   key={pillar.id}
-                  onClick={() => setActiveTab(pillar.id)}
+                  onClick={() => handleTabChange(pillar.id)}
                   className={`py-3.5 px-5 rounded-xl font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all ${
                     isActive
                       ? "bg-heavy text-surface shadow-md"

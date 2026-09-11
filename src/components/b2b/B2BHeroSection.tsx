@@ -5,8 +5,18 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import B2BChatDemoWidget from "./B2BChatDemoWidget";
 import { ArrowRight, ShieldCheck, Zap, Database } from "lucide-react";
+import { ymEvent } from "@/components/YandexMetrika";
 
 export default function B2BHeroSection() {
+  const handleAuditClick = () => {
+    ymEvent("b2b_audit_clicked", { source: "hero_primary" });
+  };
+
+  const handleTelegramClick = () => {
+    ymEvent("b2b_telegram_clicked", { source: "hero_telegram" });
+    ymEvent("telegram_clicked", { source: "b2b_hero" });
+  };
+
   return (
     <section
       id="hero"
@@ -58,7 +68,11 @@ export default function B2BHeroSection() {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-3.5">
               <Button size="lg" asChild className="w-full sm:w-auto font-bold shadow-md">
-                <a href="#contact" aria-label="Заказать аудит процессов">
+                <a
+                  href="#contact"
+                  onClick={handleAuditClick}
+                  aria-label="Заказать аудит процессов"
+                >
                   Заказать аудит процессов
                 </a>
               </Button>
@@ -67,6 +81,7 @@ export default function B2BHeroSection() {
                   href="https://t.me/samartsev_ai"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={handleTelegramClick}
                   aria-label="Обсудить в Telegram"
                   className="flex items-center justify-center gap-2 text-heavy hover:text-primary"
                 >

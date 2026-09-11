@@ -168,6 +168,9 @@ export default function QuizSection({
       setFormState("success");
       ymEvent("quiz_lead_captured", { niche: niche || defaultNiche || "main", channel: preferredChannel });
       ymEvent("form_submitted", { niche: niche || defaultNiche || "main", source: "quiz_funnel" });
+      if ((niche && niche.toLowerCase().includes("b2b")) || (defaultNiche && defaultNiche.toLowerCase().includes("b2b"))) {
+        ymEvent("b2b_form_submitted", { channel: preferredChannel, niche: "b2b" });
+      }
     } catch (err) {
       console.error("Quiz submission error:", err);
       setFormState("error");
@@ -234,6 +237,12 @@ export default function QuizSection({
           href="https://t.me/samartsev_ai"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => {
+            ymEvent("telegram_clicked", { source: "quiz_success", niche: niche || defaultNiche || "main" });
+            if ((niche && niche.toLowerCase().includes("b2b")) || (defaultNiche && defaultNiche.toLowerCase().includes("b2b"))) {
+              ymEvent("b2b_telegram_clicked", { source: "quiz_success" });
+            }
+          }}
           className="w-full flex items-center justify-center gap-2 h-12 px-6 bg-primary text-heavy hover:bg-heavy hover:text-surface font-display font-semibold uppercase tracking-wider text-xs rounded-md transition-all duration-300 shadow-sm"
         >
           <Send className="w-4 h-4" /> Написать основателю в Telegram
@@ -527,6 +536,12 @@ export default function QuizSection({
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => {
+                      ymEvent("telegram_clicked", { source: "quiz_error_fallback", niche: niche || defaultNiche || "main" });
+                      if ((niche && niche.toLowerCase().includes("b2b")) || (defaultNiche && defaultNiche.toLowerCase().includes("b2b"))) {
+                        ymEvent("b2b_telegram_clicked", { source: "quiz_error_fallback" });
+                      }
+                    }}
                     className="inline-flex items-center gap-1.5 font-semibold text-primary hover:underline pt-1 text-xs"
                   >
                     <Send className="w-3.5 h-3.5" /> Отправить напрямую в Telegram (@samartsev_ai)
