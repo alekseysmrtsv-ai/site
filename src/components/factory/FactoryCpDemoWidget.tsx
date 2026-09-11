@@ -126,17 +126,13 @@ export default function FactoryCpDemoWidget() {
   // Direct send to n8n AI Agent with prompt-tailored fallback
   const sendToBackendAgent = async (query: string): Promise<string> => {
     try {
-      let webhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK;
-      if (webhookUrl && process.env.NODE_ENV === "production") {
+      let webhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK || "/api/n8n/webhook/chat-widget";
+      if (process.env.NODE_ENV === "production" && webhookUrl.includes("/webhook-test/")) {
         webhookUrl = webhookUrl.replace("/webhook-test/", "/webhook/");
       }
 
-      if (!webhookUrl) {
-        throw new Error("No webhook configured");
-      }
-
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 18000);
+      const timeoutId = setTimeout(() => controller.abort(), 20000);
 
       const res = await fetch(webhookUrl, {
         method: "POST",
@@ -157,7 +153,14 @@ export default function FactoryCpDemoWidget() {
         throw new Error(`HTTP ${res.status}`);
       }
 
-      const data = await res.json();
+      const responseText = await res.text();
+      let data: { response?: string; reply?: string; text?: string } = {};
+      try {
+        if (responseText) data = JSON.parse(responseText);
+      } catch {
+        // non-json response
+      }
+
       return (
         data.response ||
         data.reply ||
@@ -167,17 +170,19 @@ export default function FactoryCpDemoWidget() {
     } catch {
       // Smart local fallback for factory questions
       const lower = query.toLowerCase();
-      if (lower.includes("1с") || lower.includes("erp") || lower.includes("унф") || lower.includes("баз")) {
+      if (lower.includes("что еще") || lower.includes("кроме") || lower.includes("список") || lower.includes("может") || lower.includes("услуг") || lower.includes("задач")) {
+        return "Кроме генерации КП для производств мы внедряем:\n• **Продажи**: квалификация входящих заявок из почты/мессенджеров 24/7 и дожим в CRM.\n• **Операционка**: OCR-разбор чертежей/сканов/Excel, расчеты по ГОСТам, контроль сроков и связка 1С ↔ Битрикс24.\n• **База знаний**: AI-помощник по техкартам и регламентам цехов для инженеров и мастеров.\n\nКакое из этих направлений сейчас больше всего отнимает время?";
+      } else if (lower.includes("1с") || lower.includes("erp") || lower.includes("унф") || lower.includes("баз")) {
         return "Интеграция с 1С выполняется через штатный протокол OData / REST API. ИИ считывает остатки со складов завода, учитывает резервы и автоматически создает проект документа «Коммерческое предложение» в вашей 1С без доработки конфигурации.\n\nКакую конфигурацию 1С вы используете на предприятии?";
       } else if (lower.includes("чертеж") || lower.includes("скан") || lower.includes("pdf") || lower.includes("тз") || lower.includes("гост")) {
         return "Модуль Vision OCR оцифровывает спецификации из многостраничных PDF, Excel и чертежей деталей: извлекает марку стали, ГОСТ, габариты и рассчитывает норматив станко-часов цехов.\n\nВ каком формате заказчики чаще всего присылают заявки — PDF или Excel?";
       } else if (lower.includes("цен") || lower.includes("стоим") || lower.includes("срок") || lower.includes("пилот")) {
         return "Базовый пилот на одну товарную группу запускается за 10–14 рабочих дней (от 150 000 ₽). Мы калибруем точность расчета на массиве из 50 ваших реальных прошлых спецификаций.\n\nХотите провести бесплатный экспресс-аудит спецификаций?";
-      } else if (lower.includes("безопасн") || lower.includes("тайн") || lower.includes("152") || lower.includes("сервер")) {
-        return "Все данные остаются в закрытом периметре сертифицированных серверов в РФ (Selectel) или локально on-premise на сервере завода. Коммерческие прайсы защищены по 152-ФЗ и соглашению NDA.\n\nЕсть ли у вашей службы безопасности строгие регламенты?";
+      } else if (lower.includes("безопасн") || lower.includes("тайн") || lower.includes("152") || lower.includes("сервер") || lower.includes("контур")) {
+        return "Все данные остаются в закрытом периметре сертифицированных серверов в РФ или локально on-premise на сервере завода. Коммерческие прайсы защищены по 152-ФЗ и соглашению NDA.\n\nЕсть ли у вашей службы безопасности строгие регламенты?";
       }
 
-      return "Отличный вопрос по вашему производству! Мы настраиваем алгоритмы расчета индивидуально под технологические карты цехов. Оставьте контакты (телефон или Telegram) — Алексей Самарцев подготовит технический разбор под ваш завод.";
+      return "Мы настраиваем ИИ-автоматизацию индивидуально под технологические карты цехов и 1С завода. Оставьте контакты (телефон или Telegram) — Алексей Самарцев подготовит технический разбор под ваше производство.";
     }
   };
 

@@ -40,7 +40,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/prom" className="hover:text-primary transition-colors flex items-center gap-1.5">
-                  <span>🏭</span> ИИ для заводов и B2B
+                  <span>🏭</span> ИИ для заводов и производства
+                </Link>
+              </li>
+              <li>
+                <Link href="/b2b" className="hover:text-primary transition-colors flex items-center gap-1.5 font-bold text-primary">
+                  <span>💼</span> B2B Автоматизация процессов
                 </Link>
               </li>
             </ul>
