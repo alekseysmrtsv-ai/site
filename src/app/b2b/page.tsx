@@ -8,7 +8,7 @@ import B2BWorkflowSteps from "@/components/b2b/B2BWorkflowSteps";
 import B2BSecuritySection from "@/components/b2b/B2BSecuritySection";
 import B2BFAQSection from "@/components/b2b/B2BFAQSection";
 import { B2B_FAQS } from "@/data/b2bFaq";
-import B2BCTASection from "@/components/b2b/B2BCTASection";
+import QuizSection from "@/components/QuizSection";
 
 export const metadata: Metadata = {
   title: "Автоматизация бизнес-процессов с ИИ для B2B — продажи, операционка и база знаний | Samartsev AI",
@@ -127,7 +127,12 @@ export default function B2BPage() {
         <B2BSecuritySection />
         <FounderSection description="Внедряю прикладную ИИ-автоматизацию для B2B-компаний. Лично провожу аудит узких мест, собираю надежную архитектуру в n8n и отвечаю за окупаемость каждого внедренного решения." />
         <B2BFAQSection />
-        <B2BCTASection />
+        <QuizSection
+          defaultNiche="B2B / Дистрибуция и опт"
+          startAtStep1={true}
+          title="Рассчитайте окупаемость автоматизации для вашей компании"
+          subtitle="Пройдите интерактивный опрос из 4 шагов: выберите приоритетные процессы (продажи, 1С, договоры или базу знаний), и мы подготовим персональный расчет окупаемости и план внедрения."
+        />
       </main>
 
       <Footer />

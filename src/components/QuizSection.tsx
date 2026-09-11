@@ -7,14 +7,15 @@ import { ymEvent } from "@/components/YandexMetrika";
 type FormState = "idle" | "loading" | "success" | "error";
 
 const NICHES = [
+  "B2B / Дистрибуция и опт",
+  "Производство / Завод",
   "Медицина / Стоматология",
   "Beauty / SPA",
   "Автосервис",
-  "Производство / Завод",
   "Недвижимость / Девелопмент",
-  "E-commerce / Магазин",
-  "Образование",
-  "Юридические услуги",
+  "E-commerce / Ритейл",
+  "Образование / EdTech",
+  "Юридические / Фин. услуги",
   "Другое",
 ];
 
@@ -26,14 +27,14 @@ const EMPLOYEES = [
 ];
 
 const TASKS = [
-  "Квалификация лидов",
-  "Запись на услуги / приём",
+  "Квалификация лидов в CRM",
   "Автоматизация КП и спецификаций",
+  "Синхронизация 1С и учетных баз",
+  "Авто-генерация договоров и счетов",
+  "Корпоративная база знаний (RAG)",
   "Поддержка клиентов 24/7",
-  "Интеграция с CRM и 1С",
-  "Снижение стоимости лида",
+  "Мониторинг цен конкурентов",
   "Не знаю, нужна консультация",
-  "Другое",
 ];
 
 const CHANNELS = [
@@ -44,12 +45,20 @@ const CHANNELS = [
 
 interface QuizSectionProps {
   defaultNiche?: string;
+  startAtStep1?: boolean;
+  title?: string;
+  subtitle?: string;
 }
 
-export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
+export default function QuizSection({
+  defaultNiche = "",
+  startAtStep1 = false,
+  title,
+  subtitle,
+}: QuizSectionProps) {
   const [isMounted, setIsMounted] = useState(false);
   
-  const [step, setStep] = useState(defaultNiche ? 2 : 1);
+  const [step, setStep] = useState(defaultNiche && !startAtStep1 ? 2 : 1);
   const [niche, setNiche] = useState(defaultNiche);
   const [employees, setEmployees] = useState("");
   const [tasks, setTasks] = useState<string[]>([]);
@@ -597,14 +606,14 @@ export default function QuizSection({ defaultNiche = "" }: QuizSectionProps) {
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         {/* Left info column */}
         <div className="animate-fade-in-up">
-          <span className="text-[13px] font-semibold tracking-widest text-text-muted uppercase block mb-4">
+          <span className="text-[13px] font-semibold tracking-widest text-slate-500 uppercase block mb-4 font-mono">
             // УЗНАЙТЕ СТОИМОСТЬ И СРОКИ
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-heavy mb-6 leading-tight">
-            Получите решение для вашего бизнеса
+            {title || "Получите решение для вашего бизнеса"}
           </h2>
-          <p className="text-text-muted mb-10 font-body leading-relaxed text-lg border-b border-border pb-8">
-            Пройдите короткий опрос из 4 шагов — мы подготовим персональное предложение с расчётом окупаемости для вашей ниши.
+          <p className="text-slate-600 mb-10 font-body leading-relaxed text-lg border-b border-border pb-8">
+            {subtitle || "Пройдите короткий опрос из 4 шагов — мы подготовим персональное предложение с расчётом окупаемости для вашей ниши."}
           </p>
           <ul className="space-y-5">
             {[
