@@ -147,59 +147,83 @@ export default function B2BPillarsSection() {
     <section id="pillars" className="w-full py-20 bg-bg text-heavy border-t border-border">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/15 border border-primary/40 text-primary text-xs font-bold uppercase tracking-wider">
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/15 border border-primary/40 text-slate-900 text-xs font-bold uppercase tracking-wider">
             <span>🧩</span>
-            <span>Системная экосистема</span>
+            <span>Направления автоматизации</span>
           </div>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-heavy leading-tight">
-            Три ключевых направления автоматизации бизнеса
+            Три направления автоматизации бизнеса
           </h2>
-          <p className="text-slate-200 text-base md:text-lg font-body leading-relaxed">
-            Я делю всю автоматизацию компании на три большие категории. Когда они работают вместе — бизнес получает максимальный эффект без разрывов между отделами.
+          <p className="text-slate-700 text-base md:text-lg font-body leading-relaxed max-w-2xl mx-auto">
+            Всю автоматизацию можно разделить на три независимые категории. Не обязательно внедрять всё и сразу — вы можете начать с одного самого узкого места, где компания сейчас теряет больше всего времени или денег.
           </p>
         </div>
 
-        {/* ВВОДНЫЙ БЛОК-ПРЕДИСЛОВИЕ: Почему точечные решения не работают */}
-        <div className="mb-14 p-7 sm:p-9 rounded-3xl bg-surface border-2 border-border shadow-card relative overflow-hidden">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-            <div className="space-y-3 max-w-2xl">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400">
-                <AlertCircle className="w-4 h-4" />
-                <span>Почему точечная автоматизация не работает</span>
+        {/* Вводный обзорный блок (3 направления на выбор) */}
+        <div className="mb-12 p-6 sm:p-8 rounded-3xl bg-surface border-2 border-border shadow-card">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+              onClick={() => setActiveTab("sales")}
+              className={`p-5 rounded-2xl cursor-pointer transition-all border-2 ${
+                activeTab === "sales"
+                  ? "bg-primary/10 border-primary shadow-sm"
+                  : "bg-bg border-border hover:border-slate-300"
+              }`}
+            >
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <div className="w-8 h-8 rounded-xl bg-surface border border-border flex items-center justify-center text-emerald-600 font-bold">
+                  1
+                </div>
+                <h4 className="font-display font-bold text-base text-heavy">Продажи</h4>
               </div>
-              <h3 className="font-display text-xl sm:text-2xl font-bold text-heavy leading-snug">
-                Чат-бот отдельно, 1С отдельно, регламенты в Google Drive — так рождаются разрывы данных
-              </h3>
-              <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-body">
-                Большинство компаний покупают разрозненный софт: менеджеры вручную перебивают лиды в CRM, бухгалтерия сутками сверяет акты в 1С, а новые сотрудники дергают РОПа вопросами «где лежит файл». 
-                Мы объединяем процессы в <strong>единый сквозной конвейер</strong>: продажи сразу передают данные в операционку, а обе системы опираются на единую базу знаний.
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-body">
+                Быстрый прием заявок 24/7, мгновенный расчет КП и регулярный мониторинг цен конкурентов.
               </p>
             </div>
 
-            {/* Scheme mini-card */}
-            <div className="w-full lg:w-auto shrink-0 bg-bg p-5 rounded-2xl border border-border/80 space-y-3 font-mono text-xs">
-              <div className="flex items-center gap-2 text-emerald-400 font-bold">
-                <span>1. ПРОДАЖИ</span>
-                <span className="text-slate-500">→</span>
-                <span className="text-slate-300 font-normal">квалификация & КП за 30с</span>
+            <div
+              onClick={() => setActiveTab("ops")}
+              className={`p-5 rounded-2xl cursor-pointer transition-all border-2 ${
+                activeTab === "ops"
+                  ? "bg-primary/10 border-primary shadow-sm"
+                  : "bg-bg border-border hover:border-slate-300"
+              }`}
+            >
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <div className="w-8 h-8 rounded-xl bg-surface border border-border flex items-center justify-center text-primary-dark font-bold">
+                  2
+                </div>
+                <h4 className="font-display font-bold text-base text-heavy">Операционка</h4>
               </div>
-              <div className="flex items-center gap-2 text-primary font-bold">
-                <span>2. ОПЕРАЦИОНКА</span>
-                <span className="text-slate-500">→</span>
-                <span className="text-slate-300 font-normal">договоры, 1С и сверка</span>
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-body">
+                Авто-сбор реквизитов из почты, генерация договоров, синхронизация с 1С и сверка отчетов.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setActiveTab("knowledge")}
+              className={`p-5 rounded-2xl cursor-pointer transition-all border-2 ${
+                activeTab === "knowledge"
+                  ? "bg-primary/10 border-primary shadow-sm"
+                  : "bg-bg border-border hover:border-slate-300"
+              }`}
+            >
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <div className="w-8 h-8 rounded-xl bg-surface border border-border flex items-center justify-center text-amber-600 font-bold">
+                  3
+                </div>
+                <h4 className="font-display font-bold text-base text-heavy">Знания компании</h4>
               </div>
-              <div className="flex items-center gap-2 text-amber-400 font-bold">
-                <span>3. ЗНАНИЯ</span>
-                <span className="text-slate-500">→</span>
-                <span className="text-slate-300 font-normal">RAG база и обучение команды</span>
-              </div>
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-body">
+                Единая база регламентов, мгновенные ответы на вопросы сотрудников и легкий онбординг новичков.
+              </p>
             </div>
           </div>
         </div>
 
         {/* Pillar Switcher Navigation */}
-        <div className="flex justify-center mb-10">
+        <div className="flex justify-center mb-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-2 bg-surface rounded-2xl border-2 border-border max-w-3xl w-full">
             {PILLARS.map((pillar) => {
               const isActive = pillar.id === activeTab;
@@ -209,8 +233,8 @@ export default function B2BPillarsSection() {
                   onClick={() => setActiveTab(pillar.id)}
                   className={`py-3.5 px-5 rounded-xl font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all ${
                     isActive
-                      ? "bg-bg text-heavy border-2 border-primary/50 shadow-md"
-                      : "text-slate-300 hover:text-heavy hover:bg-bg/50"
+                      ? "bg-heavy text-surface shadow-md"
+                      : "text-slate-700 hover:text-heavy hover:bg-bg"
                   }`}
                 >
                   <span className="shrink-0">{pillar.icon}</span>
@@ -224,13 +248,13 @@ export default function B2BPillarsSection() {
         {/* Active Pillar Card Breakdown */}
         <div className="bg-surface border-2 border-border rounded-3xl p-7 sm:p-11 shadow-card">
           <div className="max-w-3xl mb-9 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
               {currentPillar.badge}
             </span>
             <h3 className="font-display text-2xl sm:text-3xl font-bold text-heavy">
               {currentPillar.title}
             </h3>
-            <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
+            <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
               {currentPillar.subtitle}
             </p>
           </div>
@@ -240,7 +264,7 @@ export default function B2BPillarsSection() {
             {currentPillar.items.map((item, idx) => (
               <div
                 key={idx}
-                className="p-6 sm:p-7 rounded-2xl bg-bg border border-border hover:border-primary/60 transition-all flex flex-col justify-between space-y-5 group shadow-sm"
+                className="p-6 sm:p-7 rounded-2xl bg-bg border border-border hover:border-slate-400 transition-all flex flex-col justify-between space-y-5 group shadow-sm"
               >
                 <div className="space-y-3.5">
                   <div className="flex items-center gap-3.5">
@@ -251,14 +275,14 @@ export default function B2BPillarsSection() {
                       {item.title}
                     </h4>
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-body">
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-body">
                     {item.description}
                   </p>
                 </div>
 
-                <div className="pt-3.5 border-t border-border/80">
-                  <span className="text-xs sm:text-sm font-semibold text-primary flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <div className="pt-3.5 border-t border-border">
+                  <span className="text-xs sm:text-sm font-semibold text-slate-900 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
                     <span>{item.benefit}</span>
                   </span>
                 </div>
@@ -270,3 +294,4 @@ export default function B2BPillarsSection() {
     </section>
   );
 }
+

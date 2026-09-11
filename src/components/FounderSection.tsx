@@ -33,7 +33,7 @@ export default function FounderSection({ description }: FounderSectionProps = {}
           <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-heavy">
             Алексей Самарцев
           </h2>
-          <p className="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed font-body">
+          <p className="text-lg md:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed font-body">
             {bioText}
           </p>
           <div className="pt-6 flex flex-col items-center gap-3">

@@ -125,7 +125,7 @@ export default function B2BPage() {
         <B2BPillarsSection />
         <B2BWorkflowSteps />
         <B2BSecuritySection />
-        <FounderSection description="Проектирую и внедряю сквозную ИИ-автоматизацию для производств и B2B-компаний. Лично провожу аудит процессов, собираю архитектуру в n8n и отвечаю за окупаемость каждого внедренного сценария." />
+        <FounderSection description="Внедряю прикладную ИИ-автоматизацию для B2B-компаний. Лично провожу аудит узких мест, собираю надежную архитектуру в n8n и отвечаю за окупаемость каждого внедренного решения." />
         <B2BFAQSection />
         <B2BCTASection />
       </main>

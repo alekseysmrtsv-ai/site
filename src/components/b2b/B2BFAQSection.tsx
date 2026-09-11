@@ -22,7 +22,7 @@ export default function B2BFAQSection() {
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-heavy leading-tight">
             Часто задаваемые вопросы по B2B-автоматизации
           </h2>
-          <p className="text-slate-200 text-base md:text-lg font-body leading-relaxed">
+          <p className="text-slate-700 text-base md:text-lg font-body leading-relaxed">
             Ответы на ключевые вопросы собственников бизнеса, коммерческих и операционных директоров.
           </p>
         </div>
@@ -46,7 +46,7 @@ export default function B2BFAQSection() {
                   </span>
                   <div
                     className={`w-9 h-9 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-primary border-primary/50" : "text-slate-300"
+                      isOpen ? "rotate-180 text-emerald-600 border-emerald-400" : "text-slate-400"
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -54,7 +54,7 @@ export default function B2BFAQSection() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 pt-2 text-sm sm:text-base text-slate-200 leading-relaxed border-t border-border/80 font-body">
+                  <div className="px-5 sm:px-6 pb-6 pt-2 text-sm sm:text-base text-slate-700 leading-relaxed border-t border-border font-body">
                     <p className="whitespace-pre-line">{faq.answer}</p>
                   </div>
                 )}

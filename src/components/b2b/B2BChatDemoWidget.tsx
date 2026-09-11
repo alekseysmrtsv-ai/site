@@ -89,25 +89,25 @@ export default function B2BChatDemoWidget() {
         <div className="space-y-4 text-xs sm:text-sm font-sans">
           <div className="p-3.5 bg-bg rounded-xl border border-border">
             <div className="font-bold text-heavy text-sm">Заказчик: ООО «Инфраструктура-Юг»</div>
-            <div className="text-slate-300 text-xs mt-0.5">Менеджер: Автоматический расчет Samartsev AI</div>
+            <div className="text-slate-600 text-xs mt-0.5">Менеджер: Автоматический расчет Samartsev AI</div>
           </div>
           <div className="space-y-2">
-            <div className="flex justify-between py-2 border-b border-border/70 text-slate-200">
+            <div className="flex justify-between py-2 border-b border-border/70 text-slate-700 font-medium">
               <span>Серверный шкаф 42U 800x1000 (8 шт.)</span>
               <span className="font-mono font-bold text-heavy">680 000 ₽</span>
             </div>
-            <div className="flex justify-between py-2 border-b border-border/70 text-slate-200">
+            <div className="flex justify-between py-2 border-b border-border/70 text-slate-700 font-medium">
               <span>Коммутаторы L3 48 PoE+ (12 шт.)</span>
               <span className="font-mono font-bold text-heavy">1 440 000 ₽</span>
             </div>
-            <div className="flex justify-between py-2 border-b border-border/70 text-slate-200">
+            <div className="flex justify-between py-2 border-b border-border/70 text-slate-700 font-medium">
               <span>Комплект кабельных трасс и патч-панелей</span>
               <span className="font-mono font-bold text-heavy">360 000 ₽</span>
             </div>
           </div>
-          <div className="p-3.5 bg-primary/10 rounded-xl border border-primary/40 flex justify-between items-center text-sm font-bold">
+          <div className="p-3.5 bg-primary/15 rounded-xl border border-primary/40 flex justify-between items-center text-sm font-bold">
             <span className="text-heavy">Итого со скидкой 5%:</span>
-            <span className="text-primary font-display text-base">2 480 000 ₽ с НДС</span>
+            <span className="text-slate-900 font-display text-base">2 480 000 ₽ с НДС</span>
           </div>
         </div>
       );
@@ -115,10 +115,10 @@ export default function B2BChatDemoWidget() {
       setModalTitle("Проект договора поставки № Д-142/26");
       setModalContent(
         <div className="space-y-3.5 text-xs sm:text-sm">
-          <p className="text-slate-200 leading-relaxed">
+          <p className="text-slate-700 leading-relaxed font-body">
             Договор сформирован по типовому юридическому шаблону компании. Все реквизиты покупателя (ИНН 7701894210, КПП, расчетный счет, БИК банка, Генеральный директор) подставлены автоматически из входящей карточки.
           </p>
-          <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400 font-medium">
+          <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 font-semibold">
             ✓ Документ зарегистрирован в 1С и прикреплен к сделке в amoCRM / Битрикс24.
           </div>
         </div>
@@ -127,11 +127,11 @@ export default function B2BChatDemoWidget() {
       setModalTitle("Ответ из корпоративной базы знаний RAG");
       setModalContent(
         <div className="space-y-3 text-xs sm:text-sm">
-          <div className="p-3 bg-bg rounded-xl border border-border text-slate-200">
+          <div className="p-3 bg-bg rounded-xl border border-border text-slate-700">
             <span className="font-bold text-heavy block mb-1">Регламент продаж (п. 4.2 «Ценообразование»):</span>
             «Скидки до 10% применяет менеджер самостоятельно. Скидки от 10% до 15% утверждает РОП в Telegram-боте. Скидки свыше 15% требуют визы Коммерческого директора».
           </div>
-          <div className="text-xs text-primary font-semibold">
+          <div className="text-xs text-emerald-700 font-bold">
             ✓ Ответ найден за 1.4 секунды без отвлечения руководителя
           </div>
         </div>
@@ -227,12 +227,12 @@ export default function B2BChatDemoWidget() {
               <span className="text-base font-bold font-display text-heavy">
                 B2B ИИ-ассистент
               </span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 В сети
               </span>
             </div>
-            <p className="text-xs text-slate-300 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5 font-medium">
               Живой демо-диалог · Отвечает за 1 секунду
             </p>
           </div>
@@ -248,7 +248,7 @@ export default function B2BChatDemoWidget() {
               msg.role === "user" ? "items-end ml-auto max-w-[88%]" : "items-start max-w-[92%]"
             }`}
           >
-            <div className="flex items-center gap-2 px-1 text-[11px] text-slate-400 font-medium">
+            <div className="flex items-center gap-2 px-1 text-[11px] text-slate-500 font-medium">
               <span>{msg.role === "user" ? "Вы" : "ИИ-ассистент"}</span>
               <span>·</span>
               <span>{msg.time}</span>
@@ -257,18 +257,18 @@ export default function B2BChatDemoWidget() {
             <div
               className={`p-4 rounded-2xl leading-relaxed shadow-sm ${
                 msg.role === "user"
-                  ? "bg-primary text-surface font-semibold rounded-tr-sm"
-                  : "bg-bg border border-border text-heavy rounded-tl-sm space-y-3"
+                  ? "bg-heavy text-surface font-medium rounded-tr-sm"
+                  : "bg-bg border border-border text-slate-800 rounded-tl-sm space-y-3"
               }`}
             >
-              <p className="whitespace-pre-line text-xs sm:text-sm font-medium">
+              <p className="whitespace-pre-line text-xs sm:text-sm">
                 {msg.text}
               </p>
 
               {msg.actionBtn && (
                 <button
                   onClick={msg.actionBtn.onClick}
-                  className="w-full mt-2 py-2.5 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm"
+                  className="w-full mt-2 py-2.5 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm"
                 >
                   <FileCheck2 className="w-4 h-4 shrink-0" />
                   <span className="truncate">{msg.actionBtn.label}</span>
@@ -280,8 +280,8 @@ export default function B2BChatDemoWidget() {
 
         {/* Live Typing Indicator */}
         {isTyping && (
-          <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-bg border border-border w-fit text-xs text-slate-300">
-            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-bg border border-border w-fit text-xs text-slate-600 font-medium">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
             <span>ИИ-ассистент печатает ответ...</span>
           </div>
         )}
@@ -291,7 +291,7 @@ export default function B2BChatDemoWidget() {
 
       {/* Interactive Scenario Buttons */}
       <div className="px-4 py-2.5 bg-bg/80 border-t border-border space-y-1.5">
-        <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+        <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
           Нажмите, чтобы протестировать сценарий:
         </div>
         <div className="flex flex-col gap-1.5">
@@ -300,12 +300,12 @@ export default function B2BChatDemoWidget() {
               key={topic.id}
               onClick={() => handleTopicClick(topic)}
               disabled={isTyping}
-              className="w-full text-left px-3 py-2 rounded-xl bg-surface hover:bg-surface/80 border border-border hover:border-primary/60 text-xs font-semibold text-heavy transition-all flex items-center justify-between group disabled:opacity-50"
+              className="w-full text-left px-3 py-2 rounded-xl bg-surface hover:bg-surface/80 border border-border hover:border-slate-400 text-xs font-semibold text-heavy transition-all flex items-center justify-between group disabled:opacity-50"
             >
-              <span className="group-hover:text-primary transition-colors">
+              <span className="group-hover:text-primary-dark transition-colors">
                 {topic.buttonLabel}
               </span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+              <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-primary-dark group-hover:translate-x-0.5 transition-all shrink-0" />
             </button>
           ))}
         </div>
@@ -321,12 +321,12 @@ export default function B2BChatDemoWidget() {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Или задайте свой вопрос (про 1С, CRM, сроки)..."
-          className="flex-1 bg-bg border-2 border-border focus:border-primary rounded-xl px-4 py-2.5 text-xs sm:text-sm text-heavy placeholder:text-slate-400 focus:outline-none transition-colors"
+          className="flex-1 bg-bg border-2 border-border focus:border-primary rounded-xl px-4 py-2.5 text-xs sm:text-sm text-heavy placeholder:text-slate-500 focus:outline-none transition-colors"
         />
         <button
           type="submit"
           disabled={!inputText.trim() || isTyping}
-          className="p-3 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold transition-colors disabled:opacity-40 shrink-0 shadow-sm"
+          className="p-3 rounded-xl bg-primary hover:bg-primary-hover text-slate-950 font-bold transition-colors disabled:opacity-40 shrink-0 shadow-sm"
           aria-label="Отправить вопрос"
         >
           <Send className="w-4 h-4" />
@@ -339,7 +339,7 @@ export default function B2BChatDemoWidget() {
           <div className="bg-surface text-heavy rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative border border-border">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-5 right-5 p-1.5 rounded-full hover:bg-bg text-slate-300 hover:text-heavy transition-colors"
+              className="absolute top-5 right-5 p-1.5 rounded-full hover:bg-bg text-slate-400 hover:text-heavy transition-colors"
               aria-label="Закрыть"
             >
               <X className="w-5 h-5" />
@@ -349,7 +349,7 @@ export default function B2BChatDemoWidget() {
               <h3 className="font-display font-bold text-base sm:text-lg text-heavy">
                 {modalTitle}
               </h3>
-              <p className="text-xs text-slate-300 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 Пример автоматического документа в контуре Samartsev AI
               </p>
             </div>
@@ -361,13 +361,13 @@ export default function B2BChatDemoWidget() {
                 href="https://t.me/samartsev_ai"
                 target="_blank"
                 rel="noreferrer"
-                className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-primary hover:bg-primary-hover text-surface font-bold text-xs sm:text-sm text-center transition-colors shadow-md"
+                className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-heavy hover:bg-heavy/90 text-surface font-bold text-xs sm:text-sm text-center transition-colors shadow-md"
               >
                 Внедрить такой процесс в вашу компанию
               </a>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="w-full sm:w-auto py-3 px-5 rounded-xl bg-bg hover:bg-bg/80 text-slate-200 font-medium text-xs transition-colors border border-border"
+                className="w-full sm:w-auto py-3 px-5 rounded-xl bg-bg hover:bg-slate-100 text-slate-700 font-semibold text-xs transition-colors border border-border"
               >
                 Закрыть
               </button>

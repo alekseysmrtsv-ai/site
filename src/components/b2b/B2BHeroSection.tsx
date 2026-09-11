@@ -32,7 +32,7 @@ export default function B2BHeroSection() {
               Автоматизация бизнес-процессов с ИИ для B2B
             </h1>
 
-            <p className="font-body text-base sm:text-lg text-slate-200 leading-relaxed">
+            <p className="font-body text-base sm:text-lg text-slate-700 leading-relaxed">
               Устраняем невидимые затраты компании: алгоритмы за 30 секунд готовят КП, вытаскивают реквизиты из входящей почты, синхронизируют CRM с 1С и дают команде мгновенный доступ к корпоративной базе знаний.
             </p>
 
@@ -44,7 +44,7 @@ export default function B2BHeroSection() {
               </div>
               <div className="w-px h-3.5 bg-border hidden sm:block" />
               <div className="flex items-center gap-1.5 text-heavy">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 <span>152-ФЗ и закрытый контур</span>
               </div>
               <div className="w-px h-3.5 bg-border hidden sm:block" />
@@ -78,14 +78,14 @@ export default function B2BHeroSection() {
 
             {/* Trust Bar */}
             <div className="flex flex-col gap-2.5 pt-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                 Бесшовно связываем ваши системы:
               </span>
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                 {["amoCRM", "Битрикс24", "1С:ERP", "Telegram", "WhatsApp", "YandexGPT"].map((tool) => (
                   <span
                     key={tool}
-                    className="font-display font-bold text-sm tracking-tight text-slate-200 hover:text-heavy transition-colors cursor-default"
+                    className="font-display font-bold text-sm tracking-tight text-slate-700 hover:text-heavy transition-colors cursor-default"
                   >
                     {tool}
                   </span>
